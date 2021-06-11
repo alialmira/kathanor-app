@@ -145,8 +145,8 @@ export default class ManageContact extends Vue {
     this.filterOptions = this.institution;
   }
 
-  selectedCollege(institution: string): void {
-    this.$store.dispatch('recipient/filterInsitution', institution);
+  async selectedCollege(institution: string) {
+    await this.$store.dispatch('recipient/filterInsitution', institution);
     this.data = this.newRecipients;
   }
 }
