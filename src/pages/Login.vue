@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center bg-img">
+  <q-page class="flex flex-center bg-secondary">
     <div class="row">
       <div class="col-7">
         <q-card class="__imgg q-mr-lg" >
@@ -132,9 +132,6 @@ export default class Login extends Vue {
 .__card {
   width: 400px;
   height: 500px;
-}
-.bg-img {
-  background-image: url(~assets/33.jpg);
 }
 .__btn {
   width: 250px;

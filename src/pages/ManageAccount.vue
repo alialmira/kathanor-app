@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-img">
+qay;luqw kj  <q-page class="bg-secondary">
     <div class="q-pa-md">
       <q-btn
         label="Add Officer"
@@ -78,8 +78,3 @@ export default class ManageAccount extends Vue {
 }
 </script>
 
-<style>
-.bg-img {
-  background-image: url(~assets/33.jpg);
-}
-</style>
