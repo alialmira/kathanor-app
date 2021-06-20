@@ -1,27 +1,19 @@
 <template>
-  <q-page class="bg-brown-1 flex flex-center">
+  <q-page class="flex flex-center bg-img">
     <div class="row">
-      <div class="col-8 text-center">
-        <img
-          class="__card q-ma-lg"
-          height="350px"
-          width="350px"
-          src="~assets/msu-logo.png"
-        />
-        <q-card class="q-ml-xlm">
-          <div class="text-subtitle2 text-center q-ma-lg">
-            Mindanao State University - Marawi City
-            <br />
-            Office of Information, Press and Publication
-            <br /><br />
-            {{ definition }}
-          </div>
+      <div class="col-7">
+        <q-card class="__imgg q-mr-lg" >
+          <q-img class="" src="~assets/11.jpg" />
         </q-card>
       </div>
-      <div class="col-4 q-pa-xl">
-        <q-card class="__card q-py-lg">
-          <q-card-section class="q-gutter-y-md">
+      <div class="col-5">
+        <q-card elevated flat bordered class="__card bg-accent">
+          <q-card-section class="q-gutter-y-md  flex flex-center outlined">
+            <q-img class="__img" src="~assets/tryyyyyy.png" />
+            <div class="text-overline">Log in your account</div>
             <q-input
+              style="width: 300px"
+              class="center"
               v-model="user.username"
               outlined
               label="ID Number"
@@ -31,6 +23,7 @@
               ><template v-slot:prepend> <q-icon name="person"/></template>
             </q-input>
             <q-input
+              style="width: 300px"
               v-model="user.password"
               outlined
               label="Password"
@@ -49,12 +42,13 @@
               ></template>
             </q-input>
           </q-card-section>
-          <q-card-actions>
+          <q-card-actions class="flex flex-center">
             <q-btn
-              class="full-width"
-              size="lg"
+              class="__btn q-py-xs"
+              rounded
+              size="md"
               label="login"
-              color="red-10"
+              color="dark"
               text-color="white"
               @click="login()"
             ></q-btn>
@@ -95,10 +89,6 @@ export default class Login extends Vue {
     password: ''
   };
   hidePassword = false;
-  definition = `Office of Information, Press and Publication was republished in the year 1970, dated August 15, 
-        1970 it was an office recommended by the president and successfully approved during that time, 
-        until now Office of Information, Press and Publications is under the command of the Office of the President.`;
-
   async login(): Promise<void> {
     if (
       this.officers.find(
@@ -119,12 +109,12 @@ export default class Login extends Vue {
         o =>
           this.user.password == o.password &&
           this.user.username == o.name &&
-          o.accountType == 'Logged in as Officer'
+          o.accountType == 'Officer'
       )
     ) {
       this.$q.notify({
         type: 'success',
-        message: 'Officer'
+        message: 'Logged in as Officer'
       });
       await this.$store.dispatch('uiNav/isAdminLogin', false);
       await this.$router.push('/');
@@ -140,6 +130,20 @@ export default class Login extends Vue {
 
 <style scoped>
 .__card {
-  width: 350px;
+  width: 400px;
+  height: 500px;
+}
+.bg-img {
+  background-image: url(~assets/33.jpg);
+}
+.__btn {
+  width: 250px;
+}
+.__img {
+  height: 200px;
+}
+.__imgg {
+  width: 600px;
+  height: 500px;
 }
 </style>
