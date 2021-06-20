@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-img">
+  <q-page class="bg-secondary">
     <div class="q-pa-md">
       <q-btn
         label="Add document"
@@ -52,8 +52,3 @@ export default class ManageDocument extends Vue {
 }
 </script>
 
-<style>
-.bg-img {
-  background-image: url(~assets/33.jpg);
-}
-</style>
