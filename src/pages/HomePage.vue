@@ -1,11 +1,11 @@
 <template>
-  <q-page padding class="bg-brown-1">
+  <q-page
+    padding class="bg-img">
     <div class="row no-wrap items-center q-mt-none q-pa-sm bg-white">
       <q-avatar square size="xl">
         <img height="100px" src="~assets/msuu.png" />
       </q-avatar>
       <div class="text-h6 q-mx-md">Hello</div>
-
     </div>
   </q-page>
 </template>
@@ -13,5 +13,8 @@
 <style scoped>
 .q-item {
   height: 60px;
+}
+.bg-img {
+  background-image: url(~assets/33.jpg);
 }
 </style>

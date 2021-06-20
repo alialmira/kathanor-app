@@ -9,6 +9,9 @@ const actions: ActionTree<UINavModule, StateInterface> = {
 
   isAdminLogin(context, payload: boolean) {
     context.commit('isAdminLogin', payload);
+  },
+  dialogPopups(context, payload: boolean) {
+    context.commit('dialogPopups', payload)
   }
 };
 

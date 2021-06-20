@@ -8,6 +8,9 @@ const mutation: MutationTree<UINavModule> = {
 
   isAdminLogin(state, payload: boolean) {
     state.adminLoggedIn = payload;
+  },
+  dialogPopups(state, payload: boolean) {
+    state.isShoww = payload;
   }
 };
 

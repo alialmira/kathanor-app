@@ -1,9 +1,9 @@
 <template>
-  <q-page class="bg-brown-1">
+  <q-page class="bg-img">
     <div class="q-pa-md">
       <q-btn
         label="Add document"
-        color="grey-9"
+        color="dark"
         text-color="white"
         icon-right="note_add"
         dense
@@ -51,3 +51,9 @@ export default class ManageDocument extends Vue {
   ];
 }
 </script>
+
+<style>
+.bg-img {
+  background-image: url(~assets/33.jpg);
+}
+</style>
