@@ -9,20 +9,27 @@
         dense
         style="min-width: 150px"
         class="q-mb-md"
+        @click="docsPopup(true)"
       ></q-btn>
-      <q-table 
-        title="Documents" 
-        :columns="columns" 
-        row-key="name">
-         </q-table>
+      <q-table title="Documents" :columns="columns" row-key="name"> </q-table>
     </div>
+    <addDocsDialog />
   </q-page>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { mapActions } from 'vuex';
+import addDocsDialog from 'components/addDocsDialog.vue';
 
-@Component({})
+@Component({
+  components: {
+    addDocsDialog
+  },
+  methods: {
+    ...mapActions('uiNav', ['docsPopup'])
+  }
+})
 export default class ManageDocument extends Vue {
   columns = [
     {
@@ -49,6 +56,6 @@ export default class ManageDocument extends Vue {
       field: 'status'
     }
   ];
+  docsPopup!: (addDoc: boolean) => void;
 }
 </script>
-
