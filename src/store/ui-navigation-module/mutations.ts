@@ -11,6 +11,9 @@ const mutation: MutationTree<UINavModule> = {
   },
   dialogPopups(state, payload: boolean) {
     state.isShoww = payload;
+  },
+  docsPopup(state, payload: boolean) {
+    state.addDoc = payload;
   }
 };
 
