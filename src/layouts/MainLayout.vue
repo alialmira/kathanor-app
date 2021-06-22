@@ -16,13 +16,14 @@
             <q-btn
               flat
               align="left"
-              class="q-pa-sm full-width"
+              class="q-pa-sm full-width auto-close"
               label="Change Password"
               color="white"
               size="md"
               icon="settings"
               text-color="black"
-              @click="isShoww = true"
+              @click="dialogPopups(true)"     
+              clickable v-close-popup         
             >
             </q-btn>
             <q-btn
@@ -45,14 +46,14 @@
 
     <q-drawer
       v-if="$route.name != 'login-page'"
-      v-model="drawer"
+      
       show-if-above
       :width="250"
       :breakpoint="500"
       bordered
       content-class="bg-white"
     >
-      <q-item clickable v-ripple to="/" exact>
+      <q-item active clickable v-ripple to="/" exact>
         <q-item-section avatar>
           <q-icon name="dashboard" size="md" />
         </q-item-section>
@@ -62,7 +63,7 @@
         </q-item-section>
       </q-item>
 
-      <q-item clickable v-ripple to="/ManageContact" exact>
+      <q-item active clickable v-ripple to="/ManageContact" exact>
         <q-item-section avatar>
           <q-icon name="contacts" size="md" />
         </q-item-section>
@@ -71,7 +72,7 @@
         </q-item-section>
       </q-item>
 
-      <q-item clickable v-ripple to="/ManageDocument" exact>
+      <q-item active clickable v-ripple to="/ManageDocument" exact>
         <q-item-section avatar>
           <q-icon name="topic" size="md" />
         </q-item-section>
@@ -80,7 +81,7 @@
         </q-item-section>
       </q-item>
 
-      <q-item v-if="adminLoggedIn" clickable v-ripple to="/ManageAccount" exact>
+      <q-item v-if="adminLoggedIn" active clickable v-ripple to="/ManageAccount" exact>
         <q-item-section avatar>
           <q-icon name="manage_accounts" size="md" />
         </q-item-section>
@@ -93,6 +94,8 @@
     <q-page-container>
       <router-view></router-view>
     </q-page-container>
+
+    <ChangePassDialog />
   </q-layout>
 
 </template>
@@ -110,7 +113,7 @@ import ChangePassDialog from 'components/ChangePassDialog.vue';
     ...mapState('uiNav', ['adminLoggedIn'])
   },
   methods: {
-    ...mapActions('uiNavs', ['dialogPopups'])
+    ...mapActions('uiNav', ['dialogPopups'])
   }
 })
 export default class MainLayout extends Vue {
