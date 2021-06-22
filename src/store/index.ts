@@ -7,7 +7,6 @@ import officer from './officer-module';
 import { OfficerStateInterface } from './officer-module/state';
 import uiNav from './ui-navigation-module';
 import { UINavModule } from './ui-navigation-module/state';
-import uiNavs from './ui-navigation-module';
 
 /*
  * If not building with SSR mode, you can
@@ -21,7 +20,6 @@ export interface StateInterface {
   recipient: RecipientStateInterface;
   officer: OfficerStateInterface;
   uiNav: UINavModule;
-  uiNavs: UINavModule;
 }
 
 export default store(function({ Vue }) {
@@ -31,8 +29,7 @@ export default store(function({ Vue }) {
     modules: {
       recipient,
       officer,
-      uiNav,
-      uiNavs
+      uiNav
     },
 
     // enable strict mode (adds overhead!)
