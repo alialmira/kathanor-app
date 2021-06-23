@@ -5,7 +5,7 @@
         <q-avatar>
           <img src="~assets/addperson.png" />
         </q-avatar>
-        <q-toolbar-title class="text-weight-bold"
+        <q-toolbar-title class="text-weight-bold text-center"
           >ADD NEW OFFICER</q-toolbar-title
         >
         <q-btn

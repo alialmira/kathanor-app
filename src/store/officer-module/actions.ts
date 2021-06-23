@@ -19,6 +19,10 @@ const actions: ActionTree<OfficerStateInterface, StateInterface> = {
     } else {
       alert('something wrong in paylaod!');
     }
+  },
+
+  changePassword(context, payload: { [key: string]: string }) {
+    context.commit('changePassword', payload);
   }
 };
 

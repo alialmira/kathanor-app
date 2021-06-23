@@ -2,14 +2,14 @@
   <q-page class="flex flex-center bg-secondary">
     <div class="row">
       <div class="col-7">
-        <q-card class="__imgg q-mr-lg" >
-          <q-img class="" src="~assets/11.jpg" />
+        <q-card flat class="fit">
+          <img src="~assets/try2.jpg" class="__imag" />
         </q-card>
       </div>
       <div class="col-5">
         <q-card elevated flat bordered class="__card bg-accent">
           <q-card-section class="q-gutter-y-md  flex flex-center outlined">
-            <q-img class="__img" src="~assets/tryyyyyy.png" />
+            <q-img class="__img" src="~assets/try3.png" />
             <div class="text-overline">Log in your account</div>
             <q-input
               style="width: 300px"
@@ -120,6 +120,7 @@ export default class Login extends Vue {
       await this.$router.push('/');
     } else {
       this.$q.notify({
+        
         type: 'warning',
         message: 'Invalid Username or Password.'
       });
@@ -141,6 +142,9 @@ export default class Login extends Vue {
 }
 .__imgg {
   width: 600px;
+  height: 500px;
+}
+.__imag {
   height: 500px;
 }
 </style>

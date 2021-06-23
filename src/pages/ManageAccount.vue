@@ -1,5 +1,5 @@
 <template>
-qay;luqw kj  <q-page class="bg-secondary">
+<q-page class="bg-secondary">
     <div class="q-pa-md">
       <q-btn
         label="Add Officer"
