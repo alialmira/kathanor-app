@@ -6,7 +6,9 @@ import { RecipientStateInterface } from './recipient-module/state';
 import officer from './officer-module';
 import { OfficerStateInterface } from './officer-module/state';
 import uiNav from './ui-navigation-module';
-import { UINavModule } from './ui-navigation-module/state';
+import { UiNavStateInterface } from './ui-navigation-module/state';
+import { DocumentStateInterface } from './document-module/state';
+import document from './document-module';
 
 /*
  * If not building with SSR mode, you can
@@ -19,7 +21,8 @@ export interface StateInterface {
   // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
   recipient: RecipientStateInterface;
   officer: OfficerStateInterface;
-  uiNav: UINavModule;
+  uiNav: UiNavStateInterface;
+  document: DocumentStateInterface;
 }
 
 export default store(function({ Vue }) {
@@ -29,7 +32,8 @@ export default store(function({ Vue }) {
     modules: {
       recipient,
       officer,
-      uiNav
+      uiNav,
+      document
     },
 
     // enable strict mode (adds overhead!)

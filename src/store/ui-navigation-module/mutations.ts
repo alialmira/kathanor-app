@@ -1,19 +1,25 @@
 import { MutationTree } from 'vuex';
-import { UINavModule } from './state';
+import { UiNavStateInterface } from './state';
 
-const mutation: MutationTree<UINavModule> = {
-  dialogPopup(state, payload: boolean) {
-    state.isShow = payload;
+const mutation: MutationTree<UiNavStateInterface> = {
+  addAccountPopups(state, payload: boolean) {
+    state.showAddOfficerDialog = payload;
   },
 
   isAdminLogin(state, payload: boolean) {
     state.adminLoggedIn = payload;
   },
-  dialogPopups(state, payload: boolean) {
-    state.isShoww = payload;
+  changePassPopups(state, payload: boolean) {
+    state.showChangePassDialog = payload;
   },
-  docsPopup(state, payload: boolean) {
-    state.addDoc = payload;
+  addDocsPopups(state, payload: boolean) {
+    state.showAddDocumetDialog = payload;
+  },
+  sendMessagePopups(state, payload: boolean) {
+    state.showSendMessageDialog = payload;
+  },
+  uploadContactsPopups(state, payload: boolean) {
+    state.showUploadContactsDialog = payload;
   }
 };
 

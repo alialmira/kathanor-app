@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="isShow" persistent>
+  <q-dialog v-model="showAddOfficerDialog" persistent @hide="hideDialog()">
     <q-card class="__card q-py-lg">
       <q-toolbar>
         <q-avatar>
@@ -12,7 +12,7 @@
           color="dark"
           icon="close"
           size="md"
-          @click="dialogPopup(false)"
+          @click="addAccountPopups(false)"
         ></q-btn>
       </q-toolbar>
       <q-card-section class="q-gutter-y-md">
@@ -86,33 +86,29 @@ interface RefsVue extends Vue {
 
 @Component({
   computed: {
-    ...mapState('uiNav', ['isShow'])
+    ...mapState('uiNav', ['showAddOfficerDialog'])
   },
   methods: {
-    ...mapActions('uiNav', ['dialogPopup'])
+    ...mapActions('uiNav', ['addAccountPopups'])
   }
 })
 export default class Dialog extends Vue {
-  $refs!: {
-    idNumber: RefsVue;
-    fName: RefsVue;
-    lName: RefsVue;
-    contactNum: RefsVue;
-  };
-  isShow!: boolean;
-  formHasError!: boolean;
   officer = {
     name: '',
     fName: '',
     lName: '',
     contactNum: ''
   };
+  $refs!: {
+    idNumber: RefsVue;
+    fName: RefsVue;
+    lName: RefsVue;
+    contactNum: RefsVue;
+  };
+  showAddOfficerDialog!: boolean;
+  formHasError!: boolean;
   shouldShow = false;
-  dialogPopup!: (show: boolean) => void;
-
-  created() {
-    this.shouldShow = this.isShow;
-  }
+  addAccountPopups!: (show: boolean) => void;
 
   async addOfficer() {
     this.$refs.idNumber.validate();
@@ -129,7 +125,7 @@ export default class Dialog extends Vue {
       this.formHasError = true;
     } else {
       await this.$store.dispatch('officer/addOfficer', this.officer);
-      await this.$store.dispatch('uiNav/dialogPopup', false);
+      await this.$store.dispatch('uiNav/addAccountPopups', false);
       this.officer = { name: '', fName: '', lName: '', contactNum: '' };
       this.$q.notify({
         icon: 'done',
@@ -137,6 +133,10 @@ export default class Dialog extends Vue {
         message: 'Account Created'
       });
     }
+  }
+
+  hideDialog() {
+    this.officer = { name: '', fName: '', lName: '', contactNum: '' };
   }
 }
 </script>

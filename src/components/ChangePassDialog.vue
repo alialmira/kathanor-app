@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="isShoww" persistent>
+  <q-dialog v-model="showChangePassDialog" persistent @hide="hideDialog()">
     <q-card class="__card q-py-lg">
       <q-toolbar>
         <q-avatar>
@@ -52,7 +52,7 @@
             label="Cancel"
             color="dark"
             text-color="white"
-            @click="dialogPopups(false)"
+            @click="changePassPopups(false)"
           ></q-btn>
         </div>
       </q-card-actions>
@@ -70,33 +70,29 @@ interface RefsVue extends Vue {
 }
 @Component({
   computed: {
-    ...mapState('uiNav', ['isShoww']),
+    ...mapState('uiNav', ['showChangePassDialog']),
     ...mapState('officer', ['officers'])
   },
   methods: {
-    ...mapActions('uiNav', ['dialogPopups'])
+    ...mapActions('uiNav', ['changePassPopups'])
   }
 })
 export default class ChangePassDialog extends Vue {
-  formHasError!: boolean;
-  officers!: { [key: string]: string }[];
-  isShoww!: boolean;
-  shouldShoww = false;
-  dialogPopups!: (show: boolean) => void;
-  $refs!: {
-    oldPass: RefsVue;
-    newPass: RefsVue;
-    renewPass: RefsVue;
-  };
   password = {
     oldPass: '',
     newPass: '',
     renewPass: ''
   };
-
-  created() {
-    this.shouldShoww = this.isShoww;
-  }
+  shouldShoww = false;
+  $refs!: {
+    oldPass: RefsVue;
+    newPass: RefsVue;
+    renewPass: RefsVue;
+  };
+  formHasError!: boolean;
+  officers!: { [key: string]: string }[];
+  showChangePassDialog!: boolean;
+  changePassPopups!: (show: boolean) => void;
 
   changePassword() {
     this.$refs.oldPass.validate();
@@ -124,7 +120,7 @@ export default class ChangePassDialog extends Vue {
               newPassword,
               index
             });
-            await this.$store.dispatch('uiNav/dialogPopups', false);
+            await this.$store.dispatch('uiNav/changePassPopups', false);
             this.qNotify({
               type: 'positive',
               message: 'Password Updated'
@@ -144,6 +140,10 @@ export default class ChangePassDialog extends Vue {
         }
       });
     }
+  }
+
+  hideDialog() {
+    this.password = { oldPass: '', newPass: '', renewPass: '' };
   }
 
   qNotify(props: { [key: string]: string }) {
