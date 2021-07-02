@@ -9,7 +9,7 @@
         dense
         style="min-width: 150px"
         class="q-mb-md"
-        @click="dialogPopup(true)"
+        @click="addAccountPopups(true)"
       >
       </q-btn>
 
@@ -23,7 +23,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
-import Dialog from 'components/Dialog.vue';
+import Dialog from 'src/components/AddOfficerDialog.vue';
 
 @Component({
   components: {
@@ -33,7 +33,7 @@ import Dialog from 'components/Dialog.vue';
     ...mapState('officer', ['officers'])
   },
   methods: {
-    ...mapActions('uiNav', ['dialogPopup'])
+    ...mapActions('uiNav', ['addAccountPopups'])
   }
 })
 export default class ManageAccount extends Vue {
@@ -70,7 +70,7 @@ export default class ManageAccount extends Vue {
     }
   ];
   data: { [key: string]: string }[] = [];
-  dialogPopup!: (isShow: boolean) => void;
+  addAccountPopups!: (show: boolean) => void;
 
   created() {
     this.data = this.officers;

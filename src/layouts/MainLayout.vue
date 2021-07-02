@@ -1,7 +1,10 @@
 <template>
   <q-layout>
-    <q-header elevated class="bg-negative" style="height: 70px">
-      <q-toolbar class="q-mt-md">
+    <q-header elevated class="bg-negative" style="height: 60px">
+      <q-toolbar class="q-mt-sm">
+        <q-avatar square size="xl">
+          <img height="100px" src="~assets/sms_4367.png" />
+        </q-avatar>
         <q-toolbar-title>SMS CASTER</q-toolbar-title>
         <q-btn
           v-if="$route.name != 'login-page'"
@@ -10,7 +13,7 @@
           color="white"
           text-color="black"
         >
-      <q-tooltip>Account</q-tooltip>
+          <q-tooltip>Account</q-tooltip>
 
           <q-menu fit :offset="[0, 5]">
             <q-btn
@@ -22,8 +25,9 @@
               size="md"
               icon="settings"
               text-color="black"
-              @click="dialogPopups(true)"     
-              clickable v-close-popup         
+              @click="changePassPopups(true)"
+              clickable
+              v-close-popup
             >
             </q-btn>
             <q-btn
@@ -46,7 +50,6 @@
 
     <q-drawer
       v-if="$route.name != 'login-page'"
-      
       show-if-above
       :width="250"
       :breakpoint="500"
@@ -81,7 +84,14 @@
         </q-item-section>
       </q-item>
 
-      <q-item v-if="adminLoggedIn" active clickable v-ripple to="/ManageAccount" exact>
+      <q-item
+        v-if="adminLoggedIn"
+        active
+        clickable
+        v-ripple
+        to="/ManageAccount"
+        exact
+      >
         <q-item-section avatar>
           <q-icon name="manage_accounts" size="md" />
         </q-item-section>
@@ -97,7 +107,6 @@
 
     <ChangePassDialog />
   </q-layout>
-
 </template>
 
 <script lang="ts">
@@ -113,11 +122,11 @@ import ChangePassDialog from 'components/ChangePassDialog.vue';
     ...mapState('uiNav', ['adminLoggedIn'])
   },
   methods: {
-    ...mapActions('uiNav', ['dialogPopups'])
+    ...mapActions('uiNav', ['changePassPopups'])
   }
 })
 export default class MainLayout extends Vue {
   adminLoggedIn!: boolean;
-  dialogPopups!: (isShoww: boolean) => void;
+  changePassPopups!: (show: boolean) => void;
 }
 </script>

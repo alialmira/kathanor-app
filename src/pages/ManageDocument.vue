@@ -9,53 +9,119 @@
         dense
         style="min-width: 150px"
         class="q-mb-md"
-        @click="docsPopup(true)"
+        @click="addDocsPopups(true)"
       ></q-btn>
-      <q-table title="Documents" :columns="columns" row-key="name"> </q-table>
+      <q-table title="Documents" :columns="columns" :data="data" row-key="name">
+        <template v-slot:header="props">
+          <q-tr :props="props">
+            <q-th v-for="col in props.cols" :key="col.name" :props="props">
+              {{ col.label }}
+            </q-th>
+            <q-th auto-width>Action</q-th>
+          </q-tr>
+        </template>
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              {{ col.value }}
+            </q-td>
+            <q-td auto-width>
+              <q-btn
+                size="sm"
+                color="green"
+                icon="edit"
+                round
+                dense
+                class="q-mr-sm"
+              >
+                <q-tooltip>Edit Document</q-tooltip>
+              </q-btn>
+              <q-btn
+                size="sm"
+                color="green"
+                icon="preview"
+                round
+                dense
+                class="q-mr-sm"
+              >
+                <q-tooltip>View Document</q-tooltip>
+              </q-btn>
+              <q-btn
+                size="sm"
+                color="green"
+                icon="message"
+                round
+                dense
+                class="q-mr-sm"
+              >
+                <q-tooltip>SMS Status</q-tooltip>
+              </q-btn>
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
     </div>
-    <addDocsDialog />
+    <AddDocsDialog />
+    <SendMessageDialog />
   </q-page>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { mapActions } from 'vuex';
-import addDocsDialog from 'components/addDocsDialog.vue';
+import { mapActions, mapState } from 'vuex';
+import AddDocsDialog from 'src/components/AddDocsDialog.vue';
+import SendMessageDialog from 'src/components/SendMessageDialog.vue';
 
 @Component({
   components: {
-    addDocsDialog
+    AddDocsDialog,
+    SendMessageDialog
+  },
+  computed: {
+    ...mapState('document', ['documents'])
   },
   methods: {
-    ...mapActions('uiNav', ['docsPopup'])
+    ...mapActions('uiNav', ['addDocsPopups'])
   }
 })
 export default class ManageDocument extends Vue {
   columns = [
     {
-      name: 'doc',
-      label: 'Document No.',
-      align: 'left'
-    },
-    {
-      name: 'file',
-      label: 'File',
+      name: 'desc',
+      required: true,
+      label: 'ID Number',
       align: 'left',
-      field: 'file'
+      field: (row: { [key: string]: string }) => row.name,
+      sortable: true
     },
     {
-      name: 'type',
+      name: 'subject',
+      align: 'left',
+      label: 'Subject',
+      field: 'subject',
+      sortable: 'true'
+    },
+    {
+      name: 'docType',
+      align: 'left',
       label: 'Document Type',
-      align: 'left',
-      field: 'type'
+      field: 'docType',
+      sortable: true
     },
     {
-      name: 'status',
-      label: 'Status',
+      name: 'date',
       align: 'left',
-      field: 'status'
+      label: 'Date Posted',
+      field: 'date',
+      sortable: true
     }
   ];
-  docsPopup!: (addDoc: boolean) => void;
+  data: { [key: string]: string }[] = [];
+  documents!: { [key: string]: string }[];
+  addDocsPopups!: (show: boolean) => void;
+
+  created() {
+    this.data = this.documents;
+  }
 }
 </script>

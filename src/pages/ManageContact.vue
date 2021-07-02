@@ -9,6 +9,7 @@
         dense
         style="min-width: 150px"
         class="q-mb-md"
+        @click="uploadContactsPopups(true)"
       >
       </q-btn>
       <q-table
@@ -69,12 +70,14 @@
         </template>
       </q-table>
     </div>
+    <UploadContactsDialog />
   </q-page>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
+import UploadContactsDialog from 'src/components/UploadContactsDialog.vue';
 
 interface Recipients {
   contact: string;
@@ -85,8 +88,18 @@ interface Recipients {
 }
 
 @Component({
-  computed: mapState('recipient', ['recipients', 'newRecipients', 'institution']),
-  methods: mapActions('recipient', ['setInstitution'])
+  components: {
+    UploadContactsDialog
+  },
+  computed: mapState('recipient', [
+    'recipients',
+    'newRecipients',
+    'institution'
+  ]),
+  methods: {
+    ...mapActions('recipient', ['setInstitution']),
+    ...mapActions('uiNav', ['uploadContactsPopups'])
+  }
 })
 export default class ManageContact extends Vue {
   recipients!: Recipients[];
@@ -96,6 +109,7 @@ export default class ManageContact extends Vue {
   selectFilter = '';
   filterOptions: string[] = [];
   setInstitution!: () => void;
+  uploadContactsPopups!: (show: boolean) => void;
   columns = [
     {
       name: 'desc',
@@ -149,6 +163,6 @@ export default class ManageContact extends Vue {
     await this.$store.dispatch('recipient/filterInsitution', institution);
     this.data = this.newRecipients;
   }
+  
 }
 </script>
-

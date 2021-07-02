@@ -1,16 +1,20 @@
-export interface UINavModule {
-  isShoww: boolean;
-  isShow: boolean;
-  addDoc: boolean;
+export interface UiNavStateInterface {
+  showChangePassDialog: boolean;
+  showAddOfficerDialog: boolean;
+  showAddDocumetDialog: boolean;
+  showSendMessageDialog: boolean;
   adminLoggedIn: boolean;
+  showUploadContactsDialog: boolean;
 }
 
-function state(): UINavModule {
+function state(): UiNavStateInterface {
   return {
-    isShoww: false,
-    isShow: false,
-    addDoc: false,
-    adminLoggedIn: false
+    showChangePassDialog: false,
+    showAddOfficerDialog: false,
+    showAddDocumetDialog: false,
+    showSendMessageDialog: false,
+    adminLoggedIn: false,
+    showUploadContactsDialog: false
   };
 }
 
