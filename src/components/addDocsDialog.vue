@@ -53,10 +53,10 @@
           ref="docType"
           v-model="documents.docType"
           :rules="[val => !!val || 'Field is required']"
-          :options="['Special Order, Memorandum']"
+          :options="['Special Order', 'Memorandum']"
           label="Document Type"
         />
-        <q-file
+        <!-- <q-file
           color="red-10"
           ref="docFile"
           v-model="documents.docFile"
@@ -69,7 +69,7 @@
           <template v-slot:prepend>
             <q-icon name="attach_file" />
           </template>
-        </q-file>
+        </q-file> -->
       </q-card-section>
       <q-card-actions class="row q-col-gutter-md">
         <div class="col-6">
@@ -146,14 +146,13 @@ export default class addDocsDialog extends Vue {
     this.$refs.subject.validate();
     this.$refs.date.validate();
     this.$refs.docType.validate();
-    this.$refs.docFile.validate();
+    // this.$refs.docFile.validate();
 
     if (
       this.$refs.docIdNum.hasError ||
       this.$refs.subject.hasError ||
       this.$refs.date.hasError ||
-      this.$refs.docType.hasError ||
-      this.$refs.docFile.hasError
+      this.$refs.docType.hasError
     ) {
       this.formHasError = true;
     } else {
