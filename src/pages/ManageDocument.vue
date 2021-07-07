@@ -81,7 +81,8 @@ import SendMessageDialog from 'src/components/SendMessageDialog.vue';
     ...mapState('document', ['documents'])
   },
   methods: {
-    ...mapActions('uiNav', ['addDocsPopups'])
+    ...mapActions('uiNav', ['addDocsPopups']),
+    ...mapActions('document', ['getDocuments'])
   }
 })
 export default class ManageDocument extends Vue {
@@ -119,8 +120,10 @@ export default class ManageDocument extends Vue {
   data: { [key: string]: string }[] = [];
   documents!: { [key: string]: string }[];
   addDocsPopups!: (show: boolean) => void;
+  getDocuments!: () => Promise<void>;
 
-  created() {
+  async created() {
+    await this.getDocuments();
     this.data = this.documents;
   }
 }

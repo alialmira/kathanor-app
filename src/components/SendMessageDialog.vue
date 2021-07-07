@@ -65,6 +65,7 @@ import { mapState, mapActions } from 'vuex';
 })
 export default class messageDialog extends Vue {
   message = '';
+  selectFilter = '';
   showSendMessageDialog!: boolean;
   sendMessagePopups!: (show: boolean) => void;
 

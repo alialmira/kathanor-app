@@ -163,6 +163,6 @@ export default class ManageContact extends Vue {
     await this.$store.dispatch('recipient/filterInsitution', institution);
     this.data = this.newRecipients;
   }
-  
+
 }
 </script>

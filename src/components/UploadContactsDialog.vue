@@ -9,12 +9,7 @@
       </q-toolbar>
       <q-card-sections class="q-gutter-y-md">
         <div class="q-pa-md">
-          <q-file
-            v-model="files"
-            label="Choose Files"
-            filled
-            multiple
-          >
+          <q-file v-model="files" label="Choose Files" filled multiple>
             <template v-slot:prepend>
               <q-icon name="attach_file" />
             </template>
@@ -27,7 +22,7 @@
             class="full-width"
             label="Upload"
             color="dark"
-            text-color="white"           
+            text-color="white"
           ></q-btn>
         </div>
         <div class="col-6">
@@ -59,6 +54,7 @@ import { mapState, mapActions } from 'vuex';
 export default class UploadContactsDialog extends Vue {
   showUploadContactsDialog!: boolean;
   shouldShow = false;
+  files = '';
   uploadContactsPopups!: (show: boolean) => void;
 }
 </script>
