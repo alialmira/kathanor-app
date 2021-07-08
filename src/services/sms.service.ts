@@ -1,4 +1,8 @@
-import { DocumentControllerApi, Configuration, Documents } from './rest-api';
+import {
+  DocumentControllerApi,
+  Configuration,
+  DocumentsReq as IDocument
+} from './rest-api';
 
 const dev = 'http://localhost:9000';
 
@@ -19,9 +23,14 @@ class SmsService extends DocumentControllerApi {
     return response.data;
   }
 
-  async insert(payload: Documents) {
+  async insert(payload: IDocument) {
     const response = await restApi.addDocument(payload);
     return response.data;
+  }
+
+  async upload(id: string, file: any) {
+    const respone = await restApi.uploadDocument(id, file);
+    return respone.data;
   }
 }
 
