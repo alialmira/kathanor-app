@@ -146,7 +146,6 @@ export default class addDocsDialog extends Vue {
     this.$refs.subject.validate();
     this.$refs.date.validate();
     this.$refs.docType.validate();
-    // this.$refs.docFile.validate();
 
     if (
       this.$refs.docIdNum.hasError ||

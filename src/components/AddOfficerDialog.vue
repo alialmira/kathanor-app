@@ -18,31 +18,31 @@
       <q-card-section class="q-gutter-y-md">
         <q-input
           ref="idNumber"
-          v-model="officer.name"
+          v-model="officers.name"
           filled
           label="ID Number"
           lazy-rules
           :rules="[val => !!val || 'Field is required']"
         />
         <q-input
-          ref="fName"
-          v-model="officer.fName"
+          ref="firstName"
+          v-model="officers.firstName"
           filled
           label="First Name"
           lazy-rules
           :rules="[val => !!val || 'Field is required']"
         />
         <q-input
-          ref="lName"
-          v-model="officer.lName"
+          ref="lastName"
+          v-model="officers.lastName"
           filled
           label="Last Name"
           lazy-rules
           :rules="[val => !!val || 'Field is required']"
         />
         <q-input
-          ref="contactNum"
-          v-model="officer.contactNum"
+          ref="contactNumber"
+          v-model="officers.contactNumber"
           mask="###########"
           filled
           label="Contact Number"
@@ -89,44 +89,46 @@ interface RefsVue extends Vue {
     ...mapState('uiNav', ['showAddOfficerDialog'])
   },
   methods: {
-    ...mapActions('uiNav', ['addAccountPopups'])
+    ...mapActions('uiNav', ['addAccountPopups']),
+    ...mapActions('officer', ['addAccount'])
   }
 })
 export default class Dialog extends Vue {
-  officer = {
+  officers = {
     name: '',
-    fName: '',
-    lName: '',
-    contactNum: ''
+    firstName: '',
+    lastName: '',
+    contactNumber: ''
   };
   $refs!: {
     idNumber: RefsVue;
-    fName: RefsVue;
-    lName: RefsVue;
-    contactNum: RefsVue;
+    firstName: RefsVue;
+    lastName: RefsVue;
+    contactNumber: RefsVue;
   };
   showAddOfficerDialog!: boolean;
   formHasError!: boolean;
   shouldShow = false;
   addAccountPopups!: (show: boolean) => void;
+  addAccount!: (payload: any) => Promise<void>;
 
   async addOfficer() {
     this.$refs.idNumber.validate();
-    this.$refs.fName.validate();
-    this.$refs.lName.validate();
-    this.$refs.contactNum.validate();
+    this.$refs.firstName.validate();
+    this.$refs.lastName.validate();
+    this.$refs.contactNumber.validate();
 
     if (
       this.$refs.idNumber.hasError ||
-      this.$refs.fName.hasError ||
-      this.$refs.lName.hasError ||
-      this.$refs.contactNum.hasError
+      this.$refs.firstName.hasError ||
+      this.$refs.lastName.hasError ||
+      this.$refs.contactNumber.hasError
     ) {
       this.formHasError = true;
     } else {
-      await this.$store.dispatch('officer/addOfficer', this.officer);
+      await this.addAccount(this.officers);
       await this.$store.dispatch('uiNav/addAccountPopups', false);
-      this.officer = { name: '', fName: '', lName: '', contactNum: '' };
+      this.officers = { name: '', firstName: '', lastName: '', contactNumber: '' };
       this.$q.notify({
         icon: 'done',
         color: 'positive',
@@ -136,7 +138,7 @@ export default class Dialog extends Vue {
   }
 
   hideDialog() {
-    this.officer = { name: '', fName: '', lName: '', contactNum: '' };
+    this.officers = { name: '', firstName: '', lastName: '', contactNumber: '' };
   }
 }
 </script>

@@ -33,7 +33,8 @@ import Dialog from 'src/components/AddOfficerDialog.vue';
     ...mapState('officer', ['officers'])
   },
   methods: {
-    ...mapActions('uiNav', ['addAccountPopups'])
+    ...mapActions('uiNav', ['addAccountPopups']),
+    ...mapActions('officer', ['getOfficers'])
   }
 })
 export default class ManageAccount extends Vue {
@@ -71,8 +72,10 @@ export default class ManageAccount extends Vue {
   ];
   data: { [key: string]: string }[] = [];
   addAccountPopups!: (show: boolean) => void;
+  getOfficers!: () => Promise<void>;
 
-  created() {
+  async created() {
+    await this.getOfficers();
     this.data = this.officers;
   }
 }

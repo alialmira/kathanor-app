@@ -1,26 +1,17 @@
 import { ActionTree } from 'vuex';
 import { StateInterface } from '../index';
 import { OfficerStateInterface } from './state';
+import officerService from 'src/services/officer.service';
 
 const actions: ActionTree<OfficerStateInterface, StateInterface> = {
-  addOfficer(context, payload: { [key: string]: string }) {
-    console.log(payload);
-    if (payload) {
-      const { name, fName, lName, contactNum } = payload;
-      const officer = {
-        name: name,
-        firstName: fName,
-        lastName: lName,
-        contactNumber: contactNum,
-        password: lName,
-        accountType: 'Officer'
-      };
-      context.commit('addOfficer', officer);
-    } else {
-      alert('something wrong in paylaod!');
-    }
+  async addAccount(context, payload: any) {
+    const result = await officerService.addAccount(payload);
+    context.commit('addAccount', result);
   },
-
+  async getOfficers(context): Promise<any> {
+    const result = await officerService.getAll();
+    context.commit('getOfficers', result);
+  },
   changePassword(context, payload: { [key: string]: string }) {
     context.commit('changePassword', payload);
   }
