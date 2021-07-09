@@ -1,19 +1,12 @@
 export interface OfficerStateInterface {
+  createOfficers: { [key: string]: any }[];
   officers: { [key: string]: string }[];
 }
 
 function state(): OfficerStateInterface {
   return {
-    officers: [
-      {
-        name: '2015',
-        firstName: 'Abs',
-        lastName: 'Talib',
-        contactNumber: '0999999999',
-        password: 'Talib',
-        accountType: 'Admin'
-      }
-    ]
+    officers: [],
+    createOfficers: []
   };
 }
 

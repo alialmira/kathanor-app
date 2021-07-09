@@ -13,7 +13,7 @@ const restConfig = new Configuration({
 
 const restApi = new DocumentControllerApi(restConfig);
 
-class SmsService extends DocumentControllerApi {
+class DocumentService extends DocumentControllerApi {
   async getAll() {
     const response = await restApi.getDocuments();
     return response.data;
@@ -25,5 +25,5 @@ class SmsService extends DocumentControllerApi {
   }
 }
 
-const smsService = new SmsService();
-export default smsService;
+const documentService = new DocumentService();
+export default documentService;
