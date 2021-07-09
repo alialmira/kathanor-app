@@ -191,7 +191,11 @@
             "description": "OK",
             "schema": {
               "type": "array",
+<<<<<<< HEAD
               "items": { "$ref": "#/definitions/MessagesRes" }
+=======
+              "items": { "$ref": "#/definitions/DocumentsRes" }
+>>>>>>> 779ddcbcb8c2455cf3a2b8a414987c87b95de531
             }
           },
           "401": { "description": "Unauthorized" },
@@ -211,7 +215,45 @@
             "name": "model",
             "description": "model",
             "required": true,
+<<<<<<< HEAD
             "schema": { "$ref": "#/definitions/MessagesReq" }
+=======
+            "schema": { "$ref": "#/definitions/DocumentsReq" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/DocumentsRes" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/sms-api/document/upload/{id}": {
+      "post": {
+        "tags": ["document-controller"],
+        "summary": "Upload some documents",
+        "operationId": "uploadDocument",
+        "consumes": ["multipart/form-data"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "required": false,
+            "type": "file"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "string"
+>>>>>>> 779ddcbcb8c2455cf3a2b8a414987c87b95de531
           }
         ],
         "responses": {
@@ -244,7 +286,11 @@
         "responses": {
           "200": {
             "description": "OK",
+<<<<<<< HEAD
             "schema": { "$ref": "#/definitions/MessagesRes" }
+=======
+            "schema": { "$ref": "#/definitions/DocumentsRes" }
+>>>>>>> 779ddcbcb8c2455cf3a2b8a414987c87b95de531
           },
           "401": { "description": "Unauthorized" },
           "403": { "description": "Forbidden" },
@@ -270,13 +316,21 @@
             "name": "model",
             "description": "model",
             "required": true,
+<<<<<<< HEAD
             "schema": { "$ref": "#/definitions/MessagesReq" }
+=======
+            "schema": { "$ref": "#/definitions/DocumentsReq" }
+>>>>>>> 779ddcbcb8c2455cf3a2b8a414987c87b95de531
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
+<<<<<<< HEAD
             "schema": { "$ref": "#/definitions/MessagesRes" }
+=======
+            "schema": { "$ref": "#/definitions/DocumentsRes" }
+>>>>>>> 779ddcbcb8c2455cf3a2b8a414987c87b95de531
           },
           "201": { "description": "Created" },
           "401": { "description": "Unauthorized" },
@@ -560,16 +614,29 @@
     }
   },
   "definitions": {
-    "Documents": {
+    "DocumentsReq": {
       "type": "object",
       "properties": {
+        "_id": { "$ref": "#/definitions/ObjectId" },
         "date": { "type": "string" },
         "docType": { "type": "string" },
         "file": { "type": "string" },
         "name": { "type": "string" },
         "subject": { "type": "string" }
       },
-      "title": "Documents"
+      "title": "DocumentsReq"
+    },
+    "DocumentsRes": {
+      "type": "object",
+      "properties": {
+        "_id": { "type": "string" },
+        "date": { "type": "string" },
+        "docType": { "type": "string" },
+        "file": { "type": "string" },
+        "name": { "type": "string" },
+        "subject": { "type": "string" }
+      },
+      "title": "DocumentsRes"
     },
     "MessagesReq": {
       "type": "object",
