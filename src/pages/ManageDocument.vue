@@ -11,7 +11,17 @@
         class="q-mb-md"
         @click="addDocsPopups(true)"
       ></q-btn>
-      <q-table title="Documents" :columns="columns" :data="data" row-key="name">
+      <q-table
+        class="my-sticky-dynamic"
+        title="Documents"
+        :columns="columns"
+        :data="data"
+        row-key="name"
+        virtual-scroll
+        :pagination.sync="pagination"
+        :rows-per-page-options="[0]"
+        style="height: 80vh"
+      >
         <template v-slot:header="props">
           <q-tr :props="props">
             <q-th v-for="col in props.cols" :key="col.name" :props="props">
@@ -86,6 +96,9 @@ import SendMessageDialog from 'src/components/SendMessageDialog.vue';
   }
 })
 export default class ManageDocument extends Vue {
+  pagination = {
+    rowsPerPage: 0
+  };
   columns = [
     {
       name: 'desc',
@@ -128,3 +141,24 @@ export default class ManageDocument extends Vue {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.my-sticky-dynamic
+  /* height or max-height is important */
+  height: 410px
+
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th /* bg color is important for th; just specify one */
+    background-color: #fff
+
+  thead tr th
+    position: sticky
+    z-index: 1
+  /* this will be the loading indicator */
+  thead tr:last-child th
+    /* height of all previous header rows */
+    top: 48px
+  thead tr:first-child th
+    top: 0
+</style>

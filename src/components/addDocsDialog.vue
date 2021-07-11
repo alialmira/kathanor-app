@@ -66,29 +66,14 @@
               ref="docType"
               v-model="documents.docType"
               :rules="[val => !!val || 'Field is required']"
-              :options="['Special Order', 'Memorandum']"
+              :options="[
+                'Special Order',
+                'Memorandum',
+                'Official Announcement'
+              ]"
               label="Document Type"
             />
           </q-card-section>
-          <!-- <q-card-actions class="row q-col-gutter-md">
-            <div class="col-6">
-              <q-btn
-                class="full-width"
-                label="Next"
-                color="dark"
-                text-color="white"
-              ></q-btn>
-            </div>
-            <div class="col-6">
-              <q-btn
-                class="full-width"
-                label="Cancel"
-                color="dark"
-                text-color="white"
-                @click="addDocsPopups(false)"
-              ></q-btn>
-            </div>
-          </q-card-actions> -->
         </q-card>
       </q-step>
 
@@ -104,6 +89,7 @@
           ref="docFile"
           v-model="documents.docFile"
           filled
+          lazy-rules
           :rules="[val => !!val || 'Field is required']"
           label="Choose File"
           @update:model-value="fileChoose($event)"
@@ -120,15 +106,13 @@
             @click="step === 2 ? uploadFile() : saveDocument()"
             color="red-10"
             :label="step === 2 ? 'Finish' : 'Continue'"
-            :loading="isSubmit"
-            :disable="isSubmit"
           />
           <q-btn
             v-if="step >= 1"
             flat
             color="red-10"
             @click="step === 1 ? addDocsPopups(false) : $ref.stepper.previous()"
-            :label="step === 1 ? 'Cancle' : 'Previous'"
+            :label="step === 1 ? 'Cancel' : ''"
             class="q-ml-sm"
             :loading="isUpload"
             :disable="isUpload"
@@ -149,6 +133,14 @@ interface RefsVue extends Vue {
   hasError: boolean;
 }
 
+interface IDocument {
+  name: string;
+  subject: string;
+  docType: string;
+  date: string;
+  docFile: File[];
+}
+
 @Component({
   computed: {
     ...mapState('uiNav', ['showAddDocumetDialog'])
@@ -163,7 +155,7 @@ export default class addDocsDialog extends Vue {
   step = 1;
   isSubmit = false;
   isUpload = false;
-  documents = {
+  documents: IDocument = {
     name: '',
     subject: '',
     docType: '',
@@ -223,14 +215,18 @@ export default class addDocsDialog extends Vue {
 
   async uploadFile() {
     this.isUpload = true;
-    this.$refs.docFile.validate();
-    if (this.$refs.docFile.hasError) {
-      this.formHasError = true;
+    if (this.documents.docFile.length == 0) {
+      console.log('no files selected!');
     } else {
       console.log('file: ', this.documents.docFile);
       await this.uploadDocument({ id: this._id, file: this.documents.docFile });
       this.isUpload = false;
       this.addDocsPopups(false);
+      this.$q.notify({
+        icon: 'done',
+        color: 'positive',
+        message: 'Document Uploaded'
+      });
     }
   }
 }
