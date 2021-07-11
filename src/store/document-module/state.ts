@@ -1,6 +1,8 @@
+import IDocument from 'src/interfaces/document.interface';
+
 export interface DocumentStateInterface {
-  createDocuments: { [key: string]: any }[];
-  documents: { [key: string]: any }[];
+  createDocuments: IDocument[];
+  documents: IDocument[];
 }
 
 function state(): DocumentStateInterface {
