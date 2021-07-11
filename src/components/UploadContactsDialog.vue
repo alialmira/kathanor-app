@@ -7,15 +7,21 @@
           >Import File for Contacts</q-toolbar-title
         >
       </q-toolbar>
-      <q-card-sections class="q-gutter-y-md">
+      <q-card-section class="q-gutter-y-md">
         <div class="q-pa-md">
-          <q-file v-model="files" label="Choose Files" filled multiple>
+          <q-file
+            v-model="contacts"
+            label="Choose Files"
+            filled
+            accept=".csv, .json"
+            @update:model-value="fileChoose($event)"
+          >
             <template v-slot:prepend>
               <q-icon name="attach_file" />
             </template>
           </q-file>
         </div>
-      </q-card-sections>
+      </q-card-section>
       <q-card-actions class="row q-col-gutter-md">
         <div class="col-6">
           <q-btn
@@ -23,6 +29,9 @@
             label="Upload"
             color="dark"
             text-color="white"
+            :loading="isUpload"
+            :disable="isUpload"
+            @click="upload()"
           ></q-btn>
         </div>
         <div class="col-6">
@@ -48,14 +57,28 @@ import { mapState, mapActions } from 'vuex';
     ...mapState('uiNav', ['showUploadContactsDialog'])
   },
   methods: {
-    ...mapActions('uiNav', ['uploadContactsPopups'])
+    ...mapActions('uiNav', ['uploadContactsPopups']),
+    ...mapActions('recipient', ['uploadContacts', 'getContacts'])
   }
 })
 export default class UploadContactsDialog extends Vue {
   showUploadContactsDialog!: boolean;
   shouldShow = false;
-  files = '';
+  isUpload = false;
+  file = '';
+  contacts: any = [];
   uploadContactsPopups!: (show: boolean) => void;
+  uploadContacts!: (file: File) => Promise<void>;
+  fileChoose(val: any) {
+    this.contacts = val;
+  }
+
+  async upload() {
+    this.isUpload = true;
+    await this.uploadContacts(this.contacts);
+    this.isUpload = false;
+    this.uploadContactsPopups(false);
+  }
 }
 </script>
 
