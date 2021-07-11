@@ -69,8 +69,8 @@
     "/sms-api/document/upload/{id}": {
       "post": {
         "tags": ["document-controller"],
-        "summary": "uploadFile",
-        "operationId": "uploadFileUsingPOST",
+        "summary": "upload some documents",
+        "operationId": "uploadDocument",
         "consumes": ["multipart/form-data"],
         "produces": ["*/*"],
         "parameters": [
@@ -435,8 +435,8 @@
     "/sms-api/recipient/": {
       "get": {
         "tags": ["recipient-controller"],
-        "summary": "GetAll",
-        "operationId": "GetAllUsingGET_1",
+        "summary": "Get get all recipients",
+        "operationId": "getRecipients",
         "produces": ["*/*"],
         "responses": {
           "200": {
@@ -453,8 +453,8 @@
       },
       "post": {
         "tags": ["recipient-controller"],
-        "summary": "Insert",
-        "operationId": "InsertUsingPOST_1",
+        "summary": "Insert some recipients",
+        "operationId": "addRecipients",
         "consumes": ["application/json"],
         "produces": ["*/*"],
         "parameters": [
@@ -463,13 +463,19 @@
             "name": "model",
             "description": "model",
             "required": true,
-            "schema": { "$ref": "#/definitions/RecipientsReq" }
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/RecipientsReq" }
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": { "$ref": "#/definitions/RecipientsRes" }
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/RecipientsRes" }
+            }
           },
           "201": { "description": "Created" },
           "401": { "description": "Unauthorized" },
@@ -560,29 +566,16 @@
     }
   },
   "definitions": {
-    "DocumentsReq": {
+    "Documents": {
       "type": "object",
       "properties": {
-        "_id": { "$ref": "#/definitions/ObjectId" },
         "date": { "type": "string" },
         "docType": { "type": "string" },
         "file": { "type": "string" },
         "name": { "type": "string" },
         "subject": { "type": "string" }
       },
-      "title": "DocumentsReq"
-    },
-    "DocumentsRes": {
-      "type": "object",
-      "properties": {
-        "_id": { "type": "string" },
-        "date": { "type": "string" },
-        "docType": { "type": "string" },
-        "file": { "type": "string" },
-        "name": { "type": "string" },
-        "subject": { "type": "string" }
-      },
-      "title": "DocumentsRes"
+      "title": "Documents"
     },
     "MessagesReq": {
       "type": "object",

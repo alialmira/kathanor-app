@@ -4,12 +4,12 @@ import { DocumentStateInterface } from './state';
 import documentService from 'src/services/document.service';
 
 const actions: ActionTree<DocumentStateInterface, StateInterface> = {
-  async addDocument(context, payload: any) {
+  async addDocument(context, payload: any): Promise<any> {
     const result = await documentService.addDocument(payload);
-    context.commit('addDocument', result);
+    context.commit('addDocument', result.data);
     return result;
   },
-  async uploadDocument(context, payload) {
+  async uploadDocument({}, payload): Promise<any> {
     const { id, file } = payload;
     const result = await documentService.upload(id, file);
     console.log(result);

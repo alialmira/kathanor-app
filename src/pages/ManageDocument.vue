@@ -81,6 +81,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import { mapActions, mapState } from 'vuex';
 import AddDocsDialog from 'src/components/AddDocsDialog.vue';
 import SendMessageDialog from 'src/components/SendMessageDialog.vue';
+import IDocument from 'src/interfaces/document.interface';
 
 @Component({
   components: {
@@ -105,7 +106,7 @@ export default class ManageDocument extends Vue {
       required: true,
       label: 'ID Number',
       align: 'left',
-      field: (row: { [key: string]: string }) => row.name,
+      field: (row: IDocument) => row.name,
       sortable: true
     },
     {
@@ -130,8 +131,8 @@ export default class ManageDocument extends Vue {
       sortable: true
     }
   ];
-  data: { [key: string]: string }[] = [];
-  documents!: { [key: string]: string }[];
+  data: IDocument[] = [];
+  documents!: IDocument[];
   addDocsPopups!: (show: boolean) => void;
   getDocuments!: () => Promise<void>;
 

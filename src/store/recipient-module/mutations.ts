@@ -1,21 +1,23 @@
+import IRecipient from 'src/interfaces/recipient.interface';
 import { MutationTree } from 'vuex';
 import { RecipientStateInterface } from './state';
 
-interface recipients {
-  name: string;
-  fName: string;
-  lName: string;
-  offCollege: string;
-  status: string;
-}
-
 const mutation: MutationTree<RecipientStateInterface> = {
   setInstitution(state: RecipientStateInterface, institution: string[]) {
-    state.institution = institution;
+    state.institution.push(...institution);
   },
 
-  updateTable(state: RecipientStateInterface, recipient: recipients[]) {
-    state.newRecipients = recipient;
+  updateTable(state: RecipientStateInterface, recipient: IRecipient[]) {
+    state.newRecipients.push(...recipient);
+  },
+
+  uploadContacts(state, recipient: IRecipient[]) {
+    state.recipients.push(...recipient);
+  },
+
+  getContacts(state, recipient: IRecipient[]) {
+    state.recipients = [];
+    state.recipients.push(...recipient);
   }
 };
 
