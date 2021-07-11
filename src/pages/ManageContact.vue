@@ -17,9 +17,8 @@
         :data="data"
         :columns="columns"
         :filter="searchFilter"
-        row-key="name"
+        row-key="contact"
       >
-        /* table content */
         <template v-slot:header="props">
           <q-tr :props="props">
             <q-th v-for="col in props.cols" :key="col.name" :props="props">
@@ -78,14 +77,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import UploadContactsDialog from 'src/components/UploadContactsDialog.vue';
-
-interface Recipients {
-  contact: string;
-  fName: string;
-  lName: string;
-  offCollege: string;
-  status: string;
-}
+import IRecipient from 'src/interfaces/recipient.interface';
 
 @Component({
   components: {
@@ -97,72 +89,75 @@ interface Recipients {
     'institution'
   ]),
   methods: {
-    ...mapActions('recipient', ['setInstitution']),
+    ...mapActions('recipient', [
+      'setInstitution',
+      'getContacts',
+      'filterInstitution'
+    ]),
     ...mapActions('uiNav', ['uploadContactsPopups'])
   }
 })
 export default class ManageContact extends Vue {
-  recipients!: Recipients[];
-  newRecipients!: Recipients[];
+  recipients!: IRecipient[];
+  newRecipients!: IRecipient[];
   institution!: string[];
   searchFilter = '';
   selectFilter = '';
   filterOptions: string[] = [];
   setInstitution!: () => void;
   uploadContactsPopups!: (show: boolean) => void;
+  getContacts!: () => Promise<any[]>;
+  filterInstitution!: (payload: string) => Promise<void>;
   columns = [
     {
       name: 'desc',
       required: true,
       label: 'Contact No.',
       align: 'left',
-      field: (row: { [key: string]: string }) => row.name,
+      field: (row: IRecipient) => row.contact,
       sortable: true
     },
     {
-      name: 'fName',
+      name: 'firstName',
       align: 'left',
       label: 'First Name',
-      field: 'fName',
+      field: 'firstName',
       sortable: true
     },
     {
-      name: 'lName',
+      name: 'lastName',
       align: 'left',
       label: 'Last Name',
-      field: 'lName',
+      field: 'lastName',
       sortable: true
     },
     {
-      name: 'Status',
+      name: 'status',
       align: 'left',
       label: 'Status',
       field: 'status',
       sortable: true
     },
     {
-      name: 'offCollege',
+      name: 'institution',
       align: 'left',
       label: 'Office / College',
-      field: 'offCollege',
+      field: 'institution',
       sortable: true
     }
   ];
-  data: Recipients[] = [];
+  data: IRecipient[] = [];
 
-  created() {
+  async mounted() {
+    await this.getContacts();
     this.setInstitution();
-  }
-
-  mounted() {
     this.data = this.recipients;
     this.filterOptions = this.institution;
   }
 
   async selectedCollege(institution: string) {
-    await this.$store.dispatch('recipient/filterInsitution', institution);
+    await this.filterInstitution(institution);
     this.data = this.newRecipients;
   }
-
 }
 </script>
