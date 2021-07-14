@@ -108,11 +108,11 @@
             :label="step === 2 ? 'Finish' : 'Continue'"
           />
           <q-btn
-            v-if="step >= 1"
+            v-if="step == 1"
             flat
             color="red-10"
-            @click="step === 1 ? addDocsPopups(false) : $ref.stepper.previous()"
-            :label="step === 1 ? 'Cancel' : ''"
+            @click="addDocsPopups(false)"
+            label="Cancel"
             class="q-ml-sm"
             :loading="isUpload"
             :disable="isUpload"
@@ -189,6 +189,7 @@ export default class addDocsDialog extends Vue {
       date: '',
       docFile: []
     };
+    this.step = 1;
   }
 
   async saveDocument() {

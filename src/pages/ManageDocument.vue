@@ -12,7 +12,7 @@
         @click="addDocsPopups(true)"
       ></q-btn>
       <q-table
-        class="my-sticky-dynamic"
+        class="my-sticky-dynamic text-black"
         title="Documents"
         :columns="columns"
         :data="data"
@@ -24,10 +24,10 @@
       >
         <template v-slot:header="props">
           <q-tr :props="props">
-            <q-th v-for="col in props.cols" :key="col.name" :props="props">
+            <q-th  class="text-black" v-for="col in props.cols" :key="col.name" :props="props">
               {{ col.label }}
             </q-th>
-            <q-th auto-width>Action</q-th>
+            <q-th auto-width  class="text-black">Action</q-th>
           </q-tr>
         </template>
         <template v-slot:body="props">
@@ -63,6 +63,7 @@
                 round
                 dense
                 class="q-mr-sm"
+                @click="sendMessagePopups(true)"
               >
                 <q-tooltip>SMS Status</q-tooltip>
               </q-btn>
@@ -92,7 +93,7 @@ import IDocument from 'src/interfaces/document.interface';
     ...mapState('document', ['documents'])
   },
   methods: {
-    ...mapActions('uiNav', ['addDocsPopups']),
+    ...mapActions('uiNav', ['addDocsPopups', 'sendMessagePopups']),
     ...mapActions('document', ['getDocuments'])
   }
 })
@@ -134,6 +135,7 @@ export default class ManageDocument extends Vue {
   data: IDocument[] = [];
   documents!: IDocument[];
   addDocsPopups!: (show: boolean) => void;
+  sendMessagePopups!: (show: boolean) => void;
   getDocuments!: () => Promise<void>;
 
   async created() {
@@ -151,7 +153,7 @@ export default class ManageDocument extends Vue {
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th /* bg color is important for th; just specify one */
-    background-color: #fff
+    background-color: #d2b50d
 
   thead tr th
     position: sticky

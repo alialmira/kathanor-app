@@ -1,7 +1,7 @@
 import {
   DocumentControllerApi,
   Configuration,
-  Documents as IDocument
+  DocumentsReq as IDocument
 } from './rest-api';
 
 const dev = 'http://localhost:9000';

@@ -1,14 +1,17 @@
 import { store } from 'quasar/wrappers';
 import Vuex from 'vuex';
 
-import recipient from './recipient-module';
 import { RecipientStateInterface } from './recipient-module/state';
-import officer from './officer-module';
+import recipient from './recipient-module';
 import { OfficerStateInterface } from './officer-module/state';
-import uiNav from './ui-navigation-module';
+import officer from './officer-module';
 import { UiNavStateInterface } from './ui-navigation-module/state';
+import uiNav from './ui-navigation-module';
 import { DocumentStateInterface } from './document-module/state';
 import document from './document-module';
+import { SmsStateInterface } from './sms-module/state';
+import sms from './sms-module';
+
 
 /*
  * If not building with SSR mode, you can
@@ -23,6 +26,7 @@ export interface StateInterface {
   officer: OfficerStateInterface;
   uiNav: UiNavStateInterface;
   document: DocumentStateInterface;
+  sms: SmsStateInterface;
 }
 
 export default store(function({ Vue }) {
@@ -33,7 +37,8 @@ export default store(function({ Vue }) {
       recipient,
       officer,
       uiNav,
-      document
+      document,
+      sms
     },
 
     // enable strict mode (adds overhead!)

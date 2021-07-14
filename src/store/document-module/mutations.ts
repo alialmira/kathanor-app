@@ -7,6 +7,7 @@ const mutation: MutationTree<DocumentStateInterface> = {
     state.documents.push(result);
   },
   getDocuments(state, result: IDocument[]) {
+    state.documents = [];
     state.documents.push(...result);
   }
 };

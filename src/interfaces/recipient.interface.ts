@@ -1,7 +1,7 @@
 export default interface IRecipient {
   contact: string;
   firstName: string;
-  institution: string;
   lastName: string;
+  institution: string;
   status: string;
 }

@@ -58,7 +58,11 @@ import { mapState, mapActions } from 'vuex';
   },
   methods: {
     ...mapActions('uiNav', ['uploadContactsPopups']),
-    ...mapActions('recipient', ['uploadContacts', 'getContacts'])
+    ...mapActions('recipient', [
+      'uploadContacts',
+      'getContacts',
+      'setInstitution'
+    ])
   }
 })
 export default class UploadContactsDialog extends Vue {
@@ -69,6 +73,7 @@ export default class UploadContactsDialog extends Vue {
   contacts: any = [];
   uploadContactsPopups!: (show: boolean) => void;
   uploadContacts!: (file: File) => Promise<void>;
+  setInstitution!: () => void;
   fileChoose(val: any) {
     this.contacts = val;
   }
@@ -77,6 +82,7 @@ export default class UploadContactsDialog extends Vue {
     this.isUpload = true;
     await this.uploadContacts(this.contacts);
     this.isUpload = false;
+    this.setInstitution();
     this.uploadContactsPopups(false);
   }
 }

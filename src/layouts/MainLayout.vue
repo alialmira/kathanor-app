@@ -61,17 +61,17 @@
           <q-icon name="dashboard" size="md" />
         </q-item-section>
 
-        <q-item-section class="text-subtitle2">
+        <q-item-section class="text-subtitle2 text-weight-bold">
           Home
         </q-item-section>
       </q-item>
 
-      <q-item active clickable v-ripple to="/ManageContact" exact>
+      <q-item active clickable v-ripple to="/ManageAccount" exact>
         <q-item-section avatar>
-          <q-icon name="contacts" size="md" />
+          <q-icon name="manage_accounts" size="md" />
         </q-item-section>
-        <q-item-section class="text-subtitle2">
-          Manage Contacts
+        <q-item-section class="text-subtitle2 text-weight-bold">
+          Manage Accounts
         </q-item-section>
       </q-item>
 
@@ -79,24 +79,17 @@
         <q-item-section avatar>
           <q-icon name="topic" size="md" />
         </q-item-section>
-        <q-item-section class="text-subtitle2">
+        <q-item-section class="text-subtitle2 text-weight-bold">
           Manage Documents
         </q-item-section>
       </q-item>
 
-      <q-item
-        v-if="adminLoggedIn"
-        active
-        clickable
-        v-ripple
-        to="/ManageAccount"
-        exact
-      >
+      <q-item active clickable v-ripple to="/ManageContact" exact>
         <q-item-section avatar>
-          <q-icon name="manage_accounts" size="md" />
+          <q-icon name="contacts" size="md" />
         </q-item-section>
-        <q-item-section class="text-subtitle2">
-          Manage Accounts
+        <q-item-section class="text-subtitle2 text-weight-bold">
+          SMS Status
         </q-item-section>
       </q-item>
     </q-drawer>

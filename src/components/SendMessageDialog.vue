@@ -9,21 +9,27 @@
       <q-card-section>
         <q-input
           maxlength="160"
-          v-model="message"
+          v-model="smss.message"
           filled
           type="textarea"
           counter
+          lazy-rules
+          :rules="[
+            val => val.length >= 11 || 'Field is required'
+          ]"
         ></q-input>
         <template class="q-py-md">
           <div>
-            <q-select
-              v-model="selectFilter"
-              label="Select Recipients"
-              outlined
-              dense
-              clearable
-              clear-icon
-              style="min-width: 150px"
+            <q-input
+              ref="phoneNumber"
+              v-model="smss.phoneNumber"
+              mask="###########"
+              filled
+              label="Contact Number"
+              lazy-rules
+              :rules="[
+                val => val.length >= 11 || 'Contact Number must be 11 digit'
+              ]"
             />
           </div>
         </template>
@@ -31,12 +37,7 @@
 
       <q-card-actions class="row q-col-gutter-md">
         <div class="col-6">
-          <q-btn
-            class="full-width"
-            color="green"
-            label="Send Message"
-            @click="sendMessage"
-          ></q-btn>
+          <q-btn class="full-width" color="green" label="Send Message" @click="sendMessage()"></q-btn>
         </div>
         <div class="col-6">
           <q-btn
@@ -55,22 +56,46 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 
+interface RefsVue extends Vue {
+  validate(): void;
+  hasError: boolean;
+}
+
 @Component({
   computed: {
     ...mapState('uiNav', ['showSendMessageDialog'])
   },
   methods: {
-    ...mapActions('uiNav', ['sendMessagePopups'])
+    ...mapActions('uiNav', ['sendMessagePopups']),
+    ...mapActions('sms', ['sendSms'])
   }
 })
-export default class messageDialog extends Vue {
-  message = '';
+export default class SendMessageDialog extends Vue {
+  smss = {
+    message: '',
+    phoneNumber: ''
+  };
+  $refs!: {
+    message: RefsVue;
+    phoneNumber: RefsVue;
+  };
   selectFilter = '';
   showSendMessageDialog!: boolean;
+  formHasError!: boolean;
   sendMessagePopups!: (show: boolean) => void;
+  sendSms!: (payload: any) => Promise<void>;
 
-  sendMessage() {
-    console.log(this.message);
+  async sendMessage() {
+    this.$refs.message.validate();
+    this.$refs.phoneNumber.validate();
+    
+    if (this.$refs.message.hasError || this.$refs.phoneNumber.hasError) {
+      this.formHasError = true;
+    } else {
+      await this.sendSms(this.smss);
+      await this.$store.dispatch('uiNav/sendMessagePopups', false);
+      this.smss = { message: '', phoneNumber: '' };
+    }
   }
 }
 </script>

@@ -4,10 +4,12 @@ import { RecipientStateInterface } from './state';
 
 const mutation: MutationTree<RecipientStateInterface> = {
   setInstitution(state: RecipientStateInterface, institution: string[]) {
+    state.institution = [];
     state.institution.push(...institution);
   },
 
   updateTable(state: RecipientStateInterface, recipient: IRecipient[]) {
+    state.newRecipients = [];
     state.newRecipients.push(...recipient);
   },
 
