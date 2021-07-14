@@ -21,6 +21,7 @@ const actions: ActionTree<RecipientStateInterface, StateInterface> = {
           institution === 'ALL'
         );
       });
+      console.log(institution);
       context.commit('updateTable', recipient);
     } else {
       context.commit('updateTable', context.state.recipients);

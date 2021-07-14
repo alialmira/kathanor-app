@@ -4,13 +4,16 @@ import { RecipientsReq as IRecipient } from './rest-api';
 
 class HelperService {
   async uploadContacts(file: File): Promise<any> {
+    console.log(file);
     const name = file.name.split('.').find(e => e == 'csv' || e == 'json');
     const type = typeof name === 'string' ? name : '';
     if (type.toLowerCase() == 'csv') {
       return new Promise(resolve => {
         Papa.parse(file, {
           header: true,
+          skipEmptyLines: true,
           complete: async function(results) {
+            console.log(results);
             const res = await recipientService.insert(
               results.data as IRecipient[]
             );

@@ -1,4 +1,4 @@
-import { OfficerControllerApi, Configuration, OfficersReq } from './rest-api';
+import { OfficerControllerApi, Configuration, OfficersReq as IOfficer } from './rest-api';
 
 const dev = 'http://localhost:9000';
 
@@ -15,11 +15,11 @@ const restApi = new OfficerControllerApi(restConfig);
 
 class OfficerService extends OfficerControllerApi {
   async getAll() {
-    const response = await restApi.getOfficers()
+    const response = await restApi.getOfficers();
     return response.data;
   }
 
-  async insert(payload: OfficersReq) {
+  async insert(payload: IOfficer) {
     const response = await restApi.addAccount(payload);
     return response.data;
   }

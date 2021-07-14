@@ -1,5 +1,5 @@
 <template>
-<q-page class="bg-secondary">
+  <q-page class="bg-secondary">
     <div class="q-pa-md">
       <q-btn
         label="Add Officer"
@@ -13,7 +13,28 @@
       >
       </q-btn>
 
-      <q-table title="Officers" :data="data" :columns="columns" row-key="name">
+      <q-table
+        class="my-sticky-dynamic text-black"
+        title="Officers"
+        :data="data"
+        :columns="columns"
+        row-key="name"
+        virtual-scroll
+        :pagination.sync="pagination"
+        :rows-per-page-options="[0]"
+        style="height: 80vh"
+        ><template v-slot:header="props">
+          <q-tr :props="props">
+            <q-th
+              class="text-black"
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.label }}
+            </q-th>          
+          </q-tr>
+        </template>
       </q-table>
     </div>
     <Dialog />
@@ -38,6 +59,9 @@ import Dialog from 'src/components/AddOfficerDialog.vue';
   }
 })
 export default class ManageAccount extends Vue {
+  pagination = {
+    rowsPerPage: 0
+  };
   officers!: { [key: string]: string }[];
   columns = [
     {
@@ -81,3 +105,23 @@ export default class ManageAccount extends Vue {
 }
 </script>
 
+<style lang="sass" scoped>
+.my-sticky-dynamic
+  /* height or max-height is important */
+  height: 410px
+
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th /* bg color is important for th; just specify one */
+    background-color: #d2b50d
+
+  thead tr th
+    position: sticky
+    z-index: 1
+  /* this will be the loading indicator */
+  thead tr:last-child th
+    /* height of all previous header rows */
+    top: 48px
+  thead tr:first-child th
+    top: 0
+</style>
