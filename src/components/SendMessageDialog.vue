@@ -8,22 +8,20 @@
       >
       <q-card-section>
         <q-input
+          ref="message"
           maxlength="160"
           v-model="smss.message"
           filled
           type="textarea"
           counter
           lazy-rules
-          :rules="[
-            val => val.length >= 11 || 'Field is required'
-          ]"
+          :rules="[val => val.length >= 11 || 'Field is required']"
         ></q-input>
         <template class="q-py-md">
           <div>
             <q-input
               ref="phoneNumber"
               v-model="smss.phoneNumber"
-              mask="###########"
               filled
               label="Contact Number"
               lazy-rules
@@ -37,7 +35,12 @@
 
       <q-card-actions class="row q-col-gutter-md">
         <div class="col-6">
-          <q-btn class="full-width" color="green" label="Send Message" @click="sendMessage()"></q-btn>
+          <q-btn
+            class="full-width"
+            color="green"
+            label="Send Message"
+            @click="sendMessage()"
+          ></q-btn>
         </div>
         <div class="col-6">
           <q-btn
@@ -82,13 +85,15 @@ export default class SendMessageDialog extends Vue {
   selectFilter = '';
   showSendMessageDialog!: boolean;
   formHasError!: boolean;
+  isSubmit = false;
+  isUpload = false;
   sendMessagePopups!: (show: boolean) => void;
   sendSms!: (payload: any) => Promise<void>;
 
   async sendMessage() {
+    this.isSubmit = true;
     this.$refs.message.validate();
     this.$refs.phoneNumber.validate();
-    
     if (this.$refs.message.hasError || this.$refs.phoneNumber.hasError) {
       this.formHasError = true;
     } else {

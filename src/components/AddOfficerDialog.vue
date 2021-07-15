@@ -60,6 +60,8 @@
             color="dark"
             text-color="white"
             @click="addOfficer()"
+            :loading="isUpload"
+            :disable="isUpload"
           ></q-btn>
         </div>
         <div class="col-6">
@@ -68,6 +70,7 @@
             label="Reset"
             color="dark"
             text-color="white"
+            @click="hideDialog()"
           ></q-btn>
         </div>
       </q-card-actions>
@@ -109,10 +112,13 @@ export default class Dialog extends Vue {
   showAddOfficerDialog!: boolean;
   formHasError!: boolean;
   shouldShow = false;
+  isSubmit = false;
+  isUpload = false;
   addAccountPopups!: (show: boolean) => void;
   addAccount!: (payload: any) => Promise<void>;
 
   async addOfficer() {
+    this.isSubmit = true;
     this.$refs.idNumber.validate();
     this.$refs.firstName.validate();
     this.$refs.lastName.validate();
@@ -127,6 +133,7 @@ export default class Dialog extends Vue {
       this.formHasError = true;
     } else {
       await this.addAccount(this.officers);
+      this.isSubmit = false;
       await this.$store.dispatch('uiNav/addAccountPopups', false);
       this.officers = { name: '', firstName: '', lastName: '', contactNumber: '' };
       this.$q.notify({
@@ -140,6 +147,7 @@ export default class Dialog extends Vue {
   hideDialog() {
     this.officers = { name: '', firstName: '', lastName: '', contactNumber: '' };
   }
+
 }
 </script>
 

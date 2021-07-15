@@ -54,41 +54,74 @@
       :width="250"
       :breakpoint="500"
       bordered
+      elevated
       content-class="bg-white"
     >
-      <q-item active clickable v-ripple to="/" exact>
+      <div class="text-center q-pt-md">
+        <div>
+          <q-avatar size="120px" style="border-radius: 10px 10px 10px 10px">
+          <img src="~assets/msuu.png"/>
+          </q-avatar>
+        </div>
+        <q-chip class="bg-white text-weight-bolder text-h6" text-color="primary">MSU OIPP</q-chip>
+      </div>
+      <q-item
+        active
+        clickable
+        v-ripple
+        to="/"
+        exact-active-class="text-white bg-primary"
+      >
         <q-item-section avatar>
           <q-icon name="dashboard" size="md" />
         </q-item-section>
 
-        <q-item-section class="text-subtitle2 text-weight-bold">
+        <q-item-section class="text-body1 text-weight-bold">
           Home
         </q-item-section>
       </q-item>
 
-      <q-item active clickable v-ripple to="/ManageAccount" exact>
+      <q-item
+        active
+        clickable
+        v-ripple
+        to="/ManageAccount"
+        exact-active-class="text-white bg-primary"
+      >
         <q-item-section avatar>
           <q-icon name="manage_accounts" size="md" />
         </q-item-section>
-        <q-item-section class="text-subtitle2 text-weight-bold">
+        <q-item-section class="text-body1 text-weight-bold">
           Manage Accounts
         </q-item-section>
       </q-item>
 
-      <q-item active clickable v-ripple to="/ManageDocument" exact>
+      <q-item
+        active
+        clickable
+        v-ripple
+        to="/ManageDocument"
+        exact-active-class="text-white bg-primary"
+      >
         <q-item-section avatar>
           <q-icon name="topic" size="md" />
         </q-item-section>
-        <q-item-section class="text-subtitle2 text-weight-bold">
+        <q-item-section class="text-body1 text-weight-bold">
           Manage Documents
         </q-item-section>
       </q-item>
 
-      <q-item active clickable v-ripple to="/ManageContact" exact>
+      <q-item
+        active
+        clickable
+        v-ripple
+        to="/ManageContact"
+        exact-active-class="text-white bg-primary"
+      >
         <q-item-section avatar>
           <q-icon name="contacts" size="md" />
         </q-item-section>
-        <q-item-section class="text-subtitle2 text-weight-bold">
+        <q-item-section class="text-body1 text-weight-bold">
           SMS Status
         </q-item-section>
       </q-item>
