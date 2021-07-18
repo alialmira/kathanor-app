@@ -1,125 +1,109 @@
 <template>
   <q-dialog v-model="showAddDocumetDialog" persistent @hide="hideDialog()">
-    <q-stepper
-      v-model="step"
-      class="q-pa-none"
-      ref="stepper"
-      color="primary"
-      animated
-    >
-      <q-step
-        class="q-pa-none"
-        :name="1"
-        title="Document Details"
-        icon="description"
-        :done="step > 1"
-      >
-        <q-card flat class="__card q-pa-none">
-          <q-card-section class="q-gutter-y-md q-pa-none">
-            <q-input
-              ref="docIdNum"
-              v-model="documents.name"
-              filled
-              label="Document ID Number"
-              lazy-rules
-              :rules="[val => !!val || 'Field is required']"
-            />
-            <q-input
-              ref="subject"
-              v-model="documents.subject"
-              filled
-              label="Subject"
-              lazy-rules
-              :rules="[val => !!val || 'Field is required']"
-            />
-            <q-input
-              filled
-              ref="date"
-              v-model="documents.date"
-              mask="date"
-              :rules="['date']"
-              label="Date Posted"
-            >
-              <template v-slot:append>
-                <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy
-                    ref="qDateProxy"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
-                    <q-date color="primary" v-model="documents.date">
-                      <div class="row items-center justify-end">
-                        <q-btn
-                          v-close-popup
-                          label="Close"
-                          color="primary"
-                          flat
-                        />
-                      </div>
-                    </q-date>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-            <q-select
-              filled
-              ref="docType"
-              v-model="documents.docType"
-              :rules="[val => !!val || 'Field is required']"
-              :options="[
-                'Special Order',
-                'Memorandum',
-                'Official Announcement'
-              ]"
-              label="Document Type"
-            />
-          </q-card-section>
-        </q-card>
-      </q-step>
-
-      <q-step
-        class="q-pa-none"
-        :name="2"
-        title="Upload File"
-        icon="upload_file"
-        :done="step > 2"
-      >
+    <q-card class="__card q-py-lg">
+      <q-toolbar>
+        <q-avatar>
+          <img src="~assets/icons8-add-document-48.png" />
+        </q-avatar>
+        <q-toolbar-title class="text-weight-bold text-center"
+          >ADD NEW DOCUMENT</q-toolbar-title
+        >
+        <q-btn
+          color="dark"
+          icon="close"
+          size="md"
+          @click="addDocsPopups(false)"
+        ></q-btn>
+      </q-toolbar>
+      <q-card-section class="q-gutter-y-md">
+        <q-input
+          ref="docIdNum"
+          v-model="documents.name"
+          filled
+          label="Document ID Number"
+          lazy-rules
+          :rules="[val => !!val || 'Field is required']"
+        />
+        <q-input
+          ref="subject"
+          v-model="documents.subject"
+          filled
+          label="Subject"
+          lazy-rules
+          :rules="[val => !!val || 'Field is required']"
+        />
+        <q-input
+          filled
+          ref="date"
+          v-model="documents.date"
+          mask="date"
+          :rules="['date']"
+          label="Date Posted"
+        >
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy
+                ref="qDateProxy"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date color="primary" v-model="documents.date">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+        <q-select
+          filled
+          ref="docType"
+          v-model="documents.docType"
+          :rules="[val => !!val || 'Field is required']"
+          :options="['Special Order', 'Memorandum', 'Official Announcement']"
+          label="Document Type"
+        />
         <q-file
           color="red-10"
+          clearable
           ref="docFile"
-          v-model="documents.docFile"
+          max-file-size="1048576"
+          v-model="documents.contentType"
           filled
           lazy-rules
           :rules="[val => !!val || 'Field is required']"
-          label="Choose File"
+          label="Choose Files"
           @update:model-value="fileChoose($event)"
         >
           <template v-slot:prepend>
             <q-icon name="attach_file" />
           </template>
         </q-file>
-      </q-step>
-
-      <template v-slot:navigation>
-        <q-stepper-navigation>
+      </q-card-section>
+      <q-card-actions class="row q-col-gutter-md">
+        <div class="col-6">
           <q-btn
-            @click="step === 2 ? uploadFile() : saveDocument()"
-            color="red-10"
-            :label="step === 2 ? 'Finish' : 'Continue'"
-          />
-          <q-btn
-            v-if="step == 1"
-            flat
-            color="red-10"
-            @click="addDocsPopups(false)"
-            label="Cancel"
-            class="q-ml-sm"
+            class="full-width"
+            label="Create"
+            color="dark"
+            text-color="white"
+            @click="saveDocument()"
             :loading="isUpload"
             :disable="isUpload"
-          />
-        </q-stepper-navigation>
-      </template>
-    </q-stepper>
+          ></q-btn>
+        </div>
+        <div class="col-6">
+          <q-btn
+            class="full-width"
+            label="Reset"
+            color="dark"
+            text-color="white"
+            @click="hideDialog()"
+          ></q-btn>
+        </div>
+      </q-card-actions>
+    </q-card>
   </q-dialog>
 </template>
 
@@ -138,7 +122,8 @@ interface IDocument {
   subject: string;
   docType: string;
   date: string;
-  docFile: File[];
+  contentType: any;
+  docFile: any;
 }
 
 @Component({
@@ -160,6 +145,7 @@ export default class addDocsDialog extends Vue {
     subject: '',
     docType: '',
     date: '',
+    contentType: [],
     docFile: []
   };
   $refs!: {
@@ -187,6 +173,7 @@ export default class addDocsDialog extends Vue {
       subject: '',
       docType: '',
       date: '',
+      contentType: [],
       docFile: []
     };
     this.step = 1;
@@ -207,26 +194,32 @@ export default class addDocsDialog extends Vue {
     ) {
       this.formHasError = true;
     } else {
-      const res: any = await this.addDocument(this.documents);
-      this._id = res.data._id;
-      this.isSubmit = false;
-      this.$refs.stepper.next();
-    }
-  }
-
-  async uploadFile() {
-    this.isUpload = true;
-    if (this.documents.docFile.length == 0) {
-      console.log('no files selected!');
-    } else {
-      console.log('file: ', this.documents.docFile);
-      await this.uploadDocument({ id: this._id, file: this.documents.docFile });
-      this.isUpload = false;
-      this.addDocsPopups(false);
-      this.$q.notify({
+      this.documents.docFile = this.documents.contentType;
+      console.log({
+        ...this.documents,
+        contentType: this.documents.contentType.type
+      });
+      const res: any = await this.addDocument({
+        ...this.documents,
+        contentType: this.documents.contentType.type
+      });
+      await this.uploadDocument({
+        id: res.data._id,
+        file: this.documents.docFile
+      });
+      await this.$store.dispatch('uiNav/addDocsPopups', false);
+      this.documents = {
+      name: '',
+      subject: '',
+      docType: '',
+      date: '',
+      contentType: [],
+      docFile: []
+    };
+    this.$q.notify({
         icon: 'done',
         color: 'positive',
-        message: 'Document Uploaded'
+        message: 'Document Added'
       });
     }
   }

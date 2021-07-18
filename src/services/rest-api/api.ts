@@ -38,6 +38,12 @@ export interface DocumentsReq {
      * @type {string}
      * @memberof DocumentsReq
      */
+    contentType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DocumentsReq
+     */
     date?: string;
     /**
      * 
@@ -57,6 +63,12 @@ export interface DocumentsReq {
      * @memberof DocumentsReq
      */
     name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DocumentsReq
+     */
+    status?: string;
     /**
      * 
      * @type {string}
@@ -81,6 +93,12 @@ export interface DocumentsRes {
      * @type {string}
      * @memberof DocumentsRes
      */
+    contentType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DocumentsRes
+     */
     date?: string;
     /**
      * 
@@ -100,6 +118,12 @@ export interface DocumentsRes {
      * @memberof DocumentsRes
      */
     name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DocumentsRes
+     */
+    status?: string;
     /**
      * 
      * @type {string}

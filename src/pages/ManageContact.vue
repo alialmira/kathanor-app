@@ -139,7 +139,7 @@
                       clear-icon
                       style="min-width: 150px"
                       @input="selectedCollege($event)"
-                      @@popup-show="clickSelectOption()"
+                      @popup-show="clickSelectOption()"
                     />
                   </div>
                   <div class="col-6">
