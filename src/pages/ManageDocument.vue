@@ -24,10 +24,15 @@
       >
         <template v-slot:header="props">
           <q-tr :props="props">
-            <q-th  class="text-black" v-for="col in props.cols" :key="col.name" :props="props">
+            <q-th
+              class="text-black"
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
               {{ col.label }}
             </q-th>
-            <q-th auto-width  class="text-black">Action</q-th>
+            <q-th auto-width class="text-black">Action</q-th>
           </q-tr>
         </template>
         <template v-slot:body="props">
@@ -53,6 +58,7 @@
                 round
                 dense
                 class="q-mr-sm"
+                @click="viewDocument(props.row)"
               >
                 <q-tooltip>View Document</q-tooltip>
               </q-btn>
@@ -141,6 +147,15 @@ export default class ManageDocument extends Vue {
   async created() {
     await this.getDocuments();
     this.data = this.documents;
+  }
+
+  viewDocument(payload: any) {
+    console.log(payload.contentType, payload.file);
+    const linkSource = 'data:' + payload.contentType + ';base64' + payload.file;
+    const downloadLink = document.createElement('a');
+    downloadLink.href = linkSource;
+    downloadLink.download = 'test.txt';
+    downloadLink.click();
   }
 }
 </script>

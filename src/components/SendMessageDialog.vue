@@ -2,7 +2,10 @@
   <q-dialog v-model="showSendMessageDialog" persistent>
     <q-card class="__card q-py-lg">
       <q-toolbar>
-        <q-toolbar-title class="text-weight-bold text-center">
+      <q-avatar>
+          <img src="~assets/baseline_send_to_mobile_black_24dp.png" />
+        </q-avatar>
+        <q-toolbar-title class="text-weight-bold text-center" >
           Send Message</q-toolbar-title
         ></q-toolbar
       >
@@ -28,6 +31,18 @@
               :rules="[
                 val => val.length >= 11 || 'Contact Number must be 11 digit'
               ]"
+            />
+          </div>
+          <div>
+            <q-select
+              v-model="selectFilter"
+              :options="filterOptions"
+              label="Select Recipients by Status"
+              outlined
+              dense
+              clearable
+              clear-icon
+              style="min-width: 150px"
             />
           </div>
         </template>
@@ -87,6 +102,7 @@ export default class SendMessageDialog extends Vue {
   formHasError!: boolean;
   isSubmit = false;
   isUpload = false;
+  filterOptions: string[] = [];
   sendMessagePopups!: (show: boolean) => void;
   sendSms!: (payload: any) => Promise<void>;
 
@@ -102,5 +118,6 @@ export default class SendMessageDialog extends Vue {
       this.smss = { message: '', phoneNumber: '' };
     }
   }
+  
 }
 </script>

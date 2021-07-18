@@ -84,6 +84,11 @@ export default class UploadContactsDialog extends Vue {
     this.isUpload = false;
     this.setInstitution();
     this.uploadContactsPopups(false);
+    this.$q.notify({
+        icon: 'done',
+        color: 'positive',
+        message: 'File Successfully Uploaded'
+      });
   }
 }
 </script>

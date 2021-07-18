@@ -70,7 +70,7 @@
         clickable
         v-ripple
         to="/"
-        exact-active-class="text-white bg-primary"
+        exact-active-class="text-white bg-negative"
       >
         <q-item-section avatar>
           <q-icon name="dashboard" size="md" />
@@ -86,7 +86,7 @@
         clickable
         v-ripple
         to="/ManageAccount"
-        exact-active-class="text-white bg-primary"
+        exact-active-class="text-white bg-negative"
       >
         <q-item-section avatar>
           <q-icon name="manage_accounts" size="md" />
@@ -101,7 +101,7 @@
         clickable
         v-ripple
         to="/ManageDocument"
-        exact-active-class="text-white bg-primary"
+        exact-active-class="text-white bg-negative"
       >
         <q-item-section avatar>
           <q-icon name="topic" size="md" />
@@ -116,7 +116,7 @@
         clickable
         v-ripple
         to="/ManageContact"
-        exact-active-class="text-white bg-primary"
+        exact-active-class="text-white bg-negative"
       >
         <q-item-section avatar>
           <q-icon name="contacts" size="md" />
