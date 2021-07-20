@@ -108,6 +108,7 @@
 </template>
 
 <script lang="ts">
+import uploadService from 'src/services/upload.service';
 import { Vue, Component } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 
@@ -135,7 +136,7 @@ interface IDocument {
     ...mapActions('document', ['addDocument', 'uploadDocument'])
   }
 })
-export default class addDocsDialog extends Vue {
+export default class AddDocsDialog extends Vue {
   _id = undefined;
   step = 1;
   isSubmit = false;
@@ -195,28 +196,28 @@ export default class addDocsDialog extends Vue {
       this.formHasError = true;
     } else {
       this.documents.docFile = this.documents.contentType;
+      const res = await uploadService.uploadOneFile(this.documents.docFile);
+      console.log(res);
       console.log({
         ...this.documents,
-        contentType: this.documents.contentType.type
+        file: res.fileDownloadUri,
+        contentType: res.fileType
       });
-      const res: any = await this.addDocument({
+      await this.addDocument({
         ...this.documents,
-        contentType: this.documents.contentType.type
+        file: res.fileDownloadUri,
+        contentType: res.fileType
       });
-      await this.uploadDocument({
-        id: res.data._id,
-        file: this.documents.docFile
-      });
-      await this.$store.dispatch('uiNav/addDocsPopups', false);
+      this.addDocsPopups(false);
       this.documents = {
-      name: '',
-      subject: '',
-      docType: '',
-      date: '',
-      contentType: [],
-      docFile: []
-    };
-    this.$q.notify({
+        name: '',
+        subject: '',
+        docType: '',
+        date: '',
+        contentType: [],
+        docFile: []
+      };
+      this.$q.notify({
         icon: 'done',
         color: 'positive',
         message: 'Document Added'
