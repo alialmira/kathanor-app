@@ -22,9 +22,31 @@ const actions: ActionTree<RecipientStateInterface, StateInterface> = {
         );
       });
       console.log(institution);
-      context.commit('updateTable', recipient);
+      context.commit('updateInstTable', recipient);
     } else {
-      context.commit('updateTable', context.state.recipients);
+      context.commit('updateInstTable', context.state.recipients);
+    }
+  },
+  setStatus(context) {
+    const status = context.state.recipients.map(r => {
+      return r.status;
+    });
+    status.unshift('ALL');
+    const newStatus = [...new Set(status)];
+    context.commit('setStatus', newStatus);
+  },
+  filterStatus(context, status: string) {
+    if (status) {
+      const recipient = context.state.recipients.filter(r => {
+        return (
+          (status && r.status === status) ||
+          status === 'ALL'
+        );
+      });
+      console.log(status);
+      context.commit('updateStatusTable', recipient);
+    } else {
+      context.commit('updateStatusTable', context.state.recipients);
     }
   },
   async uploadContacts(context, file: File): Promise<any> {
