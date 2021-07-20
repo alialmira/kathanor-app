@@ -54,13 +54,13 @@
               <q-btn
                 size="sm"
                 color="green"
-                icon="preview"
+                icon="download"
                 round
                 dense
                 class="q-mr-sm"
                 @click="viewDocument(props.row)"
               >
-                <q-tooltip>View Document</q-tooltip>
+                <q-tooltip>Download Document</q-tooltip>
               </q-btn>
               <q-btn
                 size="sm"
@@ -150,11 +150,9 @@ export default class ManageDocument extends Vue {
   }
 
   viewDocument(payload: any) {
-    console.log(payload.contentType, payload.file);
-    const linkSource = 'data:' + payload.contentType + ';base64' + payload.file;
+    const linkSource = payload.file;
     const downloadLink = document.createElement('a');
     downloadLink.href = linkSource;
-    downloadLink.download = 'test.txt';
     downloadLink.click();
   }
 }
