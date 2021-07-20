@@ -319,6 +319,61 @@ export interface RecipientsRes {
 /**
  * 
  * @export
+ * @interface Resource
+ */
+export interface Resource {
+    /**
+     * 
+     * @type {string}
+     * @memberof Resource
+     */
+    description?: string;
+    /**
+     * 
+     * @type {any}
+     * @memberof Resource
+     */
+    file?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof Resource
+     */
+    filename?: string;
+    /**
+     * 
+     * @type {object}
+     * @memberof Resource
+     */
+    inputStream?: object;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Resource
+     */
+    open?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Resource
+     */
+    readable?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof Resource
+     */
+    uri?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Resource
+     */
+    url?: string;
+}
+/**
+ * 
+ * @export
  * @interface ResponseMessage
  */
 export interface ResponseMessage {
@@ -347,6 +402,37 @@ export interface SMSs {
      * @memberof SMSs
      */
     phoneNumber?: string;
+}
+/**
+ * 
+ * @export
+ * @interface UploadFileResponse
+ */
+export interface UploadFileResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadFileResponse
+     */
+    fileDownloadUri?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadFileResponse
+     */
+    fileName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadFileResponse
+     */
+    fileType?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UploadFileResponse
+     */
+    size?: number;
 }
 
 /**
@@ -801,6 +887,183 @@ export class DocumentControllerApi extends BaseAPI {
      */
     public uploadDocument(id: string, file?: any, options?: any) {
         return DocumentControllerApiFp(this.configuration).uploadDocument(id, file, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * FileControllerApi - axios parameter creator
+ * @export
+ */
+export const FileControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Download file by file name
+         * @param {string} fileName fileName
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadFile: async (fileName: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'fileName' is not null or undefined
+            assertParamExists('downloadFile', 'fileName', fileName)
+            const localVarPath = `/sms-api/file/downloadFile/{fileName}`
+                .replace(`{${"fileName"}}`, encodeURIComponent(String(fileName)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Upload one file
+         * @param {any} [file] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadFile: async (file?: any, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/sms-api/file/uploadFile`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * FileControllerApi - functional programming interface
+ * @export
+ */
+export const FileControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = FileControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Download file by file name
+         * @param {string} fileName fileName
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async downloadFile(fileName: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Resource>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadFile(fileName, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Upload one file
+         * @param {any} [file] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadFile(file?: any, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadFileResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadFile(file, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * FileControllerApi - factory interface
+ * @export
+ */
+export const FileControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = FileControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Download file by file name
+         * @param {string} fileName fileName
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadFile(fileName: string, options?: any): AxiosPromise<Resource> {
+            return localVarFp.downloadFile(fileName, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Upload one file
+         * @param {any} [file] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadFile(file?: any, options?: any): AxiosPromise<UploadFileResponse> {
+            return localVarFp.uploadFile(file, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * FileControllerApi - object-oriented interface
+ * @export
+ * @class FileControllerApi
+ * @extends {BaseAPI}
+ */
+export class FileControllerApi extends BaseAPI {
+    /**
+     * 
+     * @summary Download file by file name
+     * @param {string} fileName fileName
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FileControllerApi
+     */
+    public downloadFile(fileName: string, options?: any) {
+        return FileControllerApiFp(this.configuration).downloadFile(fileName, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Upload one file
+     * @param {any} [file] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FileControllerApi
+     */
+    public uploadFile(file?: any, options?: any) {
+        return FileControllerApiFp(this.configuration).uploadFile(file, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
