@@ -4,13 +4,15 @@ export interface RecipientStateInterface {
   recipients: IRecipient[];
   newRecipients: IRecipient[];
   institution: string[];
+  personStatus: string[];
 }
 
 function state(): RecipientStateInterface {
   return {
     recipients: [],
     newRecipients: [],
-    institution: []
+    institution: [],
+    personStatus: []
   };
 }
 

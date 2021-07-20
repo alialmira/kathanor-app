@@ -8,7 +8,17 @@ const mutation: MutationTree<RecipientStateInterface> = {
     state.institution.push(...institution);
   },
 
-  updateTable(state: RecipientStateInterface, recipient: IRecipient[]) {
+  updateInstTable(state: RecipientStateInterface, recipient: IRecipient[]) {
+    state.newRecipients = [];
+    state.newRecipients.push(...recipient);
+  },
+
+  setStatus(state: RecipientStateInterface, status: string[]) {
+    state.personStatus = [];
+    state.personStatus.push(...status);
+  },
+
+  updateStatusTable(state: RecipientStateInterface, recipient: IRecipient[]) {
     state.newRecipients = [];
     state.newRecipients.push(...recipient);
   },

@@ -122,8 +122,7 @@
                   >
                     {{ col.value }}
                   </q-td>
-                  <q-td auto-width>                    
-                  </q-td>
+                  <q-td auto-width> </q-td>
                 </q-tr>
               </template>
               <template v-slot:top-right>
@@ -175,11 +174,9 @@ import IRecipient from 'src/interfaces/recipient.interface';
   components: {
     UploadContactsDialog
   },
-  computed: mapState('recipient', [
-    'recipients',
-    'newRecipients',
-    'institution'
-  ]),
+  computed: {
+    ...mapState('recipient', ['recipients', 'newRecipients', 'institution'])
+  },
   methods: {
     ...mapActions('recipient', [
       'setInstitution',
@@ -297,7 +294,7 @@ export default class ManageContact extends Vue {
 
 <style lang="sass" scoped>
 
-.my-sticky-dynamic 
+.my-sticky-dynamic
   /* height or max-height is important */
   height: 410px
 
