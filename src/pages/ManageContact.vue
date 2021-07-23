@@ -22,6 +22,7 @@
             <q-table
               class="my-sticky-dynamic text-black"
               title="Logs"
+              :data="logs"
               :columns="columnsms"
               row-key="date"
               virtual-scroll
@@ -50,10 +51,7 @@
                     :props="props"
                   >
                     {{ col.value }}
-                  </q-td>
-                  <q-td auto-width>
-                    <q-btn size="sm" color="green" icon="edit" round dense />
-                  </q-td>
+                  </q-td>                  
                 </q-tr>
               </template>
               <template v-slot:top-right>
@@ -76,17 +74,33 @@
           </q-tab-panel>
 
           <q-tab-panel name="contact">
-            <q-btn
-              label="Import Data"
-              color="dark"
-              text-color="white"
-              icon-right="upload"
-              dense
-              style="min-width: 150px"
-              class="q-mb-md"
-              @click="uploadContactsPopups(true)"
-            >
-            </q-btn>
+            <div class="row">
+              <div class="col-10">
+                <q-btn
+                  label="Import Data"
+                  color="dark"
+                  text-color="white"
+                  icon-right="upload"
+                  dense
+                  style="min-width: 150px"
+                  class="q-mb-md"
+                  @click="uploadContactsPopups(true)"
+                >
+                </q-btn>
+              </div>
+              <div class="col-2">
+                <q-btn
+                  label="Archive"
+                  color="dark"
+                  text-color="white"
+                  icon-right="archive"
+                  dense
+                  style="min-width: 150px"
+                  class="q-mb-md"
+                >
+                </q-btn>
+              </div>
+            </div>
             <q-table
               class="my-sticky-dynamic text-black"
               title="Contacts"
@@ -169,13 +183,15 @@ import { Vue, Component } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import UploadContactsDialog from 'src/components/UploadContactsDialog.vue';
 import IRecipient from 'src/interfaces/recipient.interface';
+import IMessage from 'src/interfaces/message.interface';
 
 @Component({
   components: {
     UploadContactsDialog
   },
   computed: {
-    ...mapState('recipient', ['recipients', 'newRecipients', 'institution'])
+    ...mapState('recipient', ['recipients', 'newRecipients', 'institution']),
+    ...mapState('message', ['messages'])
   },
   methods: {
     ...mapActions('recipient', [
@@ -183,6 +199,7 @@ import IRecipient from 'src/interfaces/recipient.interface';
       'getContacts',
       'filterInstitution'
     ]),
+    ...mapActions('message', ['GetMessages']),
     ...mapActions('uiNav', ['uploadContactsPopups'])
   }
 })
@@ -192,6 +209,7 @@ export default class ManageContact extends Vue {
   };
   tab = 'delivered';
   recipients!: IRecipient[];
+  messages!: IMessage[];
   newRecipients!: IRecipient[];
   institution!: string[];
   searchFilter = '';
@@ -200,6 +218,7 @@ export default class ManageContact extends Vue {
   setInstitution!: () => void;
   uploadContactsPopups!: (show: boolean) => void;
   getContacts!: () => Promise<any[]>;
+  GetMessages!: () => Promise<any[]>;
   filterInstitution!: (payload: string) => Promise<void>;
   columns = [
     {
@@ -256,10 +275,10 @@ export default class ManageContact extends Vue {
       sortable: true
     },
     {
-      name: 'status',
+      name: 'subject',
       align: 'left',
-      label: 'Status',
-      field: 'status',
+      label: 'Document Subject',
+      field: 'subject',
       sortable: true
     },
     {
@@ -271,11 +290,13 @@ export default class ManageContact extends Vue {
     }
   ];
   data: IRecipient[] = [];
-
+  logs: IMessage[] = [];
   async created() {
     await this.getContacts();
+    await this.GetMessages();
     this.setInstitution();
     this.data = this.recipients;
+    this.logs = this.messages;
     this.filterOptions = this.institution;
   }
 

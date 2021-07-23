@@ -65,10 +65,10 @@ export interface DocumentsReq {
     name?: string;
     /**
      * 
-     * @type {string}
+     * @type {boolean}
      * @memberof DocumentsReq
      */
-    status?: string;
+    smsStatus?: boolean;
     /**
      * 
      * @type {string}
@@ -120,14 +120,45 @@ export interface DocumentsRes {
     name?: string;
     /**
      * 
-     * @type {string}
+     * @type {boolean}
      * @memberof DocumentsRes
      */
-    status?: string;
+    smsStatus?: boolean;
     /**
      * 
      * @type {string}
      * @memberof DocumentsRes
+     */
+    subject?: string;
+}
+/**
+ * 
+ * @export
+ * @interface Message
+ */
+export interface Message {
+    /**
+     * 
+     * @type {string}
+     * @memberof Message
+     */
+    date?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Message
+     */
+    message?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Message
+     */
+    recipient?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Message
      */
     subject?: string;
 }
@@ -402,6 +433,12 @@ export interface SMSs {
      * @memberof SMSs
      */
     phoneNumber?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SMSs
+     */
+    subject?: string;
 }
 /**
  * 
@@ -577,17 +614,17 @@ export const DocumentControllerApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * 
-         * @summary Update
+         * @summary Update this document
          * @param {string} id id
          * @param {DocumentsReq} model model
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUsingPUT: async (id: string, model: DocumentsReq, options: any = {}): Promise<RequestArgs> => {
+        updateDocument: async (id: string, model: DocumentsReq, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('updateUsingPUT', 'id', id)
+            assertParamExists('updateDocument', 'id', id)
             // verify required parameter 'model' is not null or undefined
-            assertParamExists('updateUsingPUT', 'model', model)
+            assertParamExists('updateDocument', 'model', model)
             const localVarPath = `/sms-api/document/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -713,14 +750,14 @@ export const DocumentControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Update
+         * @summary Update this document
          * @param {string} id id
          * @param {DocumentsReq} model model
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateUsingPUT(id: string, model: DocumentsReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DocumentsRes>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateUsingPUT(id, model, options);
+        async updateDocument(id: string, model: DocumentsReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DocumentsRes>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateDocument(id, model, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -786,14 +823,14 @@ export const DocumentControllerApiFactory = function (configuration?: Configurat
         },
         /**
          * 
-         * @summary Update
+         * @summary Update this document
          * @param {string} id id
          * @param {DocumentsReq} model model
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUsingPUT(id: string, model: DocumentsReq, options?: any): AxiosPromise<DocumentsRes> {
-            return localVarFp.updateUsingPUT(id, model, options).then((request) => request(axios, basePath));
+        updateDocument(id: string, model: DocumentsReq, options?: any): AxiosPromise<DocumentsRes> {
+            return localVarFp.updateDocument(id, model, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -865,15 +902,15 @@ export class DocumentControllerApi extends BaseAPI {
 
     /**
      * 
-     * @summary Update
+     * @summary Update this document
      * @param {string} id id
      * @param {DocumentsReq} model model
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DocumentControllerApi
      */
-    public updateUsingPUT(id: string, model: DocumentsReq, options?: any) {
-        return DocumentControllerApiFp(this.configuration).updateUsingPUT(id, model, options).then((request) => request(this.axios, this.basePath));
+    public updateDocument(id: string, model: DocumentsReq, options?: any) {
+        return DocumentControllerApiFp(this.configuration).updateDocument(id, model, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1069,6 +1106,173 @@ export class FileControllerApi extends BaseAPI {
 
 
 /**
+ * MessageControllerApi - axios parameter creator
+ * @export
+ */
+export const MessageControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Insert some message
+         * @param {Message} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addMessage: async (model: Message, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'model' is not null or undefined
+            assertParamExists('addMessage', 'model', model)
+            const localVarPath = `/sms-api/message/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(model, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get get all messages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMessages: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/sms-api/message/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * MessageControllerApi - functional programming interface
+ * @export
+ */
+export const MessageControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = MessageControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Insert some message
+         * @param {Message} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addMessage(model: Message, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Message>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addMessage(model, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get get all messages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMessages(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Message>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMessages(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * MessageControllerApi - factory interface
+ * @export
+ */
+export const MessageControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = MessageControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Insert some message
+         * @param {Message} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addMessage(model: Message, options?: any): AxiosPromise<Message> {
+            return localVarFp.addMessage(model, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get get all messages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMessages(options?: any): AxiosPromise<Array<Message>> {
+            return localVarFp.getMessages(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * MessageControllerApi - object-oriented interface
+ * @export
+ * @class MessageControllerApi
+ * @extends {BaseAPI}
+ */
+export class MessageControllerApi extends BaseAPI {
+    /**
+     * 
+     * @summary Insert some message
+     * @param {Message} model model
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MessageControllerApi
+     */
+    public addMessage(model: Message, options?: any) {
+        return MessageControllerApiFp(this.configuration).addMessage(model, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get get all messages
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MessageControllerApi
+     */
+    public getMessages(options?: any) {
+        return MessageControllerApiFp(this.configuration).getMessages(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
  * OfficerControllerApi - axios parameter creator
  * @export
  */
@@ -1216,11 +1420,11 @@ export const OfficerControllerApiAxiosParamCreator = function (configuration?: C
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUsingPUT1: async (id: string, model: OfficersReq, options: any = {}): Promise<RequestArgs> => {
+        updateUsingPUT: async (id: string, model: OfficersReq, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('updateUsingPUT1', 'id', id)
+            assertParamExists('updateUsingPUT', 'id', id)
             // verify required parameter 'model' is not null or undefined
-            assertParamExists('updateUsingPUT1', 'model', model)
+            assertParamExists('updateUsingPUT', 'model', model)
             const localVarPath = `/sms-api/officer/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1309,8 +1513,8 @@ export const OfficerControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateUsingPUT1(id: string, model: OfficersReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OfficersRes>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateUsingPUT1(id, model, options);
+        async updateUsingPUT(id: string, model: OfficersReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OfficersRes>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateUsingPUT(id, model, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1370,8 +1574,8 @@ export const OfficerControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUsingPUT1(id: string, model: OfficersReq, options?: any): AxiosPromise<OfficersRes> {
-            return localVarFp.updateUsingPUT1(id, model, options).then((request) => request(axios, basePath));
+        updateUsingPUT(id: string, model: OfficersReq, options?: any): AxiosPromise<OfficersRes> {
+            return localVarFp.updateUsingPUT(id, model, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1439,8 +1643,8 @@ export class OfficerControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OfficerControllerApi
      */
-    public updateUsingPUT1(id: string, model: OfficersReq, options?: any) {
-        return OfficerControllerApiFp(this.configuration).updateUsingPUT1(id, model, options).then((request) => request(this.axios, this.basePath));
+    public updateUsingPUT(id: string, model: OfficersReq, options?: any) {
+        return OfficerControllerApiFp(this.configuration).updateUsingPUT(id, model, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -1593,11 +1797,11 @@ export const RecipientControllerApiAxiosParamCreator = function (configuration?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUsingPUT2: async (id: string, model: RecipientsReq, options: any = {}): Promise<RequestArgs> => {
+        updateUsingPUT1: async (id: string, model: RecipientsReq, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('updateUsingPUT2', 'id', id)
+            assertParamExists('updateUsingPUT1', 'id', id)
             // verify required parameter 'model' is not null or undefined
-            assertParamExists('updateUsingPUT2', 'model', model)
+            assertParamExists('updateUsingPUT1', 'model', model)
             const localVarPath = `/sms-api/recipient/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1686,8 +1890,8 @@ export const RecipientControllerApiFp = function(configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateUsingPUT2(id: string, model: RecipientsReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RecipientsRes>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateUsingPUT2(id, model, options);
+        async updateUsingPUT1(id: string, model: RecipientsReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RecipientsRes>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateUsingPUT1(id, model, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1747,8 +1951,8 @@ export const RecipientControllerApiFactory = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUsingPUT2(id: string, model: RecipientsReq, options?: any): AxiosPromise<RecipientsRes> {
-            return localVarFp.updateUsingPUT2(id, model, options).then((request) => request(axios, basePath));
+        updateUsingPUT1(id: string, model: RecipientsReq, options?: any): AxiosPromise<RecipientsRes> {
+            return localVarFp.updateUsingPUT1(id, model, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1816,8 +2020,8 @@ export class RecipientControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof RecipientControllerApi
      */
-    public updateUsingPUT2(id: string, model: RecipientsReq, options?: any) {
-        return RecipientControllerApiFp(this.configuration).updateUsingPUT2(id, model, options).then((request) => request(this.axios, this.basePath));
+    public updateUsingPUT1(id: string, model: RecipientsReq, options?: any) {
+        return RecipientControllerApiFp(this.configuration).updateUsingPUT1(id, model, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

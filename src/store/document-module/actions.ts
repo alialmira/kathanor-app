@@ -11,12 +11,14 @@ const actions: ActionTree<DocumentStateInterface, StateInterface> = {
   },
   async uploadDocument({}, payload): Promise<any> {
     const { id, file } = payload;
-    const result = await documentService.upload(id, file);
-    console.log(result);
+    await documentService.upload(id, file);
   },
   async getDocuments(context): Promise<any> {
     const result = await documentService.getAll();
     context.commit('getDocuments', result);
+  },
+  async updateDocument({}, payload): Promise<any> {
+    await documentService.update(payload);
   }
 };
 

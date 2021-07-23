@@ -23,7 +23,8 @@
         :pagination.sync="pagination"
         :rows-per-page-options="[0]"
         style="height: 80vh"
-        ><template v-slot:header="props">
+      >
+        <template v-slot:header="props">
           <q-tr :props="props">
             <q-th
               class="text-black"
@@ -32,7 +33,37 @@
               :props="props"
             >
               {{ col.label }}
-            </q-th>          
+            </q-th>
+            <q-th auto-width class="text-black">Action</q-th>
+          </q-tr>
+        </template>
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              {{ col.value }}
+            </q-td>
+            <q-td auto-width>
+              <q-btn
+                size="sm"
+                color="green"
+                icon="edit"
+                round
+                dense
+                class="q-mr-sm"
+              >
+                <q-tooltip>Edit Document</q-tooltip>
+              </q-btn>
+              <q-btn
+                size="sm"
+                color="green"
+                icon="archive"
+                round
+                dense
+                class="q-mr-sm"              
+              >
+                <q-tooltip>Archive Officer</q-tooltip>
+              </q-btn>              
+            </q-td>
           </q-tr>
         </template>
       </q-table>
@@ -67,7 +98,7 @@ export default class ManageAccount extends Vue {
     {
       name: 'desc',
       required: true,
-      label: 'ID Number',
+      label: 'SSN',
       align: 'left',
       field: (row: { [key: string]: string }) => row.name,
       sortable: true

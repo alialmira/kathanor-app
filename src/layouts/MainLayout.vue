@@ -44,7 +44,6 @@
             </q-btn>
           </q-menu>
         </q-btn>
-        <!-- Menu end -->
       </q-toolbar>
     </q-header>
 
@@ -60,10 +59,12 @@
       <div class="text-center q-pt-md">
         <div>
           <q-avatar size="120px" style="border-radius: 10px 10px 10px 10px">
-          <img src="~assets/msuu.png"/>
+            <img src="~assets/msuu.png" />
           </q-avatar>
         </div>
-        <q-chip class="bg-white text-weight-bolder text-h6" text-color="primary">MSU OIPP</q-chip>
+        <q-chip class="bg-white text-weight-bolder text-h6" text-color="primary"
+          >MSU OIPP</q-chip
+        >
       </div>
       <q-item
         active
@@ -85,14 +86,14 @@
         active
         clickable
         v-ripple
-        to="/ManageAccount"
+        to="/ManageContact"
         exact-active-class="text-white bg-negative"
       >
         <q-item-section avatar>
-          <q-icon name="manage_accounts" size="md" />
+          <q-icon name="contacts" size="md" />
         </q-item-section>
         <q-item-section class="text-body1 text-weight-bold">
-          Manage Accounts
+          SMS
         </q-item-section>
       </q-item>
 
@@ -115,14 +116,14 @@
         active
         clickable
         v-ripple
-        to="/ManageContact"
+        to="/ManageAccount"
         exact-active-class="text-white bg-negative"
       >
         <q-item-section avatar>
-          <q-icon name="contacts" size="md" />
+          <q-icon name="manage_accounts" size="md" />
         </q-item-section>
         <q-item-section class="text-body1 text-weight-bold">
-          SMS Status
+          Manage Accounts
         </q-item-section>
       </q-item>
     </q-drawer>

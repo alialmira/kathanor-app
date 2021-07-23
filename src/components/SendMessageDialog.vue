@@ -18,29 +18,21 @@
           type="textarea"
           counter
           lazy-rules
-          :rules="[val => val.length >= 11 || 'Field is required']"
+          :rules="[val => val.length >= 1 || 'Field is required']"
         ></q-input>
         <template class="q-py-md">
-          <!--- 
-          <div>
-            <q-input
-              ref="phoneNumber"
-              v-model="smss.phoneNumber"
-              filled
-              label="Contact Number"
-              lazy-rules
-              :rules="[val => val.length >= 11 || 'Contact Number must be 11 digit']"
-            />
-          </div>
-          ---->
           <div>
             <q-select
+              ref="phoneNumber"
               v-model="selectFilter"
               :options="filterOptions"
               label="Select Recipients by Status"
               outlined
               dense
               clearable
+              filled
+              lazy-rules
+              :rules="[val => !!val || 'Field is required']"
               clear-icon
               style="min-width: 150px"
               @input="selectedPersonStatus($event)"
@@ -56,6 +48,8 @@
             class="full-width"
             color="green"
             label="Send Message"
+            :loading="isSubmit"
+            :disable="isSubmit"
             @click="sendMessage()"
           ></q-btn>
         </div>
@@ -64,6 +58,7 @@
             class="full-width"
             color="red"
             label="Cancel"
+            :disable="isSubmit"
             @click="sendMessagePopups(false)"
           ></q-btn>
         </div>
@@ -74,8 +69,10 @@
 
 <script lang="ts">
 import IRecipient from 'src/interfaces/recipient.interface';
-import { Vue, Component } from 'vue-property-decorator';
+import IDocument from 'src/interfaces/document.interface';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
+import { Message } from 'src/services/rest-api';
 
 interface RefsVue extends Vue {
   validate(): void;
@@ -85,19 +82,24 @@ interface RefsVue extends Vue {
 @Component({
   computed: {
     ...mapState('uiNav', ['showSendMessageDialog']),
-    ...mapState('recipient', ['recipients', 'newRecipients', 'personStatus'])
+    ...mapState('recipient', ['recipients', 'newRecipients', 'personStatus']),
+    ...mapState('document', ['smsStatus'])
   },
   methods: {
     ...mapActions('uiNav', ['sendMessagePopups']),
     ...mapActions('sms', ['sendSms']),
-    ...mapActions('recipient', ['setStatus', 'getContacts', 'filterStatus'])
+    ...mapActions('recipient', ['setStatus', 'getContacts', 'filterStatus']),
+    ...mapActions('document', ['updateDocument', 'getDocuments']),
+    ...mapActions('message', ['addMessage'])
   }
 })
 export default class SendMessageDialog extends Vue {
+  @Prop({ type: Object, required: true }) readonly document!: IDocument;
   smss = {
     message: '',
     phoneNumber: ''
   };
+
   $refs!: {
     message: RefsVue;
     phoneNumber: RefsVue;
@@ -112,11 +114,15 @@ export default class SendMessageDialog extends Vue {
   personStatus!: string[];
   filterOptions: string[] = [];
   data: IRecipient[] = [];
+  payload: IDocument[] = [];
+  updateDocument!: (payload: any) => Promise<void>;
+  getDocuments!: () => Promise<void>;
   sendMessagePopups!: (show: boolean) => void;
   sendSms!: (payload: any) => Promise<void>;
   setStatus!: () => void;
   getContacts!: () => Promise<any[]>;
   filterStatus!: (payload: string) => Promise<void>;
+  addMessage!: (payload: Message) => Promise<void>;
 
   async created() {
     await this.getContacts();
@@ -138,22 +144,34 @@ export default class SendMessageDialog extends Vue {
   async sendMessage() {
     this.isSubmit = true;
     this.$refs.message.validate();
-    // this.$refs.phoneNumber.validate();
-    if (this.$refs.message.hasError) {
+    this.$refs.phoneNumber.validate();
+    if (this.$refs.message.hasError || this.$refs.phoneNumber.hasError) {
       this.formHasError = true;
+      this.isSubmit = false;
     } else {
-      if (this.data instanceof Array) {
-        this.data.map(async (d: IRecipient) => {
-          const newSms = {
-            ...this.smss,
-            phoneNumber: '+63' + d.contact
-          };
-          await this.sendSms(newSms);
+      this.data.map(async (d: IRecipient) => {
+        const newSms = {
+          ...this.smss,
+          phoneNumber: '+63' + d.contact
+        };
+        await this.sendSms(newSms);
+        await this.addMessage({
+          ...newSms,
+          recipient: newSms.phoneNumber,
+          subject: this.document.subject,
+          date: this.document.date
         });
-        await this.$store.dispatch('uiNav/sendMessagePopups', false);
-        this.smss = { message: '', phoneNumber: '' };
-        this.selectFilter = 'ALL';
-      }
+      });
+      const smsStatus = {
+        ...this.document,
+        smsStatus: true
+      };
+      await this.updateDocument(smsStatus);
+      await this.getDocuments();
+      this.isSubmit = false;
+      this.smss = { message: '', phoneNumber: '' };
+      this.selectFilter = '';
+       this.sendMessagePopups(false);
     }
   }
 }

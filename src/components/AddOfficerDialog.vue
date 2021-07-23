@@ -20,7 +20,7 @@
           ref="idNumber"
           v-model="officers.name"
           filled
-          label="ID Number"
+          label="SSN"
           lazy-rules
           :rules="[val => !!val || 'Field is required']"
         />
