@@ -4,5 +4,6 @@ export default interface IDocument {
   file: string;
   name: string;
   subject: string;
-  smsStatus: string;
+  smsStatus: boolean;
+  message: string;
 }

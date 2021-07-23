@@ -1,13 +1,19 @@
 <template>
-  <q-dialog v-model="showAddDocumetDialog" persistent @hide="hideDialog()">
+  <q-dialog
+    v-model="showAddDocumetDialog"
+    persistent
+    @hide="hideDialog()"
+    @show="showDialog()"
+  >
     <q-card class="__card q-py-lg">
       <q-toolbar>
         <q-avatar>
           <img src="~assets/icons8-add-document-48.png" />
         </q-avatar>
-        <q-toolbar-title class="text-weight-bold text-center"
-          >ADD NEW DOCUMENT</q-toolbar-title
-        >
+        <q-toolbar-title class="text-weight-bold text-center">
+          <span v-if="document.onUpdate">UPDATE DOCUMENT</span>
+          <span v-else>ADD NEW DOCUMENT</span>
+        </q-toolbar-title>
         <q-btn
           color="dark"
           icon="close"
@@ -18,11 +24,14 @@
       <q-card-section class="q-gutter-y-md">
         <q-input
           ref="docIdNum"
+          maxlength="6"
           v-model="documents.name"
           filled
           label="Document ID Number"
           lazy-rules
-          :rules="[val => !!val || 'Field is required']"
+          :rules="[
+            val => val.length >= 3 || 'Document ID Number is not complete'
+          ]"
         />
         <q-input
           ref="subject"
@@ -67,12 +76,9 @@
         <q-file
           color="red-10"
           clearable
-          ref="docFile"
           max-file-size="1048576"
           v-model="documents.contentType"
           filled
-          lazy-rules
-          :rules="[val => !!val || 'Field is required']"
           label="Choose Files"
           @update:model-value="fileChoose($event)"
         >
@@ -85,10 +91,10 @@
         <div class="col-6">
           <q-btn
             class="full-width"
-            label="Create"
+            :label="document.onUpdate ? 'Update' : 'Create'"
             color="dark"
             text-color="white"
-            @click="saveDocument()"
+            @click="document.onUpdate ? editDocument() : saveDocument()"
             :loading="isUpload"
             :disable="isUpload"
           ></q-btn>
@@ -109,7 +115,7 @@
 
 <script lang="ts">
 import uploadService from 'src/services/upload.service';
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 
 interface RefsVue extends Vue {
@@ -125,6 +131,7 @@ interface IDocument {
   date: string;
   contentType: any;
   docFile: any;
+  smsStatus: any;
 }
 
 @Component({
@@ -133,21 +140,29 @@ interface IDocument {
   },
   methods: {
     ...mapActions('uiNav', ['addDocsPopups', 'sendMessagePopups']),
-    ...mapActions('document', ['addDocument', 'uploadDocument'])
+    ...mapActions('document', [
+      'addDocument',
+      'uploadDocument',
+      'updateDocument',
+      'getDocuments'
+    ])
   }
 })
 export default class AddDocsDialog extends Vue {
+  @Prop({ type: Object, required: true }) readonly document!: IDocument;
+
   _id = undefined;
-  step = 1;
   isSubmit = false;
   isUpload = false;
-  documents: IDocument = {
+  documents: any = {
     name: '',
     subject: '',
     docType: '',
     date: '',
+    smsStatus: '',
     contentType: [],
-    docFile: []
+    docFile: [],
+    onUpdate: false
   };
   $refs!: {
     docIdNum: RefsVue;
@@ -155,7 +170,6 @@ export default class AddDocsDialog extends Vue {
     date: RefsVue;
     docType: RefsVue;
     docFile: RefsVue;
-    stepper: RefsVue;
   };
   formHasError!: boolean;
   showAddDocumetDialog!: boolean;
@@ -163,9 +177,15 @@ export default class AddDocsDialog extends Vue {
   sendMessagePopups!: (show: boolean) => void;
   addDocument!: (payload: any) => Promise<void>;
   uploadDocument!: (payload: any) => Promise<void>;
+  updateDocument!: (payload: any) => Promise<void>;
+  getDocuments!: () => Promise<void>;
 
   fileChoose(val: any) {
     this.documents.docFile = val;
+  }
+
+  showDialog() {
+    this.documents = { ...this.document, docFile: [], contentType: [] };
   }
 
   hideDialog() {
@@ -174,10 +194,11 @@ export default class AddDocsDialog extends Vue {
       subject: '',
       docType: '',
       date: '',
+      smsStatus: '',
       contentType: [],
       docFile: []
     };
-    this.step = 1;
+    this.$emit('clearData', { ...this.documents, onUpdate: false });
   }
 
   async saveDocument() {
@@ -197,16 +218,11 @@ export default class AddDocsDialog extends Vue {
     } else {
       this.documents.docFile = this.documents.contentType;
       const res = await uploadService.uploadOneFile(this.documents.docFile);
-      console.log(res);
-      console.log({
-        ...this.documents,
-        file: res.fileDownloadUri,
-        contentType: res.fileType
-      });
       await this.addDocument({
         ...this.documents,
         file: res.fileDownloadUri,
-        contentType: res.fileType
+        contentType: res.fileType,
+        smsStatus: false
       });
       this.addDocsPopups(false);
       this.documents = {
@@ -214,13 +230,50 @@ export default class AddDocsDialog extends Vue {
         subject: '',
         docType: '',
         date: '',
+        smsStatus: '',
         contentType: [],
         docFile: []
       };
       this.$q.notify({
         icon: 'done',
         color: 'positive',
-        message: 'Document Added'
+        message: 'Document Added Successfully.'
+      });
+    }
+  }
+
+  async editDocument() {
+    try {
+      this.documents.docFile = this.documents.contentType;
+      const res = undefined;
+      console.log(this.documents.docFile);
+      if (this.documents.docFile != null) {
+        const res = await uploadService.uploadOneFile(this.documents.docFile);
+        delete this.documents.onUpdate;
+        await this.updateDocument({
+          ...this.documents,
+          file: res.fileDownloadUri,
+          contentType: res.fileType
+        });
+      } else {
+        await this.updateDocument({
+          ...this.documents,
+          contentType: this.document.contentType,
+          docFile: this.document.docFile
+        });
+      }
+      this.addDocsPopups(false);
+      this.$q.notify({
+        icon: 'done',
+        color: 'positive',
+        message: 'Document Updated Successfully.'
+      });
+      await this.getDocuments();
+    } catch (error) {
+      this.$q.notify({
+        icon: 'done',
+        color: 'negative',
+        message: 'Somethig wrong when updating the documents.'
       });
     }
   }

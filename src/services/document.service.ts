@@ -32,6 +32,12 @@ class DocumentService extends DocumentControllerApi {
     const respone = await restApi.uploadDocument(id, file);
     return respone.data;
   }
+
+  async update(payload: IDocument) {
+    const response = await restApi.updateDocument(payload._id as string, payload);
+    console.log(response)
+    return response.data;
+  }
 }
 
 const documentService = new DocumentService();

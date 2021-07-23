@@ -48,6 +48,7 @@
                 round
                 dense
                 class="q-mr-sm"
+                @click="editDocument(props.row)"
               >
                 <q-tooltip>Edit Document</q-tooltip>
               </q-btn>
@@ -64,27 +65,28 @@
               </q-btn>
               <q-btn
                 size="sm"
-                color="green"
                 icon="message"
                 round
                 dense
                 class="q-mr-sm"
-                @click="sendMessagePopups(true)"
+                :color="props.row.smsStatus ? 'red' : 'green'"
+                :disable="props.row.smsStatus"
+                @click="sendMessage(props.row)"
               >
-                <q-tooltip>SMS Status</q-tooltip>
+                <q-tooltip>Send Message</q-tooltip>
               </q-btn>
             </q-td>
           </q-tr>
         </template>
       </q-table>
     </div>
-    <AddDocsDialog />
-    <SendMessageDialog />
+    <SendMessageDialog :document="document" />
+    <AddDocsDialog :document="document" @clearData="clearData" />
   </q-page>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapActions, mapState } from 'vuex';
 import AddDocsDialog from 'src/components/AddDocsDialog.vue';
 import SendMessageDialog from 'src/components/SendMessageDialog.vue';
@@ -104,6 +106,15 @@ import IDocument from 'src/interfaces/document.interface';
   }
 })
 export default class ManageDocument extends Vue {
+  document: any = {
+    name: '',
+    subject: '',
+    docType: '',
+    date: '',
+    smsStatus: false,
+    contentType: [],
+    docFile: [],
+  };
   pagination = {
     rowsPerPage: 0
   };
@@ -144,9 +155,28 @@ export default class ManageDocument extends Vue {
   sendMessagePopups!: (show: boolean) => void;
   getDocuments!: () => Promise<void>;
 
+  @Watch('documents')
+  onDocumentsChanged(val: any) {
+    this.data = val;
+  }
+
   async created() {
     await this.getDocuments();
     this.data = this.documents;
+  }
+
+  clearData(val: IDocument) {
+    this.document = val;
+  }
+
+  sendMessage(document: IDocument) {
+    this.document = document;
+    this.sendMessagePopups(true);
+  }
+
+  editDocument(document: IDocument) {
+    this.document = { ...document, onUpdate: true};
+    this.addDocsPopups(true);
   }
 
   viewDocument(payload: any) {

@@ -11,6 +11,9 @@ import { DocumentStateInterface } from './document-module/state';
 import document from './document-module';
 import { SmsStateInterface } from './sms-module/state';
 import sms from './sms-module';
+import { MessageStateInterface } from './message-module/state';
+import message from './message-module';
+
 
 
 /*
@@ -27,6 +30,7 @@ export interface StateInterface {
   uiNav: UiNavStateInterface;
   document: DocumentStateInterface;
   sms: SmsStateInterface;
+  message: MessageStateInterface;
 }
 
 export default store(function({ Vue }) {
@@ -38,7 +42,8 @@ export default store(function({ Vue }) {
       officer,
       uiNav,
       document,
-      sms
+      sms,
+      message
     },
 
     // enable strict mode (adds overhead!)
