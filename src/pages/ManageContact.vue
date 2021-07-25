@@ -5,7 +5,7 @@
         <q-tabs
           v-model="tab"
           dense
-          class="text-black"
+          class="text-black bg-info"
           active-color="primary"
           indicator-color="primary"
           align="justify"
@@ -26,8 +26,6 @@
               :columns="columnsms"
               row-key="date"
               virtual-scroll
-              :pagination.sync="pagination"
-              :rows-per-page-options="[0]"
               style="height: 80vh"
             >
               <template v-slot:header="props">
@@ -51,7 +49,7 @@
                     :props="props"
                   >
                     {{ col.value }}
-                  </q-td>                  
+                  </q-td>
                 </q-tr>
               </template>
               <template v-slot:top-right>

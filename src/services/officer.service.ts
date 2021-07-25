@@ -23,6 +23,11 @@ class OfficerService extends OfficerControllerApi {
     const response = await restApi.addAccount(payload);
     return response.data;
   }
+  async update(payload: IOfficer) {
+    const response = await restApi.updateOfficer(payload._id as string, payload);
+    console.log(response)
+    return response.data;
+  }
 }
 
 const documentService = new OfficerService();

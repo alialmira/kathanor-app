@@ -145,21 +145,34 @@ export default class SendMessageDialog extends Vue {
     this.isSubmit = true;
     this.$refs.message.validate();
     this.$refs.phoneNumber.validate();
-    if (this.$refs.message.hasError || this.$refs.phoneNumber.hasError) {
+    if (
+      this.$refs.message.hasError ||
+      this.$refs.phoneNumber.hasError ||
+      !navigator.onLine
+    ) {
       this.formHasError = true;
       this.isSubmit = false;
+      this.sendMessagePopups(false);
+      this.$q.notify({
+        icon: 'done',
+        color: 'negative',
+        message: 'No Internet Connection.'
+      });
     } else {
       this.data.map(async (d: IRecipient) => {
         const newSms = {
           ...this.smss,
           phoneNumber: '+63' + d.contact
         };
-        await this.sendSms(newSms);
+        //await this.sendSms(newSms);
         await this.addMessage({
           ...newSms,
           recipient: newSms.phoneNumber,
           subject: this.document.subject,
-          date: this.document.date
+          date: this.document.date,
+          message:
+            `Message from MSU-OIPP, ${this.document.docType} (${this.document.date}) - ` +
+            newSms.message
         });
       });
       const smsStatus = {
@@ -171,7 +184,12 @@ export default class SendMessageDialog extends Vue {
       this.isSubmit = false;
       this.smss = { message: '', phoneNumber: '' };
       this.selectFilter = '';
-       this.sendMessagePopups(false);
+      this.sendMessagePopups(false);
+      this.$q.notify({
+        icon: 'done',
+        color: 'positive',
+        message: 'Message Sent Successfully.'
+      });
     }
   }
 }

@@ -1,10 +1,22 @@
+import IOfficer from 'src/interfaces/officer.interface';
+
 export interface OfficerStateInterface {
-  createOfficers: { [key: string]: any }[];
-  officers: { [key: string]: string }[];
+  officer: IOfficer;
+  createOfficers: IOfficer[];
+  officers: IOfficer[];
 }
 
 function state(): OfficerStateInterface {
   return {
+    officer: {
+     name: '',
+     firstName: '',
+     lastName: '',
+     contactNumber: '',
+     position: '',
+     accountType: '',
+     session: false
+    },
     officers: [],
     createOfficers: []
   };

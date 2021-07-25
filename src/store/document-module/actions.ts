@@ -19,6 +19,28 @@ const actions: ActionTree<DocumentStateInterface, StateInterface> = {
   },
   async updateDocument({}, payload): Promise<any> {
     await documentService.update(payload);
+  },
+  setacademicYear(context) {
+    const acadYear = context.state.documents.map(r => {
+      return r.acadYear;
+    });
+    acadYear.unshift('ALL');
+    const newInst = [...new Set(acadYear)];
+    context.commit('setacademicYear', newInst);
+  },
+  filteracadYear(context, acadYear: string) {
+    if (acadYear) {
+      const document = context.state.documents.filter(r => {
+        return (
+          (acadYear && r.acadYear === acadYear) ||
+          acadYear === 'ALL'
+        );
+      });
+      console.log(acadYear);
+      context.commit('updateInstTable', document);
+    } else {
+      context.commit('updateInstTable', context.state.documents);
+    }
   }
 };
 

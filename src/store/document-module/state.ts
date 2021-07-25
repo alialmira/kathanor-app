@@ -3,6 +3,8 @@ import IDocument from 'src/interfaces/document.interface';
 export interface DocumentStateInterface {
   createDocuments: IDocument[];
   documents: IDocument[];
+  newDocuments: IDocument[];
+  acadYear: string[];
   document: IDocument;
 }
 
@@ -15,10 +17,14 @@ function state(): DocumentStateInterface {
       message: '',
       name: '',
       smsStatus: false,
-      subject: ''
+      subject: '',
+      semester: '',
+      acadYear: ''
     },
     documents: [],
-    createDocuments: []
+    createDocuments: [],
+    newDocuments: [],
+    acadYear: []
   };
 }
 
