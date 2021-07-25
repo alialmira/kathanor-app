@@ -246,6 +246,12 @@ export interface OfficersReq {
      * @type {string}
      * @memberof OfficersReq
      */
+    password?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OfficersReq
+     */
     position?: string;
     /**
      * 
@@ -296,6 +302,12 @@ export interface OfficersRes {
      * @memberof OfficersRes
      */
     name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OfficersRes
+     */
+    password?: string;
     /**
      * 
      * @type {string}

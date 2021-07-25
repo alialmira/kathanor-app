@@ -60,48 +60,56 @@
 </template>
 
 <script lang="ts">
+import { OfficersReq } from 'src/services/rest-api';
 import { Vue, Component } from 'vue-property-decorator';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 interface User {
   username: string;
   password: string;
 }
 
-interface Officers {
-  name: string;
-  firstName: string;
-  lastName: string;
-  contactNumber: string;
-  password: string;
-  accountType: string;
-}
-
 @Component({
   computed: {
     ...mapState('officer', ['officers'])
+  },
+  methods: {
+    ...mapActions('officer', ['getOfficers', 'updateOfficer'])
   }
 })
 export default class Login extends Vue {
-  officers!: Officers[];
+  officers!: OfficersReq[];
+  getOfficers!: () => Promise<void>;
+  updateOfficer!: (payload: any) => Promise<void>;
   user: User = {
     username: '',
     password: ''
   };
   hidePassword = false;
   async login(): Promise<void> {
+    await this.getOfficers();
     if (
       this.officers.find(
         o =>
           this.user.password == o.password &&
           this.user.username == o.name &&
-          o.accountType == 'Admin'
+          o.accountType == 'admin'
       )
     ) {
       this.$q.notify({
         type: 'success',
         message: 'Logged in as Admin'
       });
+      await this.updateOfficer({
+        ...this.officers.find(
+          o =>
+            this.user.password == o.password &&
+            this.user.username == o.name &&
+            o.accountType == 'admin'
+        ),
+        session: true
+      });
+      await this.getOfficers();
       await this.$store.dispatch('uiNav/isAdminLogin', true);
       await this.$router.push('/');
     } else if (
@@ -109,18 +117,27 @@ export default class Login extends Vue {
         o =>
           this.user.password == o.password &&
           this.user.username == o.name &&
-          o.accountType == 'Officer'
+          o.accountType == 'officer'
       )
     ) {
+      await this.getOfficers();
+      await this.updateOfficer({
+        ...this.officers.find(
+          o =>
+            this.user.password == o.password &&
+            this.user.username == o.name &&
+            o.accountType == 'officer'
+        ),
+        session: true
+      });
       this.$q.notify({
         type: 'success',
-        message: 'Logged in as Officer'
+        message: `Logged in as Officer`
       });
       await this.$store.dispatch('uiNav/isAdminLogin', false);
       await this.$router.push('/');
     } else {
       this.$q.notify({
-        
         type: 'warning',
         message: 'Invalid Username or Password.'
       });

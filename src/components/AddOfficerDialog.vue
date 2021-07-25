@@ -165,7 +165,12 @@ export default class Dialog extends Vue {
     ) {
       this.formHasError = true;
     } else {
-      await this.addAccount(this.officers);
+      await this.addAccount({
+        ...this.officers,
+        accountType: 'officer',
+        session: false,
+        password: this.officers.lastName
+      });
       this.isSubmit = false;
       await this.$store.dispatch('uiNav/addAccountPopups', false);
       this.officers = {
@@ -184,7 +189,7 @@ export default class Dialog extends Vue {
   }
 
   showDialog() {
-    this.officers = { ...this.officer};
+    this.officers = { ...this.officer };
   }
 
   hideDialog() {

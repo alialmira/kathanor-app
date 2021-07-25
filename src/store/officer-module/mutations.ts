@@ -12,6 +12,10 @@ const mutation: MutationTree<OfficerStateInterface> = {
   },
   changePassword(state, payload: { [key: string]: any }) {
     state.officers[payload.index] = payload.newPassword;
+  },
+  updateOfficer(state, result) {
+    state.officers = [];
+    state.officers.push(...result);
   }
 };
 

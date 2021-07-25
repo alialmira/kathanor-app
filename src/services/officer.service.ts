@@ -1,4 +1,8 @@
-import { OfficerControllerApi, Configuration, OfficersReq as IOfficer } from './rest-api';
+import {
+  OfficerControllerApi,
+  Configuration,
+  OfficersReq as IOfficer
+} from './rest-api';
 
 const dev = 'http://localhost:9000';
 
@@ -24,8 +28,11 @@ class OfficerService extends OfficerControllerApi {
     return response.data;
   }
   async update(payload: IOfficer) {
-    const response = await restApi.updateOfficer(payload._id as string, payload);
-    console.log(response)
+    const response = await restApi.updateOfficer(
+      payload._id as string,
+      payload
+    );
+    console.log(response);
     return response.data;
   }
 }

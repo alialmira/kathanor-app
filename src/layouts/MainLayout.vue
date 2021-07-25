@@ -39,7 +39,7 @@
               size="md"
               icon="logout"
               text-color="black"
-              to="/login"
+              @click="logout()"
             >
             </q-btn>
           </q-menu>
@@ -113,6 +113,7 @@
       </q-item>
 
       <q-item
+        v-if="isAdmin"
         active
         clickable
         v-ripple
@@ -137,23 +138,64 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import ChangePassDialog from 'components/ChangePassDialog.vue';
+import { OfficersReq } from 'src/services/rest-api';
 
 @Component({
   components: {
     ChangePassDialog
   },
   computed: {
-    ...mapState('uiNav', ['adminLoggedIn'])
+    ...mapState('uiNav', ['adminLoggedIn']),
+    ...mapState('officer', ['officers'])
   },
   methods: {
-    ...mapActions('uiNav', ['changePassPopups'])
+    ...mapActions('uiNav', ['changePassPopups']),
+    ...mapActions('officer', ['getOfficers', 'updateOfficer'])
   }
 })
 export default class MainLayout extends Vue {
   adminLoggedIn!: boolean;
+  officers!: OfficersReq[];
   changePassPopups!: (show: boolean) => void;
+  getOfficers!: () => Promise<void>;
+  updateOfficer!: (payload: any) => Promise<void>;
+  isAdmin = false;
+
+  @Watch('officers')
+  onDocumentsChanged(val: any) {
+    this.isAdmin = this.officers.some(
+      o => o.session == true && o.accountType == 'admin'
+    );
+  }
+
+  async created() {
+    await this.getOfficers();
+    this.isAdmin = this.officers.some(
+      o => o.session == true && o.accountType == 'admin'
+    );
+  }
+
+  async logout() {
+    console.log({
+      ...this.officers.find(
+        o =>
+          (o.session == true && o.accountType == 'admin') ||
+          (o.session == true && o.accountType == 'officer')
+      ),
+      session: false
+    });
+    await this.updateOfficer({
+      ...this.officers.find(
+        o =>
+          (o.session == true && o.accountType == 'admin') ||
+          (o.session == true && o.accountType == 'officer')
+      ),
+      session: false
+    });
+    await this.$router.replace('/login');
+  }
 }
 </script>

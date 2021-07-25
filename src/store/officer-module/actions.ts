@@ -17,7 +17,7 @@ const actions: ActionTree<OfficerStateInterface, StateInterface> = {
   },
   async updateOfficer({}, payload): Promise<any> {
     await officerService.update(payload);
-  },
+  }
 };
 
 export default actions;
