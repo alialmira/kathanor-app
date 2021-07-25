@@ -379,8 +379,8 @@
       },
       "put": {
         "tags": ["officer-controller"],
-        "summary": "Update",
-        "operationId": "UpdateUsingPUT",
+        "summary": "Update this officer",
+        "operationId": "updateOfficer",
         "consumes": ["application/json"],
         "produces": ["*/*"],
         "parameters": [
@@ -512,7 +512,7 @@
       "put": {
         "tags": ["recipient-controller"],
         "summary": "Update",
-        "operationId": "UpdateUsingPUT_1",
+        "operationId": "UpdateUsingPUT",
         "consumes": ["application/json"],
         "produces": ["*/*"],
         "parameters": [
@@ -570,11 +570,13 @@
       "type": "object",
       "properties": {
         "_id": { "$ref": "#/definitions/ObjectId" },
+        "acadYear": { "type": "string" },
         "contentType": { "type": "string" },
         "date": { "type": "string" },
         "docType": { "type": "string" },
         "file": { "type": "string" },
         "name": { "type": "string" },
+        "semester": { "type": "string" },
         "smsStatus": { "type": "boolean" },
         "subject": { "type": "string" }
       },
@@ -584,11 +586,13 @@
       "type": "object",
       "properties": {
         "_id": { "type": "string" },
+        "acadYear": { "type": "string" },
         "contentType": { "type": "string" },
         "date": { "type": "string" },
         "docType": { "type": "string" },
         "file": { "type": "string" },
         "name": { "type": "string" },
+        "semester": { "type": "string" },
         "smsStatus": { "type": "boolean" },
         "subject": { "type": "string" }
       },
@@ -618,7 +622,9 @@
         "contactNumber": { "type": "string" },
         "firstName": { "type": "string" },
         "lastName": { "type": "string" },
-        "name": { "type": "string" }
+        "name": { "type": "string" },
+        "position": { "type": "string" },
+        "session": { "type": "boolean" }
       },
       "title": "OfficersReq"
     },
@@ -630,7 +636,9 @@
         "contactNumber": { "type": "string" },
         "firstName": { "type": "string" },
         "lastName": { "type": "string" },
-        "name": { "type": "string" }
+        "name": { "type": "string" },
+        "position": { "type": "string" },
+        "session": { "type": "boolean" }
       },
       "title": "OfficersRes"
     },

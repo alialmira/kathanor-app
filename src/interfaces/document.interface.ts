@@ -6,4 +6,6 @@ export default interface IDocument {
   subject: string;
   smsStatus: boolean;
   message: string;
+  semester: string;
+  acadYear: string;
 }

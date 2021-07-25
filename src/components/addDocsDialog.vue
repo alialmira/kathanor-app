@@ -24,7 +24,7 @@
       <q-card-section class="q-gutter-y-md">
         <q-input
           ref="docIdNum"
-          maxlength="6"
+          maxlength="20"
           v-model="documents.name"
           filled
           label="Document ID Number"
@@ -65,6 +65,27 @@
             </q-icon>
           </template>
         </q-input>
+        <div class="row q-col-gutter-md">
+          <div class="col-6">
+            <q-input
+              filled
+              ref="acadYear"
+              v-model="documents.acadYear"
+              :rules="[val => !!val || 'Field is required']"
+              label="Academic Year"
+            />
+          </div>
+          <div class="col-6">
+            <q-select
+              filled
+              ref="semester"
+              v-model="documents.semester"
+              :rules="[val => !!val || 'Field is required']"
+              :options="['1st Semester', '2nd Semester', 'Summer']"
+              label="Semester"
+            />
+          </div>
+        </div>
         <q-select
           filled
           ref="docType"
@@ -132,6 +153,8 @@ interface IDocument {
   contentType: any;
   docFile: any;
   smsStatus: any;
+  semester: string;
+  acadYear: string;
 }
 
 @Component({
@@ -162,7 +185,9 @@ export default class AddDocsDialog extends Vue {
     smsStatus: '',
     contentType: [],
     docFile: [],
-    onUpdate: false
+    onUpdate: false,
+    semester: '',
+    acadYear: ''
   };
   $refs!: {
     docIdNum: RefsVue;
@@ -170,6 +195,8 @@ export default class AddDocsDialog extends Vue {
     date: RefsVue;
     docType: RefsVue;
     docFile: RefsVue;
+    semester: RefsVue;
+    acadYear: RefsVue;
   };
   formHasError!: boolean;
   showAddDocumetDialog!: boolean;
@@ -196,7 +223,9 @@ export default class AddDocsDialog extends Vue {
       date: '',
       smsStatus: '',
       contentType: [],
-      docFile: []
+      docFile: [],
+      semester: '',
+      acadYear: ''
     };
     this.$emit('clearData', { ...this.documents, onUpdate: false });
   }
@@ -207,12 +236,16 @@ export default class AddDocsDialog extends Vue {
     this.$refs.subject.validate();
     this.$refs.date.validate();
     this.$refs.docType.validate();
+    this.$refs.semester.validate();
+    this.$refs.acadYear.validate();
 
     if (
       this.$refs.docIdNum.hasError ||
       this.$refs.subject.hasError ||
       this.$refs.date.hasError ||
-      this.$refs.docType.hasError
+      this.$refs.docType.hasError ||
+      this.$refs.semester.hasError ||
+      this.$refs.acadYear.hasError
     ) {
       this.formHasError = true;
     } else {
@@ -232,7 +265,9 @@ export default class AddDocsDialog extends Vue {
         date: '',
         smsStatus: '',
         contentType: [],
-        docFile: []
+        docFile: [],
+        semester: '',
+        acadYear: ''
       };
       this.$q.notify({
         icon: 'done',
@@ -246,8 +281,12 @@ export default class AddDocsDialog extends Vue {
     try {
       this.documents.docFile = this.documents.contentType;
       const res = undefined;
-      console.log(this.documents.docFile);
-      if (this.documents.docFile != null) {
+      console.log(this.document.docFile);
+      if (
+        this.document.docFile ||
+        this.document.docFile != null ||
+        this.documents.docFile.length != 0
+      ) {
         const res = await uploadService.uploadOneFile(this.documents.docFile);
         delete this.documents.onUpdate;
         await this.updateDocument({
@@ -270,6 +309,7 @@ export default class AddDocsDialog extends Vue {
       });
       await this.getDocuments();
     } catch (error) {
+      console.log(error);
       this.$q.notify({
         icon: 'done',
         color: 'negative',

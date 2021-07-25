@@ -16,6 +16,7 @@
         title="Documents"
         :columns="columns"
         :data="data"
+        :filter="searchFilter"
         row-key="name"
         virtual-scroll
         :pagination.sync="pagination"
@@ -78,6 +79,36 @@
             </q-td>
           </q-tr>
         </template>
+        <template v-slot:top-right>
+          <div class="row q-col-gutter-x-md">
+            <div class="col-6">
+              <q-select
+                v-model="selectFilter"
+                :options="filterOptions"
+                label="Academic Year"
+                outlined
+                dense
+                clearable
+                clear-icon
+                style="min-width: 150px"
+                @input="selectedacadYear($event)"
+                @popup-show="clickSelectOption()"
+              />
+            </div>
+            <div class="col-6">
+              <q-input
+                dense
+                debounce="300"
+                v-model="searchFilter"
+                placeholder="Search"
+              >
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </div>
+          </div>
+        </template>
       </q-table>
     </div>
     <SendMessageDialog :document="document" />
@@ -98,11 +129,15 @@ import IDocument from 'src/interfaces/document.interface';
     SendMessageDialog
   },
   computed: {
-    ...mapState('document', ['documents'])
+    ...mapState('document', ['documents', 'newDocuments', 'acadYear'])
   },
   methods: {
     ...mapActions('uiNav', ['addDocsPopups', 'sendMessagePopups']),
-    ...mapActions('document', ['getDocuments'])
+    ...mapActions('document', [
+      'getDocuments',
+      'setacademicYear',
+      'filteracadYear'
+    ])
   }
 })
 export default class ManageDocument extends Vue {
@@ -114,6 +149,8 @@ export default class ManageDocument extends Vue {
     smsStatus: false,
     contentType: [],
     docFile: [],
+    semester: '',
+    acadYear: ''
   };
   pagination = {
     rowsPerPage: 0
@@ -147,10 +184,31 @@ export default class ManageDocument extends Vue {
       label: 'Date Posted',
       field: 'date',
       sortable: true
+    },
+    {
+      name: 'acadYear',
+      align: 'left',
+      label: 'Academic Year',
+      field: 'acadYear',
+      sortable: true
+    },
+    {
+      name: 'semester',
+      align: 'left',
+      label: 'Semester',
+      field: 'semester',
+      sortable: true
     }
   ];
   data: IDocument[] = [];
   documents!: IDocument[];
+  selectFilter = '';
+  acadYear!: string[];
+  filterOptions: string[] = [];
+  newDocuments!: IDocument[];
+  searchFilter = '';
+  filteracadYear!: (payload: string) => Promise<void>;
+  setacademicYear!: () => void;
   addDocsPopups!: (show: boolean) => void;
   sendMessagePopups!: (show: boolean) => void;
   getDocuments!: () => Promise<void>;
@@ -162,7 +220,9 @@ export default class ManageDocument extends Vue {
 
   async created() {
     await this.getDocuments();
+    this.setacademicYear();
     this.data = this.documents;
+    this.filterOptions = this.acadYear;
   }
 
   clearData(val: IDocument) {
@@ -175,7 +235,7 @@ export default class ManageDocument extends Vue {
   }
 
   editDocument(document: IDocument) {
-    this.document = { ...document, onUpdate: true};
+    this.document = { ...document, onUpdate: true };
     this.addDocsPopups(true);
   }
 
@@ -184,6 +244,17 @@ export default class ManageDocument extends Vue {
     const downloadLink = document.createElement('a');
     downloadLink.href = linkSource;
     downloadLink.click();
+  }
+
+  clickSelectOption() {
+    this.setacademicYear();
+    this.filterOptions = this.acadYear;
+    console.log('hello');
+  }
+
+  async selectedacadYear(acadYear: string) {
+    await this.filteracadYear(acadYear);
+    this.data = this.newDocuments;
   }
 }
 </script>

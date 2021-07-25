@@ -50,6 +50,7 @@
                 round
                 dense
                 class="q-mr-sm"
+                @click="editOfficer(props.row)"
               >
                 <q-tooltip>Edit Document</q-tooltip>
               </q-btn>
@@ -68,14 +69,15 @@
         </template>
       </q-table>
     </div>
-    <Dialog />
+    <Dialog :officer="officer" @clearData="clearData"/>
   </q-page>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Watch  } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import Dialog from 'src/components/AddOfficerDialog.vue';
+import IOfficer from 'src/interfaces/officer.interface';
 
 @Component({
   components: {
@@ -90,10 +92,16 @@ import Dialog from 'src/components/AddOfficerDialog.vue';
   }
 })
 export default class ManageAccount extends Vue {
+  officer: any = {
+    name: '',
+    firstName: '',
+    lastName: '',
+    contactNumber: '',
+    position: ''
+  };
   pagination = {
     rowsPerPage: 0
   };
-  officers!: { [key: string]: string }[];
   columns = [
     {
       name: 'desc',
@@ -123,15 +131,34 @@ export default class ManageAccount extends Vue {
       label: 'Contact Number',
       field: 'contactNumber',
       sortable: true
+    },
+    {
+      name: 'position',
+      align: 'left',
+      label: 'Position',
+      field: 'position',
+      sortable: true
     }
   ];
-  data: { [key: string]: string }[] = [];
+  data: IOfficer[] = [];
+  officers!: IOfficer[];
   addAccountPopups!: (show: boolean) => void;
   getOfficers!: () => Promise<void>;
 
+  @Watch('officers')
+  onOfficersChanged(val: any) {
+    this.data = val;
+  }
   async created() {
     await this.getOfficers();
     this.data = this.officers;
+  }
+  clearData(val: IOfficer) {
+    this.officer = val;
+  }
+  editOfficer(officer: IOfficer) {
+    this.officer = { ...officer, onUpdate: true };
+    this.addAccountPopups(true);
   }
 }
 </script>

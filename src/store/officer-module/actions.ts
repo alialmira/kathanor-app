@@ -14,7 +14,10 @@ const actions: ActionTree<OfficerStateInterface, StateInterface> = {
   },
   changePassword(context, payload: { [key: string]: string }) {
     context.commit('changePassword', payload);
-  }
+  },
+  async updateOfficer({}, payload): Promise<any> {
+    await officerService.update(payload);
+  },
 };
 
 export default actions;
