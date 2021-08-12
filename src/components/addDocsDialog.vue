@@ -28,6 +28,7 @@
           v-model="documents.name"
           filled
           label="Document ID Number"
+          mask="########"
           lazy-rules
           :rules="[
             val => val.length >= 3 || 'Document ID Number is not complete'
@@ -70,6 +71,7 @@
             <q-input
               filled
               ref="acadYear"
+              mask="####-####"
               v-model="documents.acadYear"
               :rules="[val => !!val || 'Field is required']"
               label="Academic Year"
@@ -138,6 +140,7 @@
 import uploadService from 'src/services/upload.service';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
+import { date } from 'quasar';
 
 interface RefsVue extends Vue {
   validate(): void;
@@ -250,43 +253,45 @@ export default class AddDocsDialog extends Vue {
       this.formHasError = true;
     } else {
       this.documents.docFile = this.documents.contentType;
-      const res = await uploadService.uploadOneFile(this.documents.docFile);
-      await this.addDocument({
-        ...this.documents,
-        file: res.fileDownloadUri,
-        contentType: res.fileType,
-        smsStatus: false
-      });
-      this.addDocsPopups(false);
-      this.documents = {
-        name: '',
-        subject: '',
-        docType: '',
-        date: '',
-        smsStatus: '',
-        contentType: [],
-        docFile: [],
-        semester: '',
-        acadYear: ''
-      };
-      this.$q.notify({
-        icon: 'done',
-        color: 'positive',
-        message: 'Document Added Successfully.'
-      });
+      if (this.documents.contentType.length != 0) {
+        const res = await uploadService.uploadOneFile(this.documents.docFile);
+        const currentYear = date.formatDate(Date.now(), 'YYYY') as string;
+        await this.addDocument({
+          ...this.documents,
+          file: res.fileDownloadUri,
+          contentType: res.fileType,
+          name: `${currentYear}-${this.documents.name as string}-OP`,
+          smsStatus: false
+        });
+        this.addDocsPopups(false);
+        this.documents = {
+          name: '',
+          subject: '',
+          docType: '',
+          date: '',
+          smsStatus: '',
+          contentType: [],
+          docFile: [],
+          semester: '',
+          acadYear: ''
+        };
+        this.$q.notify({
+          type: 'positive',
+          message: 'Document Added Successfully.'
+        });
+      } else {
+        this.$q.notify({
+          type: 'warning',
+          message: 'Upload Document File is required.'
+        });
+      }
     }
   }
 
   async editDocument() {
     try {
       this.documents.docFile = this.documents.contentType;
-      const res = undefined;
-      console.log(this.document.docFile);
-      if (
-        this.document.docFile ||
-        this.document.docFile != null ||
-        this.documents.docFile.length != 0
-      ) {
+      if (this.document.docFile || this.document.docFile != null) {
         const res = await uploadService.uploadOneFile(this.documents.docFile);
         delete this.documents.onUpdate;
         await this.updateDocument({
@@ -303,16 +308,14 @@ export default class AddDocsDialog extends Vue {
       }
       this.addDocsPopups(false);
       this.$q.notify({
-        icon: 'done',
-        color: 'positive',
+        type: 'positive',
         message: 'Document Updated Successfully.'
       });
       await this.getDocuments();
     } catch (error) {
       console.log(error);
       this.$q.notify({
-        icon: 'done',
-        color: 'negative',
+        type: 'warning',
         message: 'Somethig wrong when updating the documents.'
       });
     }

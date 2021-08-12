@@ -16,6 +16,10 @@ const mutation: MutationTree<OfficerStateInterface> = {
   updateOfficer(state, result) {
     state.officers = [];
     state.officers.push(...result);
+  },
+  deleteOfficer(state, result) {
+    state.officers = [];
+    state.officers.push(...result);
   }
 };
 

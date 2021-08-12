@@ -181,8 +181,8 @@ export default class Dialog extends Vue {
         position: ''
       };
       this.$q.notify({
-        icon: 'done',
-        color: 'positive',
+        
+        type: 'positive',
         message: 'Account Created'
       });
     }
@@ -210,16 +210,16 @@ export default class Dialog extends Vue {
 
       this.addAccountPopups(false);
       this.$q.notify({
-        icon: 'done',
-        color: 'positive',
+        
+        type: 'positive',
         message: 'Document Updated Successfully.'
       });
       await this.getOfficers();
     } catch (error) {
       console.log(error);
       this.$q.notify({
-        icon: 'done',
-        color: 'negative',
+        
+        type: 'negative',
         message: 'Somethig wrong when updating the documents.'
       });
     }
@@ -231,4 +231,5 @@ export default class Dialog extends Vue {
 .__card {
   width: 500px;
 }
+
 </style>

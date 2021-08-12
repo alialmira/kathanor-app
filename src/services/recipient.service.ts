@@ -28,6 +28,11 @@ class RecipientService extends RecipientControllerApi {
     console.log(response);
     return response.data;
   }
+
+  async deletAll() {
+    const response = await restApi.deleteRecipients();
+    return response.data;
+  }
 }
 
 const recipientService = new RecipientService();

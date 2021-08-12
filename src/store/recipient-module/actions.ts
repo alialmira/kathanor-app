@@ -58,6 +58,10 @@ const actions: ActionTree<RecipientStateInterface, StateInterface> = {
     const result = await recipientService.getAll();
     context.commit('getContacts', result);
     return result;
+  },
+  async deleteRecipients(context): Promise<any> {
+    const result = await recipientService.deletAll();
+    context.commit('deleteRecipients', result);
   }
 };
 

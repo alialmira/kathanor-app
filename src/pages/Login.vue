@@ -3,19 +3,20 @@
     <div class="row">
       <div class="col-7">
         <q-card flat class="fit">
-          <img src="~assets/try2.jpg" class="__imag" />
+          <img src="~assets/LoginPic1.png" class="__imag __card1" />
         </q-card>
       </div>
       <div class="col-5">
-        <q-card elevated flat bordered class="__card bg-accent">
+        <q-card elevated flat bordered class="__card bg-negative">
           <q-card-section class="q-gutter-y-md  flex flex-center outlined">
-            <q-img class="__img" src="~assets/try3.png" />
-            <div class="text-overline">Log in your account</div>
+            <q-img class="__img" src="~assets/Login.png" />
+            <div class="text-white text-overline">Log in your account</div>
             <q-input
               style="width: 300px"
               class="center"
               v-model="user.username"
               outlined
+              rounded
               label="ID Number"
               bg-color="white"
               mask="#########"
@@ -26,6 +27,7 @@
               style="width: 300px"
               v-model="user.password"
               outlined
+              rounded
               label="Password"
               bg-color="white"
               color="black"
@@ -48,8 +50,8 @@
               rounded
               size="md"
               label="login"
-              color="dark"
-              text-color="white"
+              color="white"
+              text-color="negative"
               @click="login()"
             ></q-btn>
           </q-card-actions>
@@ -132,7 +134,7 @@ export default class Login extends Vue {
       });
       this.$q.notify({
         type: 'success',
-        message: `Logged in as Officer`
+        message: 'Logged in as Officer'
       });
       await this.$store.dispatch('uiNav/isAdminLogin', false);
       await this.$router.push('/');
@@ -147,6 +149,9 @@ export default class Login extends Vue {
 </script>
 
 <style scoped>
+.__card1{
+  background-image: url('~assets/LoginPic.jpg');
+}
 .__card {
   width: 400px;
   height: 500px;

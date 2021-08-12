@@ -43,7 +43,7 @@
             label="Change"
             color="dark"
             text-color="white"
-            @click="changePassword()"
+            @click="changePasswords()"
           ></q-btn>
         </div>
         <div class="col-6">
@@ -61,6 +61,7 @@
 </template>
 
 <script lang="ts">
+import { OfficersReq } from 'src/services/rest-api';
 import { Vue, Component } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 
@@ -74,10 +75,12 @@ interface RefsVue extends Vue {
     ...mapState('officer', ['officers'])
   },
   methods: {
-    ...mapActions('uiNav', ['changePassPopups'])
+    ...mapActions('uiNav', ['changePassPopups']),
+    ...mapActions('officer', ['updateOfficer'])
   }
 })
 export default class ChangePassDialog extends Vue {
+ officers!: OfficersReq[]; 
   password = {
     oldPass: '',
     newPass: '',
@@ -90,11 +93,11 @@ export default class ChangePassDialog extends Vue {
     renewPass: RefsVue;
   };
   formHasError!: boolean;
-  officers!: { [key: string]: string }[];
+ // officers!: { [key: string]: string }[];
   showChangePassDialog!: boolean;
   changePassPopups!: (show: boolean) => void;
-
-  changePassword() {
+  updateOfficer!: (payload: any) => Promise<void>;
+  changePasswords() {
     this.$refs.oldPass.validate();
     this.$refs.newPass.validate();
     this.$refs.renewPass.validate();
@@ -105,20 +108,17 @@ export default class ChangePassDialog extends Vue {
     ) {
       this.formHasError = true;
     } else {
-      this.officers.map(async (o, index) => {
+      this.officers.map(async (o: any) => {
         if (this.password.newPass == this.password.renewPass) {
           if (o.password == this.password.oldPass) {
-            const newPassword = {
-              name: o.name,
-              firstName: o.firstName,
-              lastName: o.lastName,
-              contactNumber: o.contactNumber,
-              password: this.password.newPass,
-              accountType: o.accountType
-            };
-            await this.$store.dispatch('officer/changePassword', {
-              newPassword,
-              index
+            console.log()
+            await this.updateOfficer({
+              ...this.officers.find(
+                (o: any) =>
+                  (o.session == true && o.accountType == 'admin') ||
+                  (o.session == true && o.accountType == 'officer')
+              ),
+              password: this.password.newPass
             });
             await this.$store.dispatch('uiNav/changePassPopups', false);
             this.qNotify({
@@ -141,6 +141,7 @@ export default class ChangePassDialog extends Vue {
       });
     }
   }
+
 
   hideDialog() {
     this.password = { oldPass: '', newPass: '', renewPass: '' };

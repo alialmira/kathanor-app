@@ -15,7 +15,8 @@ function state(): OfficerStateInterface {
      contactNumber: '',
      position: '',
      accountType: '',
-     session: false
+     session: false,
+     password: ''
     },
     officers: [],
     createOfficers: []

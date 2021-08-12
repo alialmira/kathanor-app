@@ -6,4 +6,5 @@ export default interface IOfficer {
   accountType: string;
   position: string;
   session: boolean;
+  password: string;
 }

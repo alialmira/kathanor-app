@@ -30,6 +30,11 @@ const mutation: MutationTree<RecipientStateInterface> = {
   getContacts(state, recipient: IRecipient[]) {
     state.recipients = [];
     state.recipients.push(...recipient);
+  },
+
+  deleteRecipients(state, recipient: IRecipient[]) {
+    state.recipients = [];
+    state.recipients.push(...recipient);
   }
 };
 

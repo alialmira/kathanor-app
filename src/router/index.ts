@@ -41,7 +41,7 @@ export default route<Store<StateInterface>>(function({ Vue, store }) {
         next();
       }
     } else if (to.matched.some(record => record.meta.requiresGuest)) {
-      console.log("session: ", session);
+      console.log('session: ', session);
       if (session) {
         next({
           path: '/',
