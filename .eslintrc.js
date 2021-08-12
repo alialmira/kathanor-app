@@ -83,6 +83,10 @@ module.exports = {
     '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
     '@typescript-eslint/require-await': 'off',
+    '@typescript-eslint/no-unnecessary-type-assertion': '',
+    '@typescript-eslint/no-floating-promises': '',
+    '@typescript-eslint/restrict-template-expressions': '',
+    '@typescript-eslint/no-unused-vars': '',
     
 
     // allow debugger during development only

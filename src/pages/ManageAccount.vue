@@ -14,18 +14,15 @@
       </q-btn>
 
       <q-table
-        class="my-sticky-dynamic text-black"
         title="Officers"
         :data="data"
         :columns="columns"
         row-key="name"
         virtual-scroll
         :pagination.sync="pagination"
-        :rows-per-page-options="[0]"
-        style="height: 80vh"
       >
         <template v-slot:header="props">
-          <q-tr :props="props">
+          <q-tr :props="props" class="bg-info">
             <q-th
               class="text-black"
               v-for="col in props.cols"
@@ -57,24 +54,25 @@
               <q-btn
                 size="sm"
                 color="green"
-                icon="archive"
+                icon="delete"
                 round
                 dense
-                class="q-mr-sm"              
+                class="q-mr-sm"
+                @click="deleteContact(props.row._id)"
               >
-                <q-tooltip>Archive Officer</q-tooltip>
-              </q-btn>              
+                <q-tooltip>Delete Officer</q-tooltip>
+              </q-btn>
             </q-td>
           </q-tr>
         </template>
       </q-table>
     </div>
-    <Dialog :officer="officer" @clearData="clearData"/>
+    <Dialog :officer="officer" @clearData="clearData" />
   </q-page>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch  } from 'vue-property-decorator';
+import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import Dialog from 'src/components/AddOfficerDialog.vue';
 import IOfficer from 'src/interfaces/officer.interface';
@@ -88,7 +86,7 @@ import IOfficer from 'src/interfaces/officer.interface';
   },
   methods: {
     ...mapActions('uiNav', ['addAccountPopups']),
-    ...mapActions('officer', ['getOfficers'])
+    ...mapActions('officer', ['getOfficers', 'deleteOfficer'])
   }
 })
 export default class ManageAccount extends Vue {
@@ -100,7 +98,7 @@ export default class ManageAccount extends Vue {
     position: ''
   };
   pagination = {
-    rowsPerPage: 0
+    rowsPerPage: 10
   };
   columns = [
     {
@@ -144,42 +142,58 @@ export default class ManageAccount extends Vue {
   officers!: IOfficer[];
   addAccountPopups!: (show: boolean) => void;
   getOfficers!: () => Promise<void>;
+  deleteOfficer!: (payload: any) => Promise<void>;
 
   @Watch('officers')
   onOfficersChanged(val: any) {
-    this.data = val;
+    this.data = val.filter((s: any) => s.accountType == 'officer');
   }
+
   async created() {
     await this.getOfficers();
-    this.data = this.officers;
+    this.data = this.officers.filter((s: any) => s.accountType == 'officer');
   }
+
+  deleteContact(id: string) {
+    this.$q
+      .dialog({
+        title: 'Are you sure you want to delete this account?',
+        message: 'Please enter your password',
+        prompt: {
+          model: '',
+          isValid: (val: any) =>
+            val ==
+            this.officers.find((o: any) => {
+              return o.accountType == 'admin';
+            })?.password,
+          type: 'text'
+        },
+        ok: {
+          outlined: true,
+          color: 'red'
+        },
+        cancel: true,
+        persistent: true
+      })
+      .onOk(async () => {
+        await this.deleteOfficer(id);
+        await this.getOfficers();
+        this.data = this.officers.filter((s: any) => s.accountType == 'officer');
+        this.$q.notify({
+          
+          type: 'positive',
+          message: 'Account Deleted Successfully.'
+        });
+      });
+  }
+
   clearData(val: IOfficer) {
     this.officer = val;
   }
+
   editOfficer(officer: IOfficer) {
     this.officer = { ...officer, onUpdate: true };
     this.addAccountPopups(true);
   }
 }
 </script>
-
-<style lang="sass" scoped>
-.my-sticky-dynamic
-  /* height or max-height is important */
-  height: 410px
-
-  .q-table__top,
-  .q-table__bottom,
-  thead tr:first-child th /* bg color is important for th; just specify one */
-    background-color: #d2b50d
-
-  thead tr th
-    position: sticky
-    z-index: 1
-  /* this will be the loading indicator */
-  thead tr:last-child th
-    /* height of all previous header rows */
-    top: 48px
-  thead tr:first-child th
-    top: 0
-</style>

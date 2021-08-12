@@ -20,16 +20,14 @@
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="delivered">
             <q-table
-              class="my-sticky-dynamic text-black"
               title="Logs"
               :data="logs"
               :columns="columnsms"
               row-key="date"
-              virtual-scroll
-              style="height: 80vh"
+              :pagination.sync="pagination"
             >
               <template v-slot:header="props">
-                <q-tr :props="props">
+                <q-tr :props="props" class="bg-info">
                   <q-th
                     class="text-black"
                     v-for="col in props.cols"
@@ -72,11 +70,11 @@
           </q-tab-panel>
 
           <q-tab-panel name="contact">
-            <div class="row">
-              <div class="col-10">
+            <div class="row  text-center">
+              <div class="col">
                 <q-btn
                   label="Import Data"
-                  color="dark"
+                  color="green"
                   text-color="white"
                   icon-right="upload"
                   dense
@@ -86,21 +84,37 @@
                 >
                 </q-btn>
               </div>
-              <div class="col-2">
+              <div class="col">
                 <q-btn
                   label="Archive"
-                  color="dark"
+                  color="warning"
                   text-color="white"
                   icon-right="archive"
                   dense
                   style="min-width: 150px"
                   class="q-mb-md"
+                  :disable="this.archive == 'done' || this.archive == null || this.archive == ''"
+                  @click="exportTable()"
+                >
+                </q-btn>
+              </div>
+              <div class="col">
+                <q-btn
+                  label="Delete ALL"
+                  color="red"
+                  text-color="white"
+                  icon-right="delete"
+                  dense
+                  style="min-width: 150px"
+                  class="q-mb-md"
+                  :disable="this.archive == 'ready' || this.archive == null || this.archive == ''"
+                  @click="deleteContacts()"
                 >
                 </q-btn>
               </div>
             </div>
+
             <q-table
-              class="my-sticky-dynamic text-black"
               title="Contacts"
               :data="data"
               :columns="columns"
@@ -108,11 +122,9 @@
               row-key="contact"
               virtual-scroll
               :pagination.sync="pagination"
-              :rows-per-page-options="[0]"
-              style="height: 80vh"
             >
               <template v-slot:header="props">
-                <q-tr :props="props">
+                <q-tr :props="props" class="bg-info">
                   <q-th
                     class="text-black size-md"
                     v-for="col in props.cols"
@@ -172,7 +184,7 @@
         </q-tab-panels>
       </q-card>
     </div>
-    <UploadContactsDialog />
+    <UploadContactsDialog @upload="upload" />
   </q-page>
 </template>
 
@@ -182,6 +194,8 @@ import { mapState, mapActions } from 'vuex';
 import UploadContactsDialog from 'src/components/UploadContactsDialog.vue';
 import IRecipient from 'src/interfaces/recipient.interface';
 import IMessage from 'src/interfaces/message.interface';
+import { exportFile } from 'quasar';
+import IOfficer from 'src/interfaces/officer.interface';
 
 @Component({
   components: {
@@ -189,27 +203,31 @@ import IMessage from 'src/interfaces/message.interface';
   },
   computed: {
     ...mapState('recipient', ['recipients', 'newRecipients', 'institution']),
-    ...mapState('message', ['messages'])
+    ...mapState('message', ['messages']),
+    ...mapState('officer', ['officers'])
   },
   methods: {
     ...mapActions('recipient', [
       'setInstitution',
       'getContacts',
-      'filterInstitution'
+      'filterInstitution',
+      'deleteRecipients'
     ]),
     ...mapActions('message', ['GetMessages']),
-    ...mapActions('uiNav', ['uploadContactsPopups'])
+    ...mapActions('uiNav', ['uploadContactsPopups']),
+    ...mapActions('officer', ['getOfficers'])
   }
 })
 export default class ManageContact extends Vue {
   pagination = {
-    rowsPerPage: 0
+    rowsPerPage: 9
   };
   tab = 'delivered';
   recipients!: IRecipient[];
   messages!: IMessage[];
   newRecipients!: IRecipient[];
   institution!: string[];
+  officers!: IOfficer[];
   searchFilter = '';
   selectFilter = '';
   filterOptions: string[] = [];
@@ -217,6 +235,8 @@ export default class ManageContact extends Vue {
   uploadContactsPopups!: (show: boolean) => void;
   getContacts!: () => Promise<any[]>;
   GetMessages!: () => Promise<any[]>;
+  getOfficers!: () => Promise<any[]>;
+  deleteRecipients!: () => Promise<void>;
   filterInstitution!: (payload: string) => Promise<void>;
   columns = [
     {
@@ -289,46 +309,116 @@ export default class ManageContact extends Vue {
   ];
   data: IRecipient[] = [];
   logs: IMessage[] = [];
+  archive: any = null;
+
   async created() {
+    await this.getOfficers();
     await this.getContacts();
     await this.GetMessages();
     this.setInstitution();
     this.data = this.recipients;
     this.logs = this.messages;
     this.filterOptions = this.institution;
+    this.archive = localStorage.getItem('archieved');
+    console.log(this.archive);
+  }
+
+  upload(val: any) {
+    this.archive = val;
   }
 
   clickSelectOption() {
     this.setInstitution();
     this.filterOptions = this.institution;
-    console.log('hello');
   }
 
   async selectedCollege(institution: string) {
     await this.filterInstitution(institution);
     this.data = this.newRecipients;
   }
+
+  async deleteContacts() {
+    this.$q
+      .dialog({
+        title: 'Are you sure you want to delete all contacts?',
+        message: 'Please enter your password',
+        prompt: {
+          model: '',
+          isValid: (val: any) =>
+            val ==
+            this.officers.find(o => {
+              return o.accountType == 'admin';
+            })?.password,
+          type: 'text'
+        },
+        ok: {
+          outlined: true,
+          color: 'red'
+        },
+        cancel: true,
+        persistent: true
+      })
+      .onOk(async (data: any) => {
+        await this.deleteRecipients();
+        await this.getContacts();
+        this.data = this.recipients;
+        this.$q.notify({
+          type: 'positive',
+          message: 'Contacts Deleted Successfully.'
+        });
+        localStorage.removeItem('archieved');
+        this.archive = '';
+      });
+  }
+
+  wrapCsvValue(val: any, formatFn?: any) {
+    let formatted = formatFn !== void 0 ? formatFn(val) : val;
+
+    formatted =
+      formatted === void 0 || formatted === null ? '' : String(formatted);
+
+    formatted = formatted.split('"').join('""');
+    /**
+     * Excel accepts \n and \r in strings, but some other CSV parsers do not
+     * Uncomment the next two lines to escape new lines
+     */
+    // .split('\n').join('\\n')
+    // .split('\r').join('\\r')
+
+    return `"${formatted}"`;
+  }
+
+  exportTable() {
+    // naive encoding to csv format
+    const content = [this.columns.map(col => this.wrapCsvValue(col.label))]
+      .concat(
+        this.data.map((row: any) =>
+          this.columns
+            .map((col: any) =>
+              this.wrapCsvValue(
+                typeof col.field === 'function'
+                  ? col.field(row)
+                  : row[col.field === void 0 ? col.name : col.field],
+                col.format
+              )
+            )
+            .join(',')
+        )
+      )
+      .join('\r\n');
+
+    const status = exportFile('table-export.csv', content, 'text/csv');
+
+    if (status !== true) {
+      this.$q.notify({
+        message: 'Browser denied file download...',
+        type: 'negative',
+        icon: 'warning'
+      });
+    } else {
+      localStorage.setItem('archieved', 'done');
+      this.archive = 'done';
+    }
+  }
 }
 </script>
-
-<style lang="sass" scoped>
-
-.my-sticky-dynamic
-  /* height or max-height is important */
-  height: 410px
-
-  .q-table__top,
-  .q-table__bottom,
-  thead tr:first-child th /* bg color is important for th; just specify one */
-    background-color: #d2b50d
-
-  thead tr th
-    position: sticky
-    z-index: 1
-  /* this will be the loading indicator */
-  thead tr:last-child th
-    /* height of all previous header rows */
-    top: 48px
-  thead tr:first-child th
-    top: 0
-</style>

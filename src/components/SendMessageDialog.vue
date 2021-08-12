@@ -154,25 +154,24 @@ export default class SendMessageDialog extends Vue {
       this.isSubmit = false;
       this.sendMessagePopups(false);
       this.$q.notify({
-        icon: 'done',
-        color: 'negative',
+        
+        type: 'negative',
         message: 'No Internet Connection.'
       });
     } else {
       this.data.map(async (d: IRecipient) => {
         const newSms = {
           ...this.smss,
+          message: `(Message from MSU-OIPP, ${this.document.docType}-${this.document.date}) - ${this.smss.message}`, //
           phoneNumber: '+63' + d.contact
         };
-        //await this.sendSms(newSms);
+        await this.sendSms(newSms);
         await this.addMessage({
           ...newSms,
           recipient: newSms.phoneNumber,
           subject: this.document.subject,
           date: this.document.date,
-          message:
-            `Message from MSU-OIPP, ${this.document.docType} (${this.document.date}) - ` +
-            newSms.message
+          message: newSms.message
         });
       });
       const smsStatus = {
@@ -186,8 +185,8 @@ export default class SendMessageDialog extends Vue {
       this.selectFilter = '';
       this.sendMessagePopups(false);
       this.$q.notify({
-        icon: 'done',
-        color: 'positive',
+        
+        type: 'positive',
         message: 'Message Sent Successfully.'
       });
     }

@@ -12,19 +12,17 @@
         @click="addDocsPopups(true)"
       ></q-btn>
       <q-table
-        class="my-sticky-dynamic text-black"
         title="Documents"
         :columns="columns"
         :data="data"
         :filter="searchFilter"
         row-key="name"
-        virtual-scroll
         :pagination.sync="pagination"
-        :rows-per-page-options="[0]"
         style="height: 80vh"
       >
         <template v-slot:header="props">
-          <q-tr :props="props">
+          <q-tr :props="props" class="bg-info">
+            <q-th auto-width class="text-black">Action</q-th>
             <q-th
               class="text-black"
               v-for="col in props.cols"
@@ -33,14 +31,10 @@
             >
               {{ col.label }}
             </q-th>
-            <q-th auto-width class="text-black">Action</q-th>
           </q-tr>
         </template>
         <template v-slot:body="props">
           <q-tr :props="props">
-            <q-td v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.value }}
-            </q-td>
             <q-td auto-width>
               <q-btn
                 size="sm"
@@ -76,6 +70,9 @@
               >
                 <q-tooltip>Send Message</q-tooltip>
               </q-btn>
+            </q-td>
+            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              {{ col.value }}
             </q-td>
           </q-tr>
         </template>
@@ -153,7 +150,7 @@ export default class ManageDocument extends Vue {
     acadYear: ''
   };
   pagination = {
-    rowsPerPage: 0
+    rowsPerPage: 10
   };
   columns = [
     {
@@ -163,13 +160,6 @@ export default class ManageDocument extends Vue {
       align: 'left',
       field: (row: IDocument) => row.name,
       sortable: true
-    },
-    {
-      name: 'subject',
-      align: 'left',
-      label: 'Subject',
-      field: 'subject',
-      sortable: 'true'
     },
     {
       name: 'docType',
@@ -198,6 +188,13 @@ export default class ManageDocument extends Vue {
       label: 'Semester',
       field: 'semester',
       sortable: true
+    },
+    {
+      name: 'subject',
+      align: 'left',
+      label: 'Subject',
+      field: 'subject',
+      sortable: 'true'
     }
   ];
   data: IDocument[] = [];
@@ -258,24 +255,3 @@ export default class ManageDocument extends Vue {
   }
 }
 </script>
-
-<style lang="sass" scoped>
-.my-sticky-dynamic
-  /* height or max-height is important */
-  height: 410px
-
-  .q-table__top,
-  .q-table__bottom,
-  thead tr:first-child th /* bg color is important for th; just specify one */
-    background-color: #d2b50d
-
-  thead tr th
-    position: sticky
-    z-index: 1
-  /* this will be the loading indicator */
-  thead tr:last-child th
-    /* height of all previous header rows */
-    top: 48px
-  thead tr:first-child th
-    top: 0
-</style>

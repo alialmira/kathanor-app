@@ -15,14 +15,21 @@
         >
           <q-tooltip>Account</q-tooltip>
 
-          <q-menu fit :offset="[0, 5]">
+          <q-menu
+            fit
+            transition-show="jump-down"
+            transition-hide="jump-up"
+            max-width="218px"
+            :offset="[10, 5]"
+          >
             <q-btn
               flat
               align="left"
-              class="q-pa-sm full-width auto-close"
+              class="q-pa-sm auto-close"
               label="Change Password"
               color="white"
               size="md"
+              style="width: 218px;"
               icon="settings"
               text-color="black"
               @click="changePassPopups(true)"
@@ -33,10 +40,11 @@
             <q-btn
               flat
               align="left"
-              class="q-pa-sm full-width"
+              class="q-pa-sm"
               label="logout"
               color="white"
               size="md"
+              style="width: 218px;"
               icon="logout"
               text-color="black"
               @click="logout()"
@@ -127,6 +135,24 @@
           Manage Accounts
         </q-item-section>
       </q-item>
+      <div class="text-center q-pb-xl fixed-bottom">
+        <q-avatar square size="xl">
+          <img height="100px" src="~assets/user.png" />
+        </q-avatar>
+        <div>
+          <q-chip
+            class="bg-white text-weight-bolder text-h6 text-uppercase"
+            text-color="primary"
+            >{{ user.accountType }}</q-chip
+          >
+        </div>
+        <div class="text-center">
+          {{ user.firstName }} {{ user.lastName }}
+        </div>
+        <div class="text-center">
+          {{ user.position }}
+        </div>
+      </div>
     </q-drawer>
 
     <q-page-container>
@@ -163,11 +189,17 @@ export default class MainLayout extends Vue {
   getOfficers!: () => Promise<void>;
   updateOfficer!: (payload: any) => Promise<void>;
   isAdmin = false;
+  user = {};
 
   @Watch('officers')
-  onDocumentsChanged(val: any) {
+  onDocumentsChanged() {
     this.isAdmin = this.officers.some(
       o => o.session == true && o.accountType == 'admin'
+    );
+    this.user = this.officers.find(
+      o =>
+        (o.session == true && o.accountType == 'admin') ||
+        o.accountType == 'officer'
     );
   }
 
@@ -179,14 +211,7 @@ export default class MainLayout extends Vue {
   }
 
   async logout() {
-    console.log({
-      ...this.officers.find(
-        o =>
-          (o.session == true && o.accountType == 'admin') ||
-          (o.session == true && o.accountType == 'officer')
-      ),
-      session: false
-    });
+    await this.getOfficers();
     await this.updateOfficer({
       ...this.officers.find(
         o =>

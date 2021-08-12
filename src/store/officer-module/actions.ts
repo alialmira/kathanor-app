@@ -17,6 +17,9 @@ const actions: ActionTree<OfficerStateInterface, StateInterface> = {
   },
   async updateOfficer({}, payload): Promise<any> {
     await officerService.update(payload);
+  },
+  async deleteOfficer({}, id: string): Promise<any> {
+    await officerService.delete(id);
   }
 };
 

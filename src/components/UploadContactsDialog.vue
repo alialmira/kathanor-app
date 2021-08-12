@@ -79,16 +79,17 @@ export default class UploadContactsDialog extends Vue {
   }
 
   async upload() {
+    localStorage.setItem('archieved', 'ready');
     this.isUpload = true;
     await this.uploadContacts(this.contacts);
     this.isUpload = false;
     this.setInstitution();
     this.uploadContactsPopups(false);
     this.$q.notify({
-        icon: 'done',
-        color: 'positive',
-        message: 'File Successfully Uploaded'
-      });
+      type: 'positive',
+      message: 'File Successfully Uploaded'
+    });
+    this.$emit('upload', 'ready')
   }
 }
 </script>
