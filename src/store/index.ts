@@ -1,21 +1,12 @@
 import { store } from 'quasar/wrappers';
 import Vuex from 'vuex';
 
-import { RecipientStateInterface } from './recipient-module/state';
-import recipient from './recipient-module';
-import { OfficerStateInterface } from './officer-module/state';
-import officer from './officer-module';
-import { UiNavStateInterface } from './ui-navigation-module/state';
-import uiNav from './ui-navigation-module';
+import { EmployeeStateInterface } from './employee-module/state';
+import employee from './employee-module';
 import { DocumentStateInterface } from './document-module/state';
 import document from './document-module';
-import { SmsStateInterface } from './sms-module/state';
-import sms from './sms-module';
-import { MessageStateInterface } from './message-module/state';
-import message from './message-module';
-
-
-
+import { UiNavStateInterface } from './ui-navigation-module/state';
+import uiNav from './ui-navigation-module';
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation
@@ -25,12 +16,9 @@ export interface StateInterface {
   // Define your own store structure, using submodules if needed
   // example: ExampleStateInterface;
   // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
-  recipient: RecipientStateInterface;
-  officer: OfficerStateInterface;
-  uiNav: UiNavStateInterface;
+  employee: EmployeeStateInterface;
   document: DocumentStateInterface;
-  sms: SmsStateInterface;
-  message: MessageStateInterface;
+  uiNav: UiNavStateInterface;
 }
 
 export default store(function({ Vue }) {
@@ -38,12 +26,9 @@ export default store(function({ Vue }) {
 
   const Store = new Vuex.Store<StateInterface>({
     modules: {
-      recipient,
-      officer,
-      uiNav,
       document,
-      sms,
-      message
+      employee,
+      uiNav
     },
 
     // enable strict mode (adds overhead!)

@@ -3,12 +3,11 @@ import { MutationTree } from 'vuex';
 import { DocumentStateInterface } from './state';
 
 const mutation: MutationTree<DocumentStateInterface> = {
-  setacademicYear(state: DocumentStateInterface, acadYear: string[]) {
-    state.acadYear = [];
-    state.acadYear.push(...acadYear);
+  addEmployeeDocument(state, result) {
+    state.documents.push(result.data);
   },
-  addDocument(state, result: IDocument) {
-    state.documents.push(result);
+  getEmployeeDocument(state, result: IDocument) {
+    state.document = result;
   },
   updateInstTable(state: DocumentStateInterface, recipient: IDocument[]) {
     state.newDocuments = [];
@@ -17,7 +16,7 @@ const mutation: MutationTree<DocumentStateInterface> = {
   getDocuments(state, result: IDocument[]) {
     state.documents = [];
     state.documents.push(...result);
-  }
+  },
 };
 
 export default mutation;

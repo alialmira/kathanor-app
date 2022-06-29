@@ -4,27 +4,28 @@ export interface DocumentStateInterface {
   createDocuments: IDocument[];
   documents: IDocument[];
   newDocuments: IDocument[];
-  acadYear: string[];
   document: IDocument;
 }
 
 function state(): DocumentStateInterface {
   return {
     document: {
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      birthDate: '',
+      birthPlace: '',
+      address: '',
+      position: '',
+      file: [],
       date: '',
       docType: '',
-      file: '',
-      message: '',
-      name: '',
-      smsStatus: false,
-      subject: '',
-      semester: '',
-      acadYear: ''
+      fileName: '',
+      fileStatus: '',
     },
     documents: [],
     createDocuments: [],
     newDocuments: [],
-    acadYear: []
   };
 }
 

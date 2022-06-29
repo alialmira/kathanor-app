@@ -1,11 +1,14 @@
 export default interface IDocument {
-  date: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  birthDate: string;
+  birthPlace: string;
+  address: string;
+  position: string;
+  file: [];
   docType: string;
-  file: string;
-  name: string;
-  subject: string;
-  smsStatus: boolean;
-  message: string;
-  semester: string;
-  acadYear: string;
+  date: string;
+  fileName: string;
+  fileStatus: string;
 }

@@ -1,20 +1,14 @@
 export interface UiNavStateInterface {
-  showChangePassDialog: boolean;
-  showAddOfficerDialog: boolean;
-  showAddDocumetDialog: boolean;
-  showSendMessageDialog: boolean;
-  adminLoggedIn: boolean;
-  showUploadContactsDialog: boolean;
+  showAddEmployeeDialog: boolean;
+  showAddAccountDialog: boolean;
+  showAdd201FileDialog: boolean;
 }
 
 function state(): UiNavStateInterface {
   return {
-    showChangePassDialog: false,
-    showAddOfficerDialog: false,
-    showAddDocumetDialog: false,
-    showSendMessageDialog: false,
-    adminLoggedIn: false,
-    showUploadContactsDialog: false
+    showAddEmployeeDialog: false,
+    showAddAccountDialog: false,
+    showAdd201FileDialog: false
   };
 }
 

@@ -2,24 +2,14 @@ import { MutationTree } from 'vuex';
 import { UiNavStateInterface } from './state';
 
 const mutation: MutationTree<UiNavStateInterface> = {
+  addEmployeePopups(state, payload: boolean) {
+    state.showAddEmployeeDialog = payload;
+  },
   addAccountPopups(state, payload: boolean) {
-    state.showAddOfficerDialog = payload;
+    state.showAddAccountDialog = payload;
   },
-
-  isAdminLogin(state, payload: boolean) {
-    state.adminLoggedIn = payload;
-  },
-  changePassPopups(state, payload: boolean) {
-    state.showChangePassDialog = payload;
-  },
-  addDocsPopups(state, payload: boolean) {
-    state.showAddDocumetDialog = payload;
-  },
-  sendMessagePopups(state, payload: boolean) {
-    state.showSendMessageDialog = payload;
-  },
-  uploadContactsPopups(state, payload: boolean) {
-    state.showUploadContactsDialog = payload;
+  add201FilePopups(state, payload: boolean) {
+    state.showAdd201FileDialog = payload;
   }
 };
 

@@ -1,11 +1,11 @@
 import { Module } from 'vuex';
 import { StateInterface } from '../index';
-import state, { SmsStateInterface } from './state';
+import state, { EmployeeStateInterface } from './state';
 import actions from './actions';
 import getters from './getters';
 import mutations from './mutations';
 
-const officerModule: Module<SmsStateInterface, StateInterface> = {
+const documentModule: Module<EmployeeStateInterface, StateInterface> = {
   namespaced: true,
   actions,
   getters,
@@ -13,4 +13,4 @@ const officerModule: Module<SmsStateInterface, StateInterface> = {
   state
 };
 
-export default officerModule;
+export default documentModule;
