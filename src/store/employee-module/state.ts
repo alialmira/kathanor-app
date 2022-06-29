@@ -12,6 +12,7 @@ function state(): EmployeeStateInterface {
       firstName: '',
       middleName: '',
       birthDate: '',
+      birthPlace: '',
       homeAddress: '',
       currentAddress: '',
       contNumber: '',

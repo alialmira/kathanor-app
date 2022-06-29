@@ -5,6 +5,7 @@ export default interface IDocument {
   birthDate: string;
   birthPlace: string;
   address: string;
+  agency: string;
   position: string;
   file: [];
   docType: string;

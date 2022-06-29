@@ -374,6 +374,7 @@
         "fileName": { "type": "string" },
         "fileStatus": { "type": "boolean" },
         "firstName": { "type": "string" },
+        "id": { "$ref": "#/definitions/ObjectId" },
         "lastName": { "type": "string" },
         "middleName": { "type": "string" },
         "position": { "type": "string" }

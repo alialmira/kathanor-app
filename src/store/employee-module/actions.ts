@@ -2,7 +2,6 @@ import { ActionTree } from 'vuex';
 import { StateInterface } from '../index';
 import { EmployeeStateInterface } from './state';
 import employeeService from 'src/services/employee.service';
-import { contextBridge } from 'electron';
 
 const actions: ActionTree<EmployeeStateInterface , StateInterface> = {
   async addEmployee(context, payload: any) {

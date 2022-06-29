@@ -95,6 +95,12 @@ export interface DocumentsReq {
     firstName?: string;
     /**
      * 
+     * @type {ObjectId}
+     * @memberof DocumentsReq
+     */
+    id?: ObjectId;
+    /**
+     * 
      * @type {string}
      * @memberof DocumentsReq
      */
