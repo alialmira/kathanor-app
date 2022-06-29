@@ -363,41 +363,26 @@
     "DocumentsReq": {
       "type": "object",
       "properties": {
-        "_id": { "$ref": "#/definitions/ObjectId" },
-        "address": { "type": "string" },
-        "agency": { "type": "string" },
-        "birthDate": { "type": "string" },
-        "birthPlace": { "type": "string" },
         "date": { "type": "string" },
         "docType": { "type": "string" },
+        "employeeId": { "type": "string" },
         "file": { "type": "string" },
         "fileName": { "type": "string" },
         "fileStatus": { "type": "boolean" },
-        "firstName": { "type": "string" },
-        "id": { "$ref": "#/definitions/ObjectId" },
-        "lastName": { "type": "string" },
-        "middleName": { "type": "string" },
-        "position": { "type": "string" }
+        "id": { "$ref": "#/definitions/ObjectId" }
       },
       "title": "DocumentsReq"
     },
     "DocumentsRes": {
       "type": "object",
       "properties": {
-        "_id": { "type": "string" },
-        "address": { "type": "string" },
-        "agency": { "type": "string" },
-        "birthDate": { "type": "string" },
-        "birthPlace": { "type": "string" },
         "date": { "type": "string" },
         "docType": { "type": "string" },
+        "employeeId": { "type": "string" },
         "file": { "type": "string" },
         "fileName": { "type": "string" },
         "fileStatus": { "type": "boolean" },
-        "firstName": { "type": "string" },
-        "lastName": { "type": "string" },
-        "middleName": { "type": "string" },
-        "position": { "type": "string" }
+        "id": { "type": "string" }
       },
       "title": "DocumentsRes"
     },

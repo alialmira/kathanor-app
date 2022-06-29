@@ -29,36 +29,6 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 export interface DocumentsReq {
     /**
      * 
-     * @type {ObjectId}
-     * @memberof DocumentsReq
-     */
-    _id?: ObjectId;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsReq
-     */
-    address?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsReq
-     */
-    agency?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsReq
-     */
-    birthDate?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsReq
-     */
-    birthPlace?: string;
-    /**
-     * 
      * @type {string}
      * @memberof DocumentsReq
      */
@@ -69,6 +39,12 @@ export interface DocumentsReq {
      * @memberof DocumentsReq
      */
     docType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DocumentsReq
+     */
+    employeeId?: string;
     /**
      * 
      * @type {string}
@@ -89,34 +65,10 @@ export interface DocumentsReq {
     fileStatus?: boolean;
     /**
      * 
-     * @type {string}
-     * @memberof DocumentsReq
-     */
-    firstName?: string;
-    /**
-     * 
      * @type {ObjectId}
      * @memberof DocumentsReq
      */
     id?: ObjectId;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsReq
-     */
-    lastName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsReq
-     */
-    middleName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsReq
-     */
-    position?: string;
 }
 /**
  * 
@@ -129,36 +81,6 @@ export interface DocumentsRes {
      * @type {string}
      * @memberof DocumentsRes
      */
-    _id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsRes
-     */
-    address?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsRes
-     */
-    agency?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsRes
-     */
-    birthDate?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsRes
-     */
-    birthPlace?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsRes
-     */
     date?: string;
     /**
      * 
@@ -166,6 +88,12 @@ export interface DocumentsRes {
      * @memberof DocumentsRes
      */
     docType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DocumentsRes
+     */
+    employeeId?: string;
     /**
      * 
      * @type {string}
@@ -189,25 +117,7 @@ export interface DocumentsRes {
      * @type {string}
      * @memberof DocumentsRes
      */
-    firstName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsRes
-     */
-    lastName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsRes
-     */
-    middleName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentsRes
-     */
-    position?: string;
+    id?: string;
 }
 /**
  * 

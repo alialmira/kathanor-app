@@ -10,13 +10,7 @@ export interface DocumentStateInterface {
 function state(): DocumentStateInterface {
   return {
     document: {
-      firstName: '',
-      middleName: '',
-      lastName: '',
-      birthDate: '',
-      birthPlace: '',
-      address: '',
-      position: '',
+      employeeId: '',
       file: [],
       date: '',
       docType: '',
