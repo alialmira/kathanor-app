@@ -8,6 +8,7 @@
         :columns="columns"
         row-key="name"
         virtual-scroll
+        :filter="filter"
         :pagination.sync="pagination"
       >
         <template v-slot:top-right>
@@ -44,7 +45,7 @@
           </div>
         </template>
         <template v-slot:header="props">
-          <q-tr :props="props" class="bg-info">
+          <q-tr :props="props">
             <q-th
               class="text-black"
               v-for="col in props.cols"
@@ -75,7 +76,7 @@
               </q-btn>
               <q-btn
                 size="sm"
-                color="green"
+                color="red"
                 icon="delete"
                 round
                 dense
@@ -99,24 +100,58 @@ import { Vue, Component } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import Add201File from 'src/components/Add201File.vue';
 import AddEmployee from '../components/AddEmployee.vue';
+import IDocument from '../interfaces/document.interface';
 
 @Component({
   components: {
     Add201File,
     AddEmployee,
   },
-  computed: {},
+  computed: {
+    ...mapState('document', ['documents'])
+  },
   methods: {
     ...mapActions('uiNav', ['add201FilePopups', 'addEmployeePopups']),
+    ...mapActions('document', ['getEmployeeDocuments'])
   },
 })
 export default class Manage201Files extends Vue {
   pagination = {
     rowsPerPage: 9,
   };
-  searchFilter = '';
-  selectFilter = '';
+  columns = [
+    {
+      name: 'employeeName',
+      align: 'left',
+      label: 'Employee Name',
+      field: 'firstName',
+      sortable: true,
+    },
+    {
+      name: 'docType',
+      align: 'left',
+      label: 'Document Type',
+      field: 'docType',
+      sortable: true,
+    },
+    {
+      name: 'fileStatus',
+      align: 'left',
+      label: 'File Status',
+      field: 'fileStatus',
+      sortable: true,
+    }
+  ];
+  filter = '';
+  data: IDocument[] = [];
+  documents!: IDocument[];
+  getEmployeeDocuments!: () => Promise<void>;
   add201FilePopups!: (show: boolean) => void;
   addEmployeePopups!: (show: boolean) => void;
+
+  async created(){
+    await this.getEmployeeDocuments();
+    this.data = this.documents;
+  }
 }
 </script>
