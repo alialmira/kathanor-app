@@ -2,6 +2,7 @@
   <q-page class="bg-white">
     <div class="q-pa-md">
       <q-table
+        style="border-radius: 25px;"
         title="CSC Report"
         :data="data"
         :columns="columns"
@@ -25,7 +26,7 @@
               text-color="black"
               icon-right="post_add"
               dense
-              style="min-width: 50px"
+              style="min-width: 50px;"
             >
             </q-btn>
           </div>
