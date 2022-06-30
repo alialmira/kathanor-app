@@ -15,7 +15,7 @@ function state(): DocumentStateInterface {
       date: '',
       docType: '',
       fileName: '',
-      fileStatus: '',
+      fileStatus: false,
     },
     documents: [],
     createDocuments: [],

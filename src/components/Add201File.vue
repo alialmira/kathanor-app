@@ -183,8 +183,6 @@
             </div>
             <div class="col">
               <q-file
-                ref="docFile"
-                v-model="documents.docFile"
                 label="Upload File"
                 outlined
                 use-chips
@@ -231,28 +229,13 @@
 import IEmployee from 'src/interfaces/employee.interface';
 import { Vue, Component } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
-import uploadService from '../services/upload.service';
 import { Promise } from 'q';
+import { debug } from 'util';
 
 interface RefsVue extends Vue {
   validate(): void;
   next(): void;
   hasError: boolean;
-}
-
-interface IDocument {
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  bod: string;
-  pod: string;
-  address: string;
-  agency: string;
-  position: string;
-  docType: any;
-  date: string;
-  fileName: string;
-  fileStatus: string;
 }
 
 @Component({
@@ -268,19 +251,12 @@ interface IDocument {
 })
 export default class Add201File extends Vue {
   documents: any = {
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    bod: '',
-    pod: '',
-    address: '',
-    agency: '',
-    position: '',
+    employeeId: '',
     file: [],
     docType: '',
     date: '',
     fileName: '',
-    fileStatus: '',
+    fileStatus: false,
   };
 
   $refs!: {
@@ -328,7 +304,6 @@ export default class Add201File extends Vue {
   checkForm() {
     this.$refs.employeeId.validate();
     this.$refs.docType.validate();
-    this.$refs.docFile.validate();
   }
 
   async saveEmployeeDocument() {
@@ -336,51 +311,39 @@ export default class Add201File extends Vue {
     this.checkForm();
     if (
       this.$refs.employeeId.hasError ||
-      this.$refs.docType.hasError ||
-      this.$refs.docFile.hasError
+      this.$refs.docType.hasError
     ) {
       this.formHasError = true;
     } else {
-      if (this.documents.docFile.length != 0) {
-        await this.addEmployeeDocument({
-          ...this.employee,
-          file: this.documents.docFile,
-          docType: this.documents.docType,
-          fileName: this.documents.docType,
-          fileStatus: 'active',
-        });
-        this.add201FilePopups(false);
-        this.documents = {
-          firstName: '',
-          middleName: '',
-          lastName: '',
-          bod: '',
-          pod: '',
-          address: '',
-          agency: '',
-          position: '',
-          file: [],
-          docType: '',
-          date: '',
-          fileName: '',
-          fileStatus: '',
-        };
-        this.$q.notify({
-          type: 'positive',
-          message: 'Document Added Successfully.',
-        });
-      } else {
-        this.$q.notify({
-          type: 'warning',
-          message: 'Upload Document File is required.',
-        });
-      }
+      this.documents = {
+        employeeId: this.empSelection.id.toString(),
+        docType: this.documents.docType,
+        fileName: this.documents.docType,
+        fileStatus: true,
+      };
+      console.log(this.documents);
+      await this.addEmployeeDocument(this.documents);
+      this.add201FilePopups(false);
+      this.documents = {
+        employeeId: '',
+        file: [],
+        docType: '',
+        date: '',
+        fileName: '',
+        fileStatus: false,
+      };
+      this.$q.notify({
+        type: 'positive',
+        message: 'Document Added Successfully.',
+      });
+      // if (this.documents.docFile.length != 0) {
+      // } else {
+      //   this.$q.notify({
+      //     type: 'warning',
+      //     message: 'Upload Document File is required.',
+      //   });
+      // }
     }
   }
-
-  // async getEmployeeInfo() {
-  //   this.empId = this.empSelection.id;
-  //   await this.getEmployeeById(this.empId);
-  // }
 }
 </script>

@@ -4,5 +4,5 @@ export default interface IDocument {
   docType: string;
   date: string;
   fileName: string;
-  fileStatus: string;
+  fileStatus: boolean;
 }
