@@ -32,7 +32,7 @@
           </div>
         </template>
         <template v-slot:header="props">
-          <q-tr :props="props" class="bg-info">
+          <q-tr :props="props">
             <q-th
               class="text-black"
               v-for="col in props.cols"
