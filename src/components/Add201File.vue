@@ -321,7 +321,6 @@ export default class Add201File extends Vue {
         fileName: this.documents.docType,
         fileStatus: true,
       };
-      console.log(this.documents);
       await this.addEmployeeDocument(this.documents);
       this.add201FilePopups(false);
       this.documents = {
