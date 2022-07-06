@@ -11,7 +11,7 @@
     >
       <q-toolbar>
         <q-toolbar-title class="text-weight-bold text-center">
-          <span v-if="documents.onUpdate">UPDATE EMPLOYEE</span>
+          <span v-if="employees.onUpdate">UPDATE EMPLOYEE</span>
           <span v-else>ADD EMPLOYEE</span>
         </q-toolbar-title>
         <q-btn
@@ -28,7 +28,7 @@
             <div class="col">
               <q-input
                 ref="firstName"
-                v-model="documents.firstName"
+                v-model="employees.firstName"
                 outlined
                 label="First Name"
                 lazy-rules
@@ -38,7 +38,7 @@
             <div class="col">
               <q-input
                 ref="middleName"
-                v-model="documents.middleName"
+                v-model="employees.middleName"
                 outlined
                 label="Middle Name"
                 lazy-rules
@@ -48,7 +48,7 @@
             <div class="col">
               <q-input
                 ref="lastName"
-                v-model="documents.lastName"
+                v-model="employees.lastName"
                 outlined
                 label="Last Name"
                 lazy-rules
@@ -60,7 +60,7 @@
             <div class="col">
               <q-input
                 ref="birthDate"
-                v-model="documents.birthDate"
+                v-model="employees.birthDate"
                 outlined
                 type="date"
                 hint="Date of Birth"
@@ -69,7 +69,7 @@
             <div class="col">
               <q-input
                 ref="birthPlace"
-                v-model="documents.birthPlace"
+                v-model="employees.birthPlace"
                 outlined
                 label="Place of Birth"
                 lazy-rules
@@ -82,7 +82,7 @@
           <div class="col">
             <q-input
               ref="address"
-              v-model="documents.address"
+              v-model="employees.address"
               outlined
               label="Home Address"
               lazy-rules
@@ -94,7 +94,7 @@
           <div class="col">
             <q-input
               ref="agency"
-              v-model="documents.agency"
+              v-model="employees.agency"
               outlined
               label="Agency"
               lazy-rules
@@ -104,7 +104,7 @@
           <div class="col">
             <q-input
               ref="position"
-              v-model="documents.position"
+              v-model="employees.position"
               outlined
               label="Position"
               lazy-rules
@@ -127,11 +127,11 @@
         <div class="col">
           <q-btn
             class="full-width"
-            :label="documents.onUpdate ? 'Update' : 'Confirm'"
+            :label="employees.onUpdate ? 'Update' : 'Confirm'"
             outline
             rounded
             dense
-            @click="documents.onUpdate ? '' : addNewEmployeeDocument()"
+            @click="employees.onUpdate ? updateEmployeeInfo() : addNewEmployeeDocument()"
             :loading="isUpload"
             :disable="isUpload"
           ></q-btn>
@@ -146,26 +146,13 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import { date } from 'quasar';
 import { lstat } from 'fs';
+import IDocument from 'src/interfaces/document.interface';
+import IEmployee from '../interfaces/employee.interface';
 
 interface RefsVue extends Vue {
   validate(): void;
   next(): void;
   hasError: boolean;
-}
-
-interface IEmployee {
-  lastName: string;
-  firstName: string;
-  middleName: string;
-  birthDate: string;
-  homeAddress: string;
-  currentAddress: string;
-  contNumber: string;
-  emailAdd: string;
-  position: string;
-  username: string;
-  password: string;
-  session: boolean;
 }
 
 @Component({
@@ -175,6 +162,7 @@ interface IEmployee {
   methods: {
     ...mapActions('uiNav', ['addEmployeePopups']),
     ...mapActions('employee', [
+      'addEmployee',
       'updateEmployee',
       'deleteEmployee',
       'getEmployees',
@@ -185,7 +173,7 @@ interface IEmployee {
 export default class AddEmployee extends Vue {
   @Prop({ type: Object, required: true }) readonly employee!: IEmployee;
 
-  documents: any = {
+  employees: any = {
     firstName: '',
     middleName: '',
     lastName: '',
@@ -193,13 +181,7 @@ export default class AddEmployee extends Vue {
     birthPlace: '',
     address: '',
     agency: '',
-    position: '',
-    file: [],
-    docType: '',
-    date: '',
-    fileName: '',
-    fileStatus: '',
-    onUpdate: false,
+    position: ''
   };
 
   $refs!: {
@@ -220,7 +202,8 @@ export default class AddEmployee extends Vue {
   showAddEmployeeDialog!: boolean;
   addEmployeePopups!: (show: boolean) => void;
   getEmployees!: () => Promise<void>;
-  addEmployeeDocument!: (payload: any) => Promise<void>;
+  addEmployee!: (payload: any) => Promise<void>;
+  updateEmployee!: (payload: any) => Promise<void>;
 
   checkForm() {
     this.$refs.lastName.validate();
@@ -249,16 +232,9 @@ export default class AddEmployee extends Vue {
       this.formHasError = true;
     } else {
       this.isSubmit = false;
-      await this.addEmployeeDocument({
-        ...this.documents,
-        file: [],
-        docType: '',
-        date: '',
-        fileName: '',
-        fileStatus: true,
-      });
+      await this.addEmployee({ ...this.employees, onUpdate: false });
       await this.$store.dispatch('uiNav/addEmployeePopups', false);
-      this.documents = {
+      this.employees = {
         firstName: '',
         middleName: '',
         lastName: '',
@@ -266,12 +242,7 @@ export default class AddEmployee extends Vue {
         birthPlace: '',
         address: '',
         agency: '',
-        position: '',
-        file: [],
-        docType: '',
-        date: '',
-        fileName: '',
-        fileStatus: '',
+        position: ''
       };
       this.$q.notify({
         type: 'positive',
@@ -280,12 +251,31 @@ export default class AddEmployee extends Vue {
     }
   }
 
+  async updateEmployeeInfo() {
+    try {
+      await this.updateEmployee({
+        ...this.employees,
+      });
+      this.addEmployeePopups(false);
+      this.$q.notify({
+        type: 'positive',
+        message: 'Employee Updated Successfully.',
+      });
+    } catch (error) {
+      console.log(error);
+      this.$q.notify({
+        type: 'negative',
+        message: 'Employee Failed to Update.',
+      });
+    }
+  }
+
   showDialog() {
-    this.documents = { ...this.documents };
+    this.employees = { ...this.employees };
   }
 
   hideDialog() {
-    this.documents = {
+    this.employees = {
       firstName: '',
       middleName: '',
       lastName: '',
@@ -300,7 +290,7 @@ export default class AddEmployee extends Vue {
       fileName: '',
       fileStatus: '',
     };
-    this.$emit('clearData', { ...this.documents, onUpdate: false });
+    this.$emit('clearData', { ...this.employees, onUpdate: false });
   }
 }
 </script>

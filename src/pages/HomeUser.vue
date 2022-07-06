@@ -1,40 +1,39 @@
 <template>
-  <q-page>
-    <div class="q-pt-md q-pr-xl q-pl-xl">
-      <q-card class="align-center no-shadow" >
-        <div class="row q-gutter-xl">
-          <div class="col-3">
-            <q-card class="text-white text-center bg-positive" style="border-radius: 25px">
-              <q-card-section style="font-size: 25px;">
-                EMPLOYEES
-              </q-card-section>
-              <q-card-action style="font-size: 100px;">
-                20
-              </q-card-action>
-            </q-card>
-          </div>
-          <div class="col-3">
-            <q-card class="text-white text-center bg-positive" style="border-radius: 25px">
-              <q-card-section style="font-size: 25px;">
-                201 - FILES
-              </q-card-section>
-              <q-card-action style="font-size: 100px;">
-                15
-              </q-card-action>
-            </q-card>
-          </div>
-          <div class="col-3">
-            <q-card class="text-white text-center bg-positive" style="border-radius: 25px">
-              <q-card-section style="font-size: 25px;">
-                CSC REPORT
-              </q-card-section>
-              <q-card-action style="font-size: 100px;">
-                10
-              </q-card-action>
-            </q-card>
-          </div>
-        </div>
-      </q-card>
+  <q-page padding>
+    <div class="q-pa-md" >
+      <div class="row justify-center items-center text-center q-gutter-md">
+        <q-card class="col bg-green card-radius text-white">
+          <q-card-section class="bg-green-8 text-h5 text-weight-medium">
+            Accounts
+          </q-card-section>
+          <q-separator color="white" />
+          <q-card-section class="text-h3 text-weight-bolder"></q-card-section>
+        </q-card>
+        <q-card class="col bg-orange card-radius text-white">
+          <q-card-section class="bg-orange-8 text-h5 text-weight-medium">
+            201-File
+          </q-card-section>
+          <q-separator color="white" />
+          <q-card-section class="text-h3 text-weight-bolder"> </q-card-section>
+        </q-card>
+        <q-card class="col bg-orange card-radius text-white">
+          <q-card-section class="bg-orange-8 text-h5 text-weight-medium">
+            Individual Reports
+          </q-card-section>
+          <q-separator color="white" />
+          <q-card-section class="text-h3 text-weight-bolder"> </q-card-section>
+        </q-card>
+        <q-card class="col bg-yellow-8 card-radius text-white">
+          <q-card-section class="bg-yellow-9 text-h5 text-weight-medium">
+            CSC Reports
+          </q-card-section>
+          <q-separator color="white" />
+          <q-card-section class="text-h3 text-weight-bolder"> </q-card-section>
+        </q-card>
+      </div>
+    </div>
+    <div class="q-pa-md q-pt-md">
+      <q-separator color="primary" />
     </div>
   </q-page>
 </template>
@@ -46,4 +45,8 @@ import { Vue, Component } from 'vue-property-decorator';
 export default class HomeUser extends Vue {}
 </script>
 
-<style scoped></style>
+<style scoped>
+.card-radius {
+  border-radius: 25px;
+}
+</style>

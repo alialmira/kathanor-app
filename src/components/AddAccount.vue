@@ -27,7 +27,7 @@
           <div class="row q-gutter-sm">
             <div class="col">
               <q-input
-                ref="firstName"
+                ref= "firstName"
                 v-model="employees.firstName"
                 outlined
                 label="First Name"
@@ -220,7 +220,7 @@ export default class AddAccount extends Vue {
     currentAddress: '',
     contNumber: '',
     emailAdd: '',
-    agency: 'CSC - Lanao (Main Library - Office)',
+    agency: 'Civil Service Commission - LDS',
     position: '',
     username: '',
     password: '',

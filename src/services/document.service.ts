@@ -24,7 +24,6 @@ class DocumentService extends DocumentControllerApi {
   }
 
   async insert(payload: IDocument) {
-    console.log(payload);
     const response = await restApi.addEmployeeDocument(payload);
     return response.data;
   }
@@ -35,7 +34,7 @@ class DocumentService extends DocumentControllerApi {
   }
 
   async update(payload: IDocument) {
-    const response = await restApi.updateDocument(payload._id as string, payload);
+    const response = await restApi.updateDocument(payload.id as string, payload);
     console.log(response)
     return response.data;
   }
