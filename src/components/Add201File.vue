@@ -322,6 +322,7 @@ export default class Add201File extends Vue {
         fileStatus: true,
       };
       await this.addEmployeeDocument(this.documents);
+
       this.add201FilePopups(false);
       this.documents = {
         employeeId: '',

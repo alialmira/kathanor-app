@@ -3,7 +3,7 @@
     <div class="q-pa-md">
       <q-table
         style="border-radius: 25px;"
-        title="Accounts (CSC Employees)"
+        title="CSC Employees Accounts"
         :data="newFiltered"
         :columns="columns"
         row-key="name"
@@ -15,7 +15,7 @@
           <div class="row q-gutter-sm">
             <q-input dense debounce="300" v-model="filter" placeholder="Search">
               <template v-slot:append>
-                <q-icon name="search" />
+                <q-icon name="search"/>
               </template>
             </q-input>
 
@@ -111,7 +111,7 @@ export default class ManageAccounts extends Vue {
     currentAddress: '',
     contNumber: '',
     emailAdd: '',
-    agency: 'CSC - Lanao (Main Library - Office)',
+    agency: 'Civil Service Commission - LDS',
     position: '',
     username: '',
     password: '',
@@ -163,7 +163,7 @@ export default class ManageAccounts extends Vue {
     await this.getEmployees();
     this.data = this.employees;
     this.newFiltered = this.data.filter(
-      (d: any) => d.agency == 'CSC - Lanao (Main Library - Office)'
+      (d: any) => d.agency == 'Civil Service Commission - LDS'
     );
   }
 

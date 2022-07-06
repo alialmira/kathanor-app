@@ -94,7 +94,7 @@
         </q-item-section>
       </q-item>
 
-      <!-- <q-item
+      <q-item
         active
         clickable
         v-ripple
@@ -107,7 +107,7 @@
         <q-item-section class="text-body1 text-weight-bold">
           Employees
         </q-item-section>
-      </q-item> -->
+      </q-item>
 
       <q-item
         active

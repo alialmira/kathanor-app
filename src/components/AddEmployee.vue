@@ -131,7 +131,7 @@
             outline
             rounded
             dense
-            @click="employees.onUpdate ? '' : addNewEmployeeDocument()"
+            @click="employees.onUpdate ? updateEmployeeInfo() : addNewEmployeeDocument()"
             :loading="isUpload"
             :disable="isUpload"
           ></q-btn>
@@ -203,6 +203,7 @@ export default class AddEmployee extends Vue {
   addEmployeePopups!: (show: boolean) => void;
   getEmployees!: () => Promise<void>;
   addEmployee!: (payload: any) => Promise<void>;
+  updateEmployee!: (payload: any) => Promise<void>;
 
   checkForm() {
     this.$refs.lastName.validate();
@@ -246,6 +247,25 @@ export default class AddEmployee extends Vue {
       this.$q.notify({
         type: 'positive',
         message: 'Employee Information Created',
+      });
+    }
+  }
+
+  async updateEmployeeInfo() {
+    try {
+      await this.updateEmployee({
+        ...this.employees,
+      });
+      this.addEmployeePopups(false);
+      this.$q.notify({
+        type: 'positive',
+        message: 'Employee Updated Successfully.',
+      });
+    } catch (error) {
+      console.log(error);
+      this.$q.notify({
+        type: 'negative',
+        message: 'Employee Failed to Update.',
       });
     }
   }

@@ -180,6 +180,7 @@ export default class ManageEmployee extends Vue {
   }
 
   editEmployee(employee: IEmployee) {
+    debugger;
     this.employee = { ...employee, onUpdate: true };
     this.addEmployeePopups(true);
   }

@@ -11,14 +11,21 @@
         </q-card>
         <q-card class="col bg-orange card-radius text-white">
           <q-card-section class="bg-orange-8 text-h5 text-weight-medium">
-            Documents
+            201-File
+          </q-card-section>
+          <q-separator color="white" />
+          <q-card-section class="text-h3 text-weight-bolder"> </q-card-section>
+        </q-card>
+        <q-card class="col bg-orange card-radius text-white">
+          <q-card-section class="bg-orange-8 text-h5 text-weight-medium">
+            Individual Reports
           </q-card-section>
           <q-separator color="white" />
           <q-card-section class="text-h3 text-weight-bolder"> </q-card-section>
         </q-card>
         <q-card class="col bg-yellow-8 card-radius text-white">
           <q-card-section class="bg-yellow-9 text-h5 text-weight-medium">
-            Employees
+            CSC Reports
           </q-card-section>
           <q-separator color="white" />
           <q-card-section class="text-h3 text-weight-bolder"> </q-card-section>
