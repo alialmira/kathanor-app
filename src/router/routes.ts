@@ -3,13 +3,19 @@ import { RouteConfig } from 'vue-router';
 const routes: RouteConfig[] = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/PlainLayout.vue'),
     children: [
       {
         path: '/login',
         name: 'log-in',
         component: () => import('src/pages/Login.vue'),
-      },
+      }
+    ],
+  },
+  {
+    path: '/user',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
       {
         path: '/home',
         name: 'home-user',
