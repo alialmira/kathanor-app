@@ -51,6 +51,11 @@ const routes: RouteConfig[] = [
         name: 'add-document',
         component: () => import('src/components/AddDocumentPage.vue'),
       },
+      {
+        path: '/add-employee',
+        name: 'add-employee',
+        component: () => import('src/components/AddEmployeePage.vue'),
+      },
     ],
   },
   // Always leave this as last one,

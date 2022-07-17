@@ -6,7 +6,7 @@
         title="201 - Files"
         :data="data"
         :columns="columns"
-        row-key="name"
+        row-key="id"
         virtual-scroll
         :filter="filter"
         :pagination.sync="pagination"
@@ -101,6 +101,7 @@ import { mapState, mapActions } from 'vuex';
 import Add201File from 'src/components/Add201File.vue';
 import AddEmployee from '../components/AddEmployee.vue';
 import IDocument from '../interfaces/document.interface';
+import IEmployee from '../interfaces/employee.interface';
 
 @Component({
   components: {
@@ -108,11 +109,13 @@ import IDocument from '../interfaces/document.interface';
     AddEmployee,
   },
   computed: {
-    ...mapState('document', ['documents'])
+    ...mapState('document', ['documents']),
+    ...mapState('employee', ['employees'])
   },
   methods: {
     ...mapActions('uiNav', ['add201FilePopups', 'addEmployeePopups']),
-    ...mapActions('document', ['getEmployeeDocuments'])
+    ...mapActions('document', ['getEmployeeDocuments']),
+    ...mapActions('employee', ['getEmployees', 'deleteEmployee']),
   },
 })
 export default class Manage201Files extends Vue {
@@ -124,7 +127,7 @@ export default class Manage201Files extends Vue {
       name: 'employeeName',
       align: 'left',
       label: 'Employee Name',
-      field: 'firstName',
+      field: (row: IEmployee) => row.firstName,
       sortable: true,
     },
     {
@@ -145,13 +148,16 @@ export default class Manage201Files extends Vue {
   filter = '';
   data: IDocument[] = [];
   documents!: IDocument[];
+  employee!: IEmployee[];
   getEmployeeDocuments!: () => Promise<void>;
   add201FilePopups!: (show: boolean) => void;
+  getEmployees!: () => Promise<void>;
   addEmployeePopups!: (show: boolean) => void;
 
   async created(){
     await this.getEmployeeDocuments();
     this.data = this.documents;
+    console.log(this.data);
   }
 }
 </script>

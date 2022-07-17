@@ -11,8 +11,8 @@
     >
       <q-toolbar>
         <q-toolbar-title class="text-weight-bold text-center">
-          <span v-if="employees.onUpdate">UPDATE ACCOUNT</span>
-          <span v-else>ADD ACCOUNT</span>
+          <span v-if="employees.onUpdate">EDIT EMPLOYEE</span>
+          <span v-else>ADD EMPLOYEE</span>
         </q-toolbar-title>
         <q-btn
           outlined
@@ -25,6 +25,9 @@
       <q-card-section class="q-pr-lg q-pl-lg q-pb-xs">
         <div class="items-start">
           <div class="row q-gutter-sm">
+            <div class="col">
+              <q-avatar></q-avatar>
+            </div>
             <div class="col">
               <q-input
                 ref= "firstName"
@@ -45,12 +48,24 @@
                 :rules="[(val) => !!val || 'Field is required']"
               />
             </div>
+          </div>
+          <div class="row q-gutter-sm">
             <div class="col">
               <q-input
                 ref="lastName"
                 v-model="employees.lastName"
                 outlined
                 label="Last Name"
+                lazy-rules
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
+            <div class="col">
+              <q-input
+                ref="lastName"
+                v-model="employees.lastName"
+                outlined
+                label="Extension Name"
                 lazy-rules
                 :rules="[(val) => !!val || 'Field is required']"
               />

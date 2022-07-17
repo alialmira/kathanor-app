@@ -1,36 +1,51 @@
 <template>
   <q-page>
     <div class="q-pa-md">
+      <div>
+        <q-label class="text-h4 text-weight-medium">CSC - EMPLOYEE</q-label>
+      </div>
       <q-table
-        style="border-radius: 25px;"
-        title="CSC Employees Accounts"
+        style="border-radius: 15px;"
         :data="newFiltered"
         :columns="columns"
         row-key="name"
         virtual-scroll
         :filter="filter"
         :pagination.sync="pagination"
-      >
-        <template v-slot:top-right>
+        >
+        <template v-slot:top-left>
           <div class="row q-gutter-sm">
-            <q-input dense debounce="300" v-model="filter" placeholder="Search">
-              <template v-slot:append>
-                <q-icon name="search"/>
-              </template>
-            </q-input>
-
             <q-btn
-              label=""
+              label="Add Account"
               color="dark"
               rounded
               outline
               text-color="black"
-              icon-right="person_add"
+              icon="add"
               dense
-              style="min-width: 50px;"
               @click="addAccountPopups(true)"
             >
             </q-btn>
+            <q-btn
+              label="Add Employee"
+              color="dark"
+              rounded
+              outline
+              text-color="black"
+              icon="add"
+              dense
+              to="/add-employee"
+            >
+            </q-btn>
+          </div>
+        </template>
+        <template v-slot:top-right>
+          <div class="row q-gutter-sm">
+            <q-input dense debounce="300" v-model="filter" placeholder="Search">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
           </div>
         </template>
         <template v-slot:header="props">
@@ -54,6 +69,17 @@
             <q-td auto-width>
               <q-btn
                 size="sm"
+                color="blue"
+                icon="info"
+                round
+                dense
+                class="q-mr-sm"
+                @click="showEmployee(props.row)"
+              >
+                <q-tooltip>Show Employee</q-tooltip>
+              </q-btn>
+              <q-btn
+                size="sm"
                 color="green"
                 icon="edit"
                 round
@@ -61,7 +87,7 @@
                 class="q-mr-sm"
                 @click="editEmployee(props.row)"
               >
-                <q-tooltip>Edit Document</q-tooltip>
+                <q-tooltip>Edit Employee</q-tooltip>
               </q-btn>
               <q-btn
                 size="sm"
@@ -72,14 +98,15 @@
                 class="q-mr-sm"
                 @click="deleteLastName(props.row.id)"
               >
-                <q-tooltip>Delete Officer</q-tooltip>
+                <q-tooltip>Delete Employee</q-tooltip>
               </q-btn>
             </q-td>
           </q-tr>
         </template>
       </q-table>
     </div>
-    <AddAccount :employee="employee" @clearData="clearData"/>
+    <AddAccount :employee="employee" @clearData="clearData" />
+    <ShowAccount :employee="employee" @clearData="clearData" />
   </q-page>
 </template>
 
@@ -87,17 +114,19 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapActions, mapState } from 'vuex';
 import AddAccount from 'src/components/AddAccount.vue';
+import ShowAccount from 'src/components/ShowAccount.vue';
 import IEmployee from 'src/interfaces/employee.interface';
 
 @Component({
   components: {
     AddAccount,
+    ShowAccount,
   },
   computed: {
     ...mapState('employee', ['employees']),
   },
   methods: {
-    ...mapActions('uiNav', ['addAccountPopups']),
+    ...mapActions('uiNav', ['addAccountPopups', 'showEmployeeInfoPopups']),
     ...mapActions('employee', ['getEmployees', 'deleteEmployee']),
   },
 })
@@ -148,7 +177,7 @@ export default class ManageAccounts extends Vue {
       label: 'Agency',
       field: 'agency',
       sortable: true,
-    }
+    },
   ];
   filter = '';
   data: IEmployee[] = [];
@@ -156,6 +185,7 @@ export default class ManageAccounts extends Vue {
   employees!: IEmployee[];
   newEmployee!: IEmployee[];
   addAccountPopups!: (show: boolean) => void;
+  showEmployeeInfoPopups!: (show: boolean) => void;
   getEmployees!: () => Promise<void>;
   deleteEmployee!: (payload: any) => Promise<void>;
 
@@ -175,6 +205,11 @@ export default class ManageAccounts extends Vue {
   editEmployee(employee: IEmployee) {
     this.employee = { ...employee, onUpdate: true };
     this.addAccountPopups(true);
+  }
+
+  showEmployee(employee: IEmployee) {
+    this.employee = { ...employee, onUpdate: true };
+    this.showEmployeeInfoPopups(true);
   }
 
   deleteLastName(id: string) {

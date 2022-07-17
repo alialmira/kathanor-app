@@ -5,6 +5,9 @@ const mutation: MutationTree<UiNavStateInterface> = {
   addEmployeePopups(state, payload: boolean) {
     state.showAddEmployeeDialog = payload;
   },
+  showEmployeeInfoPopups(state, payload: boolean){
+    state.showEmployeeInfoDialog = payload;
+  },
   addAccountPopups(state, payload: boolean) {
     state.showAddAccountDialog = payload;
   },

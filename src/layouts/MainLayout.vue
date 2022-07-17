@@ -10,7 +10,7 @@
         <!-- <q-avatar square size="xl">
           <img height="100px" src="" />
         </q-avatar> -->
-        <q-toolbar-title>KATHANOR</q-toolbar-title>
+        <q-toolbar-title>KAPAGATOR: CIVIL SERVICE COMMISSION - LDS</q-toolbar-title>
         <q-btn
           v-if="$route.name != 'login'"
           round
@@ -28,27 +28,27 @@
             max-width="218px"
             :offset="[10, 5]"
           >
-            <q-btn
+            <!-- <q-btn
               flat
               align="left"
               class="q-pa-sm auto-close"
               label="Change Password"
               color="white"
-              size="md"
+
               style="width: 218px;"
               icon="settings"
               text-color="black"
               clickable
               v-close-popup
             >
-            </q-btn>
+            </q-btn> -->
             <q-btn
               flat
               align="left"
               class="q-pa-sm"
               label="logout"
               color="white"
-              size="md"
+
               style="width: 218px;"
               icon="logout"
               text-color="black"
@@ -86,15 +86,15 @@
         exact-active-class="text-white bg-positive"
       >
         <q-item-section avatar>
-          <q-icon name="dashboard" size="md" />
+          <q-icon name="home" />
         </q-item-section>
 
-        <q-item-section class="text-body1 text-weight-bold">
-          Dashboard
+        <q-item-section class="text-weight-bold">
+          HOME
         </q-item-section>
       </q-item>
 
-      <q-item
+      <!-- <q-item
         active
         clickable
         v-ripple
@@ -102,12 +102,12 @@
         exact-active-class="text-white bg-positive"
       >
         <q-item-section avatar>
-          <q-icon name="people" size="md" />
+        <q-icon name="people" />
         </q-item-section>
-        <q-item-section class="text-body1 text-weight-bold">
-          Employees
+        <q-item-section class="text-weight-bold">
+          CSC EMPLOYEES
         </q-item-section>
-      </q-item>
+      </q-item> -->
 
       <q-item
         active
@@ -117,10 +117,10 @@
         exact-active-class="text-white bg-positive"
       >
         <q-item-section avatar>
-          <q-icon name="manage_accounts" size="md" />
+        <q-icon name="manage_accounts" />
         </q-item-section>
-        <q-item-section class="text-body1 text-weight-bold">
-          Accounts
+        <q-item-section class="text-weight-bold">
+          CSC EMPLOYEE
         </q-item-section>
       </q-item>
 
@@ -132,14 +132,14 @@
         exact-active-class="text-white bg-positive"
       >
         <q-item-section avatar>
-          <q-icon name="topic" size="md" />
+        <q-icon name="topic" />
         </q-item-section>
-        <q-item-section class="text-body1 text-weight-bold">
-          201-files
+        <q-item-section class="text-weight-bold">
+          201-FILE
         </q-item-section>
       </q-item>
 
-      <q-item
+      <!-- <q-item
         active
         clickable
         v-ripple
@@ -147,12 +147,13 @@
         exact-active-class="text-white bg-positive"
       >
         <q-item-section avatar>
-          <q-icon name="description" size="md" />
+        <q-icon name="description" />
         </q-item-section>
-        <q-item-section class="text-body1 text-weight-bold">
+        <q-item-section class="text-weight-bold">
           Individual Report
         </q-item-section>
-      </q-item>
+      </q-item> -->
+
       <q-item
         active
         clickable
@@ -161,10 +162,10 @@
         exact-active-class="text-white bg-positive"
       >
         <q-item-section avatar>
-          <q-icon name="task" size="md" />
+        <q-icon name="task" />
         </q-item-section>
-        <q-item-section class="text-body1 text-weight-bold">
-          CSC Report
+        <q-item-section class="text-weight-bold">
+          REPORT
         </q-item-section>
       </q-item>
       <div class="text-center q-pb-xl fixed-bottom">
@@ -192,7 +193,7 @@ import { Vue, Component } from 'vue-property-decorator';
 @Component({})
 export default class MainLayout extends Vue {
   async logout() {
-    this.$router.push('/login');
+    this.$router.push('/');
   }
 }
 </script>

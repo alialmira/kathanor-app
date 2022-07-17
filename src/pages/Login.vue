@@ -2,7 +2,7 @@
   <q-page class="flex flex-center">
     <q-card class="__card shadow-10 bg-grey-1 q-pa-lg" style="border-radius: 25px">
       <q-item-label class="text-center text-h3">
-        <b>KATHANOR</b>
+        <b>KAPAGATOR</b>
       </q-item-label>
       <q-card-section>
         <q-input
