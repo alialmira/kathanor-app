@@ -6,7 +6,7 @@ const routes: RouteConfig[] = [
     component: () => import('layouts/PlainLayout.vue'),
     children: [
       {
-        path: '/login',
+        path: '/',
         name: 'log-in',
         component: () => import('src/pages/Login.vue'),
       }
@@ -45,6 +45,11 @@ const routes: RouteConfig[] = [
         path: '/indiv-report',
         name: 'manage-indiv-report',
         component: () => import('src/pages/ManageIndividualReport.vue'),
+      },
+      {
+        path: '/add-document',
+        name: 'add-document',
+        component: () => import('src/components/AddDocumentPage.vue'),
       },
     ],
   },
