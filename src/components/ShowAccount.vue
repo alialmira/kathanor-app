@@ -78,7 +78,7 @@
                     Email Address:
                   </div>
                   <div class="col text-weight-bold">
-                    {{ employees.emailAdd }}
+                    {{ employees.emailAddress }}
                   </div>
                 </div>
                 <div class="row q-gutter-sm">

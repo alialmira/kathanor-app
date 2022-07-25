@@ -26,9 +26,6 @@
         <div class="items-start">
           <div class="row q-gutter-sm">
             <div class="col">
-              <q-avatar></q-avatar>
-            </div>
-            <div class="col">
               <q-input
                 ref= "firstName"
                 v-model="employees.firstName"
@@ -62,8 +59,8 @@
             </div>
             <div class="col">
               <q-input
-                ref="lastName"
-                v-model="employees.lastName"
+                ref="extName"
+                v-model="employees.extName"
                 outlined
                 label="Extension Name"
                 lazy-rules
@@ -97,6 +94,16 @@
             </div>
           </div>
           <div class="row q-gutter-sm">
+            <div class="col">
+             <q-input
+                ref="birthPlace"
+                v-model="employees.birthPlace"
+                outlined
+                label="Place of Birth"
+                lazy-rules
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
             <div class="col">
               <q-input
                 ref="homeAddress"
@@ -230,7 +237,9 @@ export default class AddAccount extends Vue {
     lastName: '',
     firstName: '',
     middleName: '',
+    extName: '',
     birthDate: '',
+    birthPlace: '',
     homeAddress: '',
     currentAddress: '',
     contNumber: '',
@@ -246,7 +255,9 @@ export default class AddAccount extends Vue {
     lastName: RefsVue;
     firstName: RefsVue;
     middleName: RefsVue;
+    extName: RefsVue;
     birthDate: RefsVue;
+    birthPlace: RefsVue;
     homeAddress: RefsVue;
     currentAddress: RefsVue;
     contNumber: RefsVue;
@@ -269,7 +280,9 @@ export default class AddAccount extends Vue {
     this.$refs.lastName.validate();
     this.$refs.firstName.validate();
     this.$refs.middleName.validate();
+    this.$refs.extName.validate();
     this.$refs.birthDate.validate();
+    this.$refs.birthPlace.validate();
     this.$refs.homeAddress.validate();
     this.$refs.currentAddress.validate();
     this.$refs.contNumber.validate();
@@ -286,7 +299,9 @@ export default class AddAccount extends Vue {
       this.$refs.lastName.hasError ||
       this.$refs.firstName.hasError ||
       this.$refs.middleName.hasError ||
+      this.$refs.extName.hasError ||
       this.$refs.birthDate.hasError ||
+      this.$refs.birthPlace.hasError ||
       this.$refs.homeAddress.hasError ||
       this.$refs.currentAddress.hasError ||
       this.$refs.contNumber.hasError ||

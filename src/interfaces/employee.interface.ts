@@ -2,6 +2,7 @@ export default interface IEmployee {
   lastName: string;
   firstName: string;
   middleName: string;
+  extName: string;
   birthDate: string;
   birthPlace: string;
   homeAddress: string;
