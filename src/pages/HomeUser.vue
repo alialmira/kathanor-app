@@ -37,12 +37,12 @@
           <q-separator color="white" />
           <q-card-section class="text-h4">The Civil Service Commission is one of the three Constitutional Commissions of the Philippines with responsibility over the civil service. It is tasked with overseeing the integrity of government actions and processes. </q-card-section>
         </q-card>
-        <q-card class="col card-radius">
-          <q-card-section class="text-h5 text-weight-medium">
+        <q-card class="col card-radius q-pa-md">
+          <q-card-section class="text-h5 text-weight-bold">
             What is 201-File?
           </q-card-section>
           <q-separator color="white" />
-          <q-card-section class="text-h3 text-weight-bolder">lorem ipsum</q-card-section>
+          <q-card-section class="text-h4">201 - files contains records/data pertaining to the employee's personal information, financial information, employment contract, duties, job grade, performance, and employment history for future employment requirements.</q-card-section>
         </q-card>
       </div>
     </div>
