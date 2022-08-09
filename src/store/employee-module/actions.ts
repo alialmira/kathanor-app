@@ -22,8 +22,9 @@ const actions: ActionTree<EmployeeStateInterface , StateInterface> = {
   async updateEmployee({}, payload): Promise<any> {
     await employeeService.update(payload);
   },
-  async deleteEmployee({}, id: string): Promise<any> {
+  async deleteEmployee(context, id: string): Promise<any> {
     await employeeService.delete(id);
+    context.commit('deleteOfficer', id);
   }
 };
 

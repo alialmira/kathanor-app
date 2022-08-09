@@ -21,9 +21,11 @@ const mutation: MutationTree<EmployeeStateInterface> = {
     state.employees = [];
     state.employees.push(...result);
   },
-  deleteOfficer(state, result) {
-    state.employees = [];
-    state.employees.push(...result);
+  deleteOfficer(state, id) {
+    const index = state.employees.findIndex(e => e.id == id);
+    if (index >= 0) {
+      state.employees.splice(index, 1);
+    }
   }
 };
 

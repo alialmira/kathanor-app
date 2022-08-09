@@ -1,8 +1,9 @@
 export default interface IEmployee {
+  id?: string;
   lastName: string;
   firstName: string;
   middleName: string;
-  extName: string;
+  extName?: string;
   birthDate: string;
   birthPlace: string;
   homeAddress: string;

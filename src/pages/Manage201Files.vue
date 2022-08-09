@@ -1,6 +1,9 @@
 <template>
   <q-page class="bg-white">
     <div class="q-pa-md">
+      <div>
+        <q-label class="text-h4 text-weight-medium">201-File</q-label>
+      </div>
       <q-table
         style="border-radius: 25px;"
         title="201 - Files"

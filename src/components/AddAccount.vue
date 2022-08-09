@@ -206,6 +206,7 @@ interface IEmployee {
   lastName: string;
   firstName: string;
   middleName: string;
+  extName:String;
   birthDate: string;
   homeAddress: string;
   currentAddress: string;

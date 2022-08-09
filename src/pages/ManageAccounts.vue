@@ -135,6 +135,7 @@ export default class ManageAccounts extends Vue {
     lastName: '',
     firstName: '',
     middleName: '',
+    extName: '',
     birthDate: '',
     homeAddress: '',
     currentAddress: '',
@@ -171,13 +172,24 @@ export default class ManageAccounts extends Vue {
       field: 'lastName',
       sortable: true,
     },
+
     {
-      name: 'Agency',
+      name: 'position',
+      align: 'left',
+      label: 'Position',
+      field: 'position',
+      sortable: true,
+    },
+
+    {
+      name: 'agency',
       align: 'left',
       label: 'Agency',
       field: 'agency',
       sortable: true,
     },
+
+
   ];
   filter = '';
   data: IEmployee[] = [];
@@ -192,10 +204,15 @@ export default class ManageAccounts extends Vue {
   async created() {
     await this.getEmployees();
     this.data = this.employees;
+
     this.newFiltered = this.data.filter(
       (d: any) => d.agency == 'Civil Service Commission - LDS'
+
+
     );
   }
+
+
 
   @Watch('employees')
   onEmployeesChanged(val: any) {
