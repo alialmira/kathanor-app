@@ -5,7 +5,7 @@
         <q-label class="text-h5 text-weight-medium">201 Files</q-label>
       </div>
       <q-table
-      class="card-border"
+        class="card-border"
         style="border-radius: 15px;"
         :data="newFiltered"
         :columns="columns"
@@ -16,13 +16,22 @@
       >
         <template v-slot:top-left>
           <div class="row q-gutter-sm">
-            <q-btn
+            <!-- <q-btn
               label="Add 201-File"
               color="positive"
               rounded
               text-color="white"
               icon="add"
               to="/add-201"
+            >
+            </q-btn> -->
+            <q-btn
+              label="Add 201-File"
+              color="positive"
+              rounded
+              text-color="white"
+              icon="add"
+              @click="add201FilePopups(true)"
             >
             </q-btn>
           </div>
@@ -88,6 +97,7 @@
           </q-tr>
         </template>
       </q-table>
+      <Add201File />
     </div>
   </q-page>
 </template>
@@ -95,11 +105,17 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapActions, mapState } from 'vuex';
-import AddDocument from 'src/components/addFile201.vue';
-import ShowDocument from 'src/components/ShowDocument.vue';
-import IDocument from 'src/interfaces/document.interface';
+import Add201File from 'src/components/Add201File.vue';
 
-@Component({})
+@Component({
+  components: {
+    Add201File,
+  },
+  computed: {},
+  methods: {
+    ...mapActions('uiNav', ['add201FilePopups']),
+  },
+})
 export default class ManageAccounts extends Vue {
   columns = [
     {
@@ -147,5 +163,7 @@ export default class ManageAccounts extends Vue {
       sortable: true,
     },
   ];
+
+  add201FilePopups!: (show: boolean) => void;
 }
 </script>

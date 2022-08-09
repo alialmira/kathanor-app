@@ -59,12 +59,9 @@
             </div>
             <div class="col">
               <q-input
-                ref="extName"
                 v-model="employees.extName"
                 outlined
                 label="Extension Name"
-                lazy-rules
-                :rules="[(val) => !!val || 'Field is required']"
               />
             </div>
           </div>
@@ -254,7 +251,6 @@ export default class AddAccount extends Vue {
     lastName: RefsVue;
     firstName: RefsVue;
     middleName: RefsVue;
-    extName: RefsVue;
     birthDate: RefsVue;
     birthPlace: RefsVue;
     homeAddress: RefsVue;
@@ -279,7 +275,6 @@ export default class AddAccount extends Vue {
     this.$refs.lastName.validate();
     this.$refs.firstName.validate();
     this.$refs.middleName.validate();
-    this.$refs.extName.validate();
     this.$refs.birthDate.validate();
     this.$refs.birthPlace.validate();
     this.$refs.homeAddress.validate();
@@ -297,7 +292,6 @@ export default class AddAccount extends Vue {
       this.$refs.lastName.hasError ||
       this.$refs.firstName.hasError ||
       this.$refs.middleName.hasError ||
-      this.$refs.extName.hasError ||
       this.$refs.birthDate.hasError ||
       this.$refs.birthPlace.hasError ||
       this.$refs.homeAddress.hasError ||

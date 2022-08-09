@@ -8,7 +8,7 @@
       </div>
       <q-table
         class="card-border"
-        :data="newFiltered"
+        :data="data"
         :columns="columns"
         row-key="name"
         virtual-scroll
@@ -126,7 +126,7 @@ export default class ManageAccounts extends Vue {
     lastName: '',
     firstName: '',
     middleName: '',
-    extName: '',
+    extensionName: '',
     birthDate: '',
     homeAddress: '',
     currentAddress: '',
@@ -165,10 +165,10 @@ export default class ManageAccounts extends Vue {
     },
 
     {
-      name: 'extName',
+      name: 'extensionName',
       align: 'left',
       label: 'Extension Name',
-      field: 'extName',
+      field: 'extensionName',
       sortable: true,
     },
 

@@ -131,7 +131,7 @@
             <q-icon name="manage_accounts" />
           </q-item-section>
           <q-item-section class="text-weight-bold">
-            CSC EMPLOYEE
+            EMPLOYEES
           </q-item-section>
         </q-item>
 

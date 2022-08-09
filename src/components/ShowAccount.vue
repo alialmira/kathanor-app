@@ -33,7 +33,7 @@
               <q-card-section class="text-h5 text-weight-bold">
                 <div class="row q-gutter-sm">
                   {{ employees.firstName }} {{ employees.middleName }}
-                  {{ employees.lastName }} {{employees.extName }}
+                  {{ employees.lastName }} {{ employees.extensionName }}
                   <br />
                   {{ employees.position }}
                   <br />
@@ -122,7 +122,7 @@ interface IEmployee {
   lastName: string;
   firstName: string;
   middleName: string;
-  extName: String;
+  extensionName: String;
   birthDate: string;
   homeAddress: string;
   currentAddress: string;
@@ -155,7 +155,7 @@ export default class AddAccount extends Vue {
     lastName: '',
     firstName: '',
     middleName: '',
-    extName: '',
+    extensionName: '',
     birthDate: '',
     birthPlace: '',
     homeAddress: '',
@@ -185,7 +185,7 @@ export default class AddAccount extends Vue {
       name: '',
       firstName: '',
       lastName: '',
-      extName: '',
+      extensionName: '',
       contactNumber: '',
       agency: '',
       position: '',
