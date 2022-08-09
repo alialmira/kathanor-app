@@ -4,14 +4,14 @@
       <div class="row justify-center items-center text-center q-gutter-md">
         <q-card class="col bg-green card-radius text-white">
           <q-card-section class="bg-green-8 text-h5 text-weight-medium">
-            CSC EMPLOYEE
+            EMPLOYEES
           </q-card-section>
           <q-separator color="white" />
           <q-card-section class="text-h3 text-weight-bolder">12</q-card-section>
         </q-card>
         <q-card class="col bg-orange card-radius text-white">
           <q-card-section class="bg-orange-8 text-h5 text-weight-medium">
-            201-FILE
+            201-FILES
           </q-card-section>
           <q-separator color="white" />
           <q-card-section class="text-h3 text-weight-bolder">572</q-card-section>
@@ -30,14 +30,14 @@
     </div>
     <div class="q-pa-md" >
       <div class="row justify-center items-center q-gutter-md">
-        <q-card class="col card-radius q-pa-md">
+        <q-card class="col card-border q-pa-md">
           <q-card-section class="text-h5 text-weight-bold">
             What is Civil Service Commission?
           </q-card-section>
           <q-separator color="white" />
           <q-card-section class="text-h4">The Civil Service Commission is one of the three Constitutional Commissions of the Philippines with responsibility over the civil service. It is tasked with overseeing the integrity of government actions and processes. </q-card-section>
         </q-card>
-        <q-card class="col card-radius q-pa-md">
+        <q-card class="col card-border q-pa-md">
           <q-card-section class="text-h5 text-weight-bold">
             What is 201-File?
           </q-card-section>

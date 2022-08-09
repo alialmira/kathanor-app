@@ -1,14 +1,15 @@
+
 import { ActionTree } from 'vuex';
 import { StateInterface } from '../index';
 import { DocumentStateInterface } from './state';
 import documentService from 'src/services/document.service';
 
 const actions: ActionTree<DocumentStateInterface, StateInterface> = {
-  async addEmployeeDocument(context, payload: any) {
-    const result = await documentService.addEmployeeDocument(payload);
+  async addDocument(context, id: any) {
+    const result = await documentService.addDocument(id);
     context.commit('addEmployeeDocument', result);
   },
-  async getEmployeeDocument(context, id: any): Promise<any>{
+  async getDocument(context, id: any): Promise<any>{
     const result = await documentService.getDocument(id);
     context.commit('getEmployeeDocument', result);
   },
@@ -16,7 +17,7 @@ const actions: ActionTree<DocumentStateInterface, StateInterface> = {
     const { id, file } = payload;
     await documentService.upload(id, file);
   },
-  async getEmployeeDocuments(context): Promise<any> {
+  async getDocuments(context): Promise<any> {
     const result = await documentService.getAll();
     context.commit('getDocuments', result);
   },

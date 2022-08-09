@@ -1,6 +1,6 @@
 <template>
   <q-dialog
-    v-model="showEmployeeInfoDialog"
+    v-model="showDocumentInfoDialog"
     persistent
     @hide="hideDialog()"
     @show="showDialog()"
@@ -11,15 +11,9 @@
     >
       <q-toolbar>
         <q-toolbar-title class="text-weight-bold text-center">
-          <span>EMPLOYEE DETAILS</span>
+          <span>FILE DETAILS</span>
         </q-toolbar-title>
-        <q-btn
-          outlined
-          flat
-          icon="close"
-          size="sm"
-          @click="showEmployeeInfoPopups(false)"
-        ></q-btn>
+        <q-btn outlined flat icon="close" size="sm"></q-btn>
       </q-toolbar>
       <q-card-section class="q-pr-lg q-pl-lg q-pb-xs">
         <div class="items-center">
@@ -32,12 +26,12 @@
             <div class="col">
               <q-card-section class="text-h5 text-weight-bold">
                 <div class="row q-gutter-sm">
-                  {{ employees.firstName }} {{ employees.middleName }}
-                  {{ employees.lastName }} {{employees.extName }}
+                  {{ document.firstName }} {{ document.middleName }}
+                  {{ document.lastName }} {{ document.extName }}
                   <br />
-                  {{ employees.position }}
+                  {{ document.position }}
                   <br />
-                  {{ employees.agency }}
+                  {{ document.agency }}
                 </div>
               </q-card-section>
             </div>
@@ -54,7 +48,7 @@
                     Birth Date:
                   </div>
                   <div class="col text-weight-bold">
-                    {{ employees.birthDate }}
+                    {{ document.birthDate }}
                   </div>
                 </div>
                 <div class="row q-gutter-sm">
@@ -62,7 +56,7 @@
                     Birth Place:
                   </div>
                   <div class="col text-weight-bold">
-                    {{ employees.birthPlace }}
+                    {{ document.birthPlace }}
                   </div>
                 </div>
                 <div class="row q-gutter-sm">
@@ -70,7 +64,7 @@
                     Contact Number:
                   </div>
                   <div class="col text-weight-bold">
-                    {{ employees.contactNumber }}
+                    {{ document.contactNumber }}
                   </div>
                 </div>
                 <div class="row q-gutter-sm">
@@ -78,7 +72,7 @@
                     Email Address:
                   </div>
                   <div class="col text-weight-bold">
-                    {{ employees.emailAddress }}
+                    {{ document.emailAddress }}
                   </div>
                 </div>
                 <div class="row q-gutter-sm">
@@ -86,7 +80,7 @@
                     Home Address:
                   </div>
                   <div class="col text-weight-bold">
-                    {{ employees.homeAddress }}
+                    {{ document.homeAddress }}
                   </div>
                 </div>
                 <div class="row q-gutter-sm">
@@ -94,7 +88,7 @@
                     Current Address:
                   </div>
                   <div class="col text-weight-bold">
-                    {{ employees.currentAddress }}
+                    {{ document.currentAddress }}
                   </div>
                 </div>
               </q-card-section>
@@ -118,7 +112,7 @@ interface RefsVue extends Vue {
   hasError: boolean;
 }
 
-interface IEmployee {
+interface IDocument {
   lastName: string;
   firstName: string;
   middleName: string;
@@ -129,7 +123,6 @@ interface IEmployee {
   contNumber: string;
   emailAdd: string;
   position: string;
-  agency: string;
   username: string;
   password: string;
   session: boolean;
@@ -137,21 +130,21 @@ interface IEmployee {
 
 @Component({
   computed: {
-    ...mapState('uiNav', ['showEmployeeInfoDialog']),
+    ...mapState('uiNav', ['showDocumentInfoDialog']),
   },
   methods: {
-    ...mapActions('uiNav', ['showEmployeeInfoPopups']),
+    ...mapActions('uiNav', ['showDocumentInfoPopups']),
     ...mapActions('employee', [
-      'addEmployee',
-      'updateEmployee',
-      'deleteEmployee',
+      'addDocument',
+      'updateDocument',
+      'deleteDocument',
     ]),
   },
 })
-export default class AddAccount extends Vue {
-  @Prop({ type: Object, required: true }) readonly employee!: IEmployee;
+export default class AddDocument extends Vue {
+  @Prop({ type: Object, required: true }) readonly document!: IDocument;
 
-  employees: any = {
+  document: any = {
     lastName: '',
     firstName: '',
     middleName: '',
@@ -177,11 +170,11 @@ export default class AddAccount extends Vue {
   showEmployeeInfoPopups!: (show: boolean) => void;
 
   showDialog() {
-    this.employees = { ...this.employee };
+    this.documents = { ...this.document };
   }
 
   hideDialog() {
-    this.employees = {
+    this.documents = {
       name: '',
       firstName: '',
       lastName: '',
@@ -190,7 +183,7 @@ export default class AddAccount extends Vue {
       agency: '',
       position: '',
     };
-    this.$emit('clearData', { ...this.employees, onUpdate: false });
+    this.$emit('clearData', { ...this.document, onUpdate: false });
   }
 }
 </script>

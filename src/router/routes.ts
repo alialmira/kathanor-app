@@ -14,7 +14,7 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/user',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/mainLayout.vue'),
     children: [
       {
         path: '/home',
@@ -28,13 +28,13 @@ const routes: RouteConfig[] = [
       },
       {
         path: '/accounts',
-        name: 'manage-employee',
+        name: 'manage-account',
         component: () => import('src/pages/ManageAccounts.vue'),
       },
       {
         path: '/201-files',
         name: 'manage-201',
-        component: () => import('src/pages/Manage201Files.vue'),
+        component: () => import('src/pages/Manage201.vue'),
       },
       {
         path: '/csc-report',
@@ -42,9 +42,9 @@ const routes: RouteConfig[] = [
         component: () => import('src/pages/ManageCscReport.vue'),
       },
       {
-        path: '/indiv-report',
-        name: 'manage-indiv-report',
-        component: () => import('src/pages/ManageIndividualReport.vue'),
+        path: '/report',
+        name: 'manage-csc-report',
+        component: () => import('src/pages/managereport.vue'),
       },
       {
         path: '/add-document',
@@ -56,6 +56,13 @@ const routes: RouteConfig[] = [
         name: 'add-employee',
         component: () => import('src/components/AddEmployeePage.vue'),
       },
+      {
+        path: '/add-201',
+        name: 'add-201File',
+        component: () => import('src/components/Add201.vue'),
+      },
+
+
     ],
   },
   // Always leave this as last one,

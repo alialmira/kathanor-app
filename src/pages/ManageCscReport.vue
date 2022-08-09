@@ -3,7 +3,7 @@
     <div class="q-pa-md">
       <q-table
         style="border-radius: 25px;"
-        title="CSC Report"
+        title="Civil Service Commission - LDS Report"
         :data="data"
         :columns="columns"
         row-key="name"

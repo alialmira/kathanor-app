@@ -18,13 +18,19 @@ const restConfig = new Configuration({
 const restApi = new DocumentControllerApi(restConfig);
 
 class DocumentService extends DocumentControllerApi {
+  addDocument(payload: any) {
+    throw new Error('Method not implemented.');
+  }
+  addEmployeeDocument(payload: any) {
+    throw new Error('Method not implemented.');
+  }
   async getAll() {
     const response = await restApi.getDocuments();
     return response.data;
   }
 
-  async insert(payload: IDocument) {
-    const response = await restApi.addEmployeeDocument(payload);
+  async insert(id: IDocument) {
+    const response = await restApi.addDocument(id);
     return response.data;
   }
 

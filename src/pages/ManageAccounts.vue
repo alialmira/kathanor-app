@@ -1,40 +1,29 @@
 <template>
   <q-page>
     <div class="q-pa-md">
-      <div>
-        <q-label class="text-h4 text-weight-medium">CSC - EMPLOYEE</q-label>
+      <div class="q-pt-xs q-pr-md q-pb-sm">
+        <q-label class="text-h5 text-weight-medium"
+          >Employees</q-label
+        >
       </div>
       <q-table
-        style="border-radius: 15px;"
+        class="card-border"
         :data="newFiltered"
         :columns="columns"
         row-key="name"
         virtual-scroll
         :filter="filter"
         :pagination.sync="pagination"
-        >
+      >
         <template v-slot:top-left>
           <div class="row q-gutter-sm">
             <q-btn
-              label="Add Account"
-              color="dark"
-              rounded
-              outline
-              text-color="black"
-              icon="add"
-              dense
-              @click="addAccountPopups(true)"
-            >
-            </q-btn>
-            <q-btn
               label="Add Employee"
-              color="dark"
+              color="positive"
               rounded
-              outline
-              text-color="black"
+              text-color="white"
               icon="add"
-              dense
-              to="/add-employee"
+              @click="addAccountPopups(true)"
             >
             </q-btn>
           </div>
@@ -78,6 +67,7 @@
               >
                 <q-tooltip>Show Employee</q-tooltip>
               </q-btn>
+
               <q-btn
                 size="sm"
                 color="green"
@@ -89,6 +79,7 @@
               >
                 <q-tooltip>Edit Employee</q-tooltip>
               </q-btn>
+
               <q-btn
                 size="sm"
                 color="red"
@@ -141,7 +132,7 @@ export default class ManageAccounts extends Vue {
     currentAddress: '',
     contNumber: '',
     emailAdd: '',
-    agency: 'Civil Service Commission - LDS',
+    agency: '',
     position: '',
     username: '',
     password: '',
@@ -174,6 +165,14 @@ export default class ManageAccounts extends Vue {
     },
 
     {
+      name: 'extName',
+      align: 'left',
+      label: 'Extension Name',
+      field: 'extName',
+      sortable: true,
+    },
+
+    {
       name: 'position',
       align: 'left',
       label: 'Position',
@@ -188,8 +187,6 @@ export default class ManageAccounts extends Vue {
       field: 'agency',
       sortable: true,
     },
-
-
   ];
   filter = '';
   data: IEmployee[] = [];
@@ -204,15 +201,7 @@ export default class ManageAccounts extends Vue {
   async created() {
     await this.getEmployees();
     this.data = this.employees;
-
-    this.newFiltered = this.data.filter(
-      (d: any) => d.agency == 'Civil Service Commission - LDS'
-
-
-    );
   }
-
-
 
   @Watch('employees')
   onEmployeesChanged(val: any) {

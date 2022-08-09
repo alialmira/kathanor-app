@@ -5,18 +5,8 @@
         <q-toolbar-title class="text-left text-h4 text-weight-bold"
           >201-File</q-toolbar-title
         >
-        <q-btn
-          color="positive"
-          rounded
-          dense
-          text-color="white"
-          icon="arrow_back"
-          to="/201-files"
-        >
-        </q-btn>
       </q-toolbar>
 
-      <br />
       <div class="row q-gutter-sm">
         <div class="col">
           <q-input
@@ -138,7 +128,7 @@
         </div>
       </div>
 
-      <!-- <div class="row q-gutter-sm">
+     <!-- <div class="row q-gutter-sm">
         <q-list>
           <q-item>
             <q-btn
@@ -205,65 +195,73 @@
         </q-list>
       </div> -->
 
-      <div class="q-pa-md">
-        <div class="q-gutter-sm row items-start">
-          <q-uploader
-            label="Transcript Of Records"
-            multiple
-            batch
-            color="grey-8"
-            icon="attachment"
-            flat
-            bordered
-            style="max-width: 500px;"
-          />
 
-          <q-uploader
-            label="Personal Data Sheet"
-            multiple
-            batch
-            color="grey-8"
-            flat
-            bordered
-          />
 
-          <q-uploader
-            label="Appointment"
-            multiple
-            batch
-            color="grey-8"
-            icon="attachment"
-            flat
-            bordered
-          />
+  <div class="q-pa-md">
+    <div class="q-gutter-sm row items-start">
+      <q-uploader
+        label="Transcript Of Records"
+        multiple
+        batch
+        color="grey-8"
+        icon="attachment"
+        flat
+        bordered
+        style="max-width: 500px"
+      />
 
-          <q-uploader
-            label="Eligibility"
-            multiple
-            batch
-            color="grey-8"
-            icon="attachment"
-            flat
-            bordered
-          />
+      <q-uploader
+      label = "Personal Data Sheet"
+      multiple
+        batch
+        color="grey-8"
+        flat
+        bordered
 
-          <q-uploader
-            label="S-Card"
-            multiple
-            batch
-            color="grey-8"
-            icon="attachment"
-            flat
-            bordered
-          />
-        </div>
-      </div>
+      />
+
+      <q-uploader
+         label="Appointment"
+         multiple
+        batch
+        color="grey-8"
+        icon="attachment"
+        flat
+        bordered
+      />
+
+      <q-uploader
+         label="Eligibility"
+         multiple
+        batch
+        color="grey-8"
+        icon="attachment"
+        flat
+        bordered
+      />
+
+      <q-uploader
+         label="S-Card"
+         multiple
+        batch
+        color="grey-8"
+        icon="attachment"
+        flat
+        bordered
+      />
+
+
+    </div>
+  </div>
+
+
 
       <q-card-action class="row text-center">
         <div class="col">
           <q-btn
             style="width: 60%;"
             label="Cancel"
+            outline
             color="red"
             rounded
             dense
@@ -285,6 +283,7 @@
       </q-card-action>
     </q-card>
   </q-page>
+
 </template>
 
 <script lang="ts">

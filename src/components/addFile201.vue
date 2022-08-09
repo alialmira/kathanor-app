@@ -5,18 +5,8 @@
         <q-toolbar-title class="text-left text-h4 text-weight-bold"
           >201-File</q-toolbar-title
         >
-        <q-btn
-          color="positive"
-          rounded
-          dense
-          text-color="white"
-          icon="arrow_back"
-          to="/201-files"
-        >
-        </q-btn>
       </q-toolbar>
 
-      <br />
       <div class="row q-gutter-sm">
         <div class="col">
           <q-input
@@ -264,6 +254,7 @@
           <q-btn
             style="width: 60%;"
             label="Cancel"
+            outline
             color="red"
             rounded
             dense

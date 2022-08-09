@@ -1,73 +1,32 @@
 <template>
-  <div>
-    <q-layout>
-      <q-header
-        v-if="$route.name != 'login'"
-        elevated
-        class="bg-positive"
-        :style="$q.screen.lt.md ? 'height: 60px' : 'height: 80px;'"
-      >
-        <q-toolbar>
-          <q-avatar v-show="!$q.screen.lt.md" class="q-pa-xs" circle size="70px">
-            <img src="~assets/CSC-logo-2.png" />
+  <div class="q-pa-md">
+    <q-layout
+      view="lHh lpr lFf"
+      container
+      style="height: 400px;"
+      class="shadow-2 rounded-borders"
+    >
+      <q-header v-if="$route.name != 'login'" elevated>
+        <q-toolbar class="glossy">
+          <q-btn flat round dense icon="menu" class="q-mr-sm" />
+          <q-avatar>
+            <img src="~assets/CSC-logo.jpg" />
           </q-avatar>
 
-          <q-toolbar-title v-if="!$q.screen.lt.md" class="text-h4 text-weight-medium">
-            <strong> KAPAGATOR: </strong>
-            CIVIL SERVICE COMMISSION - LANAO DEL SUR
-          </q-toolbar-title>
-
-          <q-toolbar-title v-else class="text-h6 text-weight-medium">
-            <strong> KAPAGATOR </strong>
-          </q-toolbar-title>
-
-
+          <q-toolbar-title
+            >KAPAGATOR: CIVIL SERVICE COMMISSION - LANAO DEL
+            SUR</q-toolbar-title
+          >
           <q-btn
-            size="20px"
             v-if="$route.name != 'login'"
             round
             flat
             outlined
-            icon="settings"
+            icon="more_vert"
             text-color="white"
-          >
-            <q-tooltip>Logout</q-tooltip>
+          />
 
-            <q-menu
-              fit
-              transition-show="jump-down"
-              transition-hide="jump-up"
-              max-width="218px"
-              :offset="[10, 5]"
-            >
-              <!-- <q-btn
-              flat
-              align="left"
-              class="q-pa-sm auto-close"
-              label="Change Password"
-              color="white"
-
-              style="width: 218px;"
-              icon="settings"
-              text-color="black"
-              clickable
-              v-close-popup
-            >
-            </q-btn> -->
-              <q-btn
-                flat
-                align="left"
-                class="q-pa-sm"
-                label="logout"
-                color="white"
-                style="width: 218px;"
-                icon="logout"
-                text-color="black"
-                @click="logout()"
-              >
-              </q-btn>
-            </q-menu>
-          </q-btn>
+          <q-btn flat round dense icon="people" />
         </q-toolbar>
       </q-header>
 
@@ -131,7 +90,7 @@
             <q-icon name="manage_accounts" />
           </q-item-section>
           <q-item-section class="text-weight-bold">
-            CSC EMPLOYEE
+            EMPLOYEES
           </q-item-section>
         </q-item>
 
@@ -209,3 +168,4 @@ export default class MainLayout extends Vue {
   }
 }
 </script>
+

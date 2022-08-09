@@ -137,10 +137,8 @@
           <div class="row q-gutter-sm">
             <div class="col">
               <q-input
-                disable
                 ref="agency"
                 v-model="employees.agency"
-                value="CSC - Lanao (Main Library - Office)"
                 outlined
                 label="Agency"
                 lazy-rules
@@ -165,7 +163,7 @@
           <q-btn
             class="full-width"
             label="Reset"
-            outline
+            color="red"
             rounded
             dense
             @click="hideDialog()"
@@ -175,7 +173,7 @@
           <q-btn
             class="full-width"
             :label="employees.onUpdate ? 'Update' : 'Confirm'"
-            outline
+            color="positive"
             rounded
             dense
             @click="
@@ -206,7 +204,7 @@ interface IEmployee {
   lastName: string;
   firstName: string;
   middleName: string;
-  extName:String;
+  extName: string;
   birthDate: string;
   homeAddress: string;
   currentAddress: string;
@@ -297,7 +295,6 @@ export default class AddAccount extends Vue {
     this.checkForm();
     if (
       this.$refs.lastName.hasError ||
-      this.$refs.lastName.hasError ||
       this.$refs.firstName.hasError ||
       this.$refs.middleName.hasError ||
       this.$refs.extName.hasError ||
@@ -324,12 +321,13 @@ export default class AddAccount extends Vue {
         lastName: '',
         firstName: '',
         middleName: '',
+        extName: '',
         birthDate: '',
         homeAddress: '',
         currentAddress: '',
         contNumber: '',
         emailAdd: '',
-        agency: 'CSC - Lanao (Main Library - Office)',
+        agency: '',
         position: '',
       };
       this.$q.notify({
@@ -367,8 +365,9 @@ export default class AddAccount extends Vue {
       name: '',
       firstName: '',
       lastName: '',
+      extName: '',
       contactNumber: '',
-      agency: 'CSC - Lanao (Main Library - Office)',
+      agency: '',
       position: '',
     };
     this.$emit('clearData', { ...this.employees, onUpdate: false });

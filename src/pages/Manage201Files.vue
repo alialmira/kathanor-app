@@ -23,12 +23,11 @@
             </q-input>
             <q-btn
               label=""
-              color="dark"
+              color="positive"
               rounded
               outline
               text-color="black"
               icon-right="person_add"
-              dense
               style="min-width: 50px;"
               @click="addEmployeePopups(true)"
             >
@@ -101,7 +100,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
-import Add201File from 'src/components/Add201File.vue';
+import Add201File from 'src/components/Add201.vue';
 import AddEmployee from '../components/AddEmployee.vue';
 import IDocument from '../interfaces/document.interface';
 import IEmployee from '../interfaces/employee.interface';

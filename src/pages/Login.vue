@@ -1,11 +1,11 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="bg-image flex flex-center">
     <q-card
-      class="radius opac"
-      v-bind:style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%'}"
+      class="card-border opac"
+      v-bind:style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%' }"
     >
-      <q-card-section >
-        <div class="text-center q-pt-md ">
+      <q-card-section>
+        <div class="text-center q-pt-md">
           <div class="col text-h2 text-grey-9 text-weight-bold ellipsis">
             KAPAGATOR
           </div>
@@ -14,7 +14,7 @@
           </div>
         </div>
       </q-card-section>
-      <q-card-section >
+      <q-card-section>
         <q-form class="q-pr-md q-pl-md q-gutter-md">
           <q-input
             v-model="user.username"
@@ -52,13 +52,7 @@
           </q-input>
 
           <div class="q-pb-md text-center">
-            <q-btn
-              class="radius"
-              label="Login"
-              dense
-              @click="login()"
-              style="width: 415px; height: 43px"
-            />
+            <q-btn class="radius bg-positive full-width text-white" style="height: 43px;" label="Login" @click="login()" />
           </div>
         </q-form>
       </q-card-section>
@@ -84,7 +78,7 @@ export default class Login extends Vue {
         type: 'positive',
         message: 'Successfully Logged in',
       });
-    }else{
+    } else {
       this.$q.notify({
         type: 'negative',
         message: 'Failed to log-in',
@@ -95,9 +89,10 @@ export default class Login extends Vue {
 </script>
 
 <style scoped>
-/* .bg-image {
-  background-image: url("~assets/");
-} */
+.bg-image {
+  background-image: url("~assets/CSC-background-1.jpg");
+  background-size: cover;
+}
 .opac {
   background: rgba(255, 255, 255, 0.6);
 }
