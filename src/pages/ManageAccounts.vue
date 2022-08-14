@@ -163,15 +163,6 @@ export default class ManageAccounts extends Vue {
       field: 'lastName',
       sortable: true,
     },
-
-    {
-      name: 'extensionName',
-      align: 'left',
-      label: 'Extension Name',
-      field: 'extensionName',
-      sortable: true,
-    },
-
     {
       name: 'position',
       align: 'left',
@@ -201,6 +192,7 @@ export default class ManageAccounts extends Vue {
   async created() {
     await this.getEmployees();
     this.data = this.employees;
+    console.log('data: ', this.data);
   }
 
   @Watch('employees')

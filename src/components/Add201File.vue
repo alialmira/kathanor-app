@@ -6,7 +6,7 @@
     @show="showDialog()"
   >
     <q-card
-      style="width: 700px; max-width: 80vw; border-radius: 25px;"
+      style="width: 600px; max-width: 80vw; border-radius: 25px;"
       class="__card q-pt-xs q-pb-md"
     >
       <q-toolbar>
@@ -29,72 +29,74 @@
               <q-select
                 ref="employeeId"
                 v-model="documents.employeeId"
+                :options="data"
+                option-value="id"
+                :option-label="
+                  (data) =>
+                    data === null
+                      ? ''
+                      : data.firstName +
+                        ' ' +
+                        data.middleName +
+                        ' ' +
+                        data.lastName +
+                        ' ' +
+                        data.extensionName +
+                        ' - ' +
+                        data.agency
+                "
                 outlined
-                label="Employee ID"
+                label="Employee - ID"
+                emit-value
+                map-options
                 lazy-rules
                 :rules="[(val) => !!val || 'Field is required']"
-              />
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      No Employees Found
+                    </q-item-section>
+                  </q-item>
+                </template>
+                <template v-slot:selected-item="scope">
+                  {{ scope.opt.firstName }} {{ scope.opt.middleName }}
+                  {{ scope.opt.lastName }} - {{ scope.opt.agency }}
+                </template>
+              </q-select>
             </div>
           </div>
           <div class="row q-gutter-sm">
-            <q-uploader
-              label="Transcript Of Records"
-              ref="tor"
-              v-model="documents.tor"
-              multiple
-              batch
-              color="grey-8"
-              icon="attachment"
-              flat
-              bordered
-              style="max-width: 500px;"
-            />
-            <q-uploader
-              ref="pds"
-              v-model="documents.pds"
-              label="Personal Data Sheet"
-              multiple
-              batch
-              color="grey-8"
-              flat
-              bordered
-            />
-
-            <q-uploader
-              ref="appointment"
-              v-model="documents.appointment"
-              label="Appointment"
-              multiple
-              batch
-              color="grey-8"
-              icon="attachment"
-              flat
-              bordered
-            />
-
-            <q-uploader
-              ref="eligibility"
-              v-model="documents.eligibility"
-              label="Eligibility"
-              multiple
-              batch
-              color="grey-8"
-              icon="attachment"
-              flat
-              bordered
-            />
-
-            <q-uploader
-              ref="scard"
-              v-model="documents.scard"
-              label="S-Card"
-              multiple
-              batch
-              color="grey-8"
-              icon="attachment"
-              flat
-              bordered
-            />
+            <div class="col">
+              <q-select
+                label="Document Type"
+                v-model="documents.docType"
+                outlined
+                emit-value
+                map-options
+                :options="[
+                  'Transcript of Records',
+                  'Eligibility',
+                  'Appointment',
+                  'Personal Data Sheet',
+                  'SCARD',
+                ]"
+                lazy-rules
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+              <q-file
+                clearable
+                style="width: 550px; max-width: 80vw;"
+                v-model="documents.files"
+                label="Choose Files"
+                multiple
+                batch
+                icon="attachment"
+                outlined
+                bordered
+                @update:model-value="fileChoose($event)"
+              />
+            </div>
           </div>
         </div>
       </q-card-section>
@@ -129,7 +131,9 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
+import file201Service from 'src/services/201file.service';
 import IDocument from '../interfaces/document.interface';
+import IEmployee from 'src/interfaces/employee.interface';
 
 interface RefsVue extends Vue {
   validate(): void;
@@ -140,22 +144,21 @@ interface RefsVue extends Vue {
 @Component({
   computed: {
     ...mapState('uiNav', ['showAdd201FileDialog']),
+    ...mapState('employee', ['employees']),
   },
   methods: {
     ...mapActions('uiNav', ['add201FilePopups']),
-    ...mapActions([]),
+    ...mapActions('employee', ['getEmployees']),
+    ...mapActions('document', ['add201File']),
   },
 })
 export default class Add201File extends Vue {
   @Prop({ type: Object, required: true }) readonly document!: IDocument;
 
-  documents: any = {
+  documents:IDocument = {
     employeeId: '',
-    appointment: '',
-    eligibility: '',
-    pds: '',
-    scard: '',
-    tor: '',
+    docType: '',
+    files: [],
     onUpdate: false,
   };
 
@@ -174,45 +177,50 @@ export default class Add201File extends Vue {
   isUpload = false;
   formHasError!: boolean;
   showAdd201FileDialog!: boolean;
+  data: IEmployee[] = [];
+  employees!: IEmployee[];
   add201FilePopups!: (show: boolean) => void;
+  getEmployees!: () => Promise<void>;
+  add201File!: (payload: any) => Promise<void>;
+
+  async created() {
+    await this.getEmployees();
+    this.data = this.employees;
+  }
 
   checkForm() {
     this.$refs.employeeId.validate();
-    this.$refs.appointment.validate();
-    this.$refs.eligibility.validate();
-    this.$refs.pds.validate();
-    this.$refs.scard.validate();
-    this.$refs.tor.validate();
   }
 
   async addNewDocument() {
     this.isSubmit = true;
     this.checkForm();
-    if (
-      this.$refs.employeeId.hasError ||
-      this.$refs.appointment.hasError ||
-      this.$refs.eligibility.hasError ||
-      this.$refs.pds.hasError ||
-      this.$refs.scard.hasError ||
-      this.$refs.tor.hasError
-    ) {
+    if (this.$refs.employeeId.hasError) {
       this.formHasError = true;
     } else {
       this.isSubmit = false;
+      console.log(this.documents.docType);
+      await this.add201File(this.documents);
+      // await file201Service.upload201File(
+      //   this.documents.docType,
+      //   this.documents.employeeId,
+      //   this.documents.file
+      // );
       await this.$store.dispatch('uiNav/add201FilePopups', false);
       this.documents = {
         employeeId: '',
-        appointment: '',
-        eligibility: '',
-        pds: '',
-        scard: '',
-        tor: '',
+        docType: '',
+        files: [],
       };
       this.$q.notify({
         type: 'positive',
         message: 'Document Successfully Created.',
       });
     }
+  }
+
+  fileChoose(val: any) {
+    this.documents.files = val;
   }
 
   showDialog() {
@@ -222,11 +230,8 @@ export default class Add201File extends Vue {
   hideDialog() {
     this.documents = {
       employeeId: '',
-      appointment: '',
-      eligibility: '',
-      pds: '',
-      scard: '',
-      tor: '',
+      docType: '',
+      files: [],
     };
     this.$emit('clearData', { ...this.documents, onUpdate: false });
   }

@@ -11,11 +11,8 @@ function state(): DocumentStateInterface {
   return {
     document: {
       employeeId: '',
-      file: [],
-      date: '',
       docType: '',
-      fileName: '',
-      fileStatus: false,
+      files: [],
     },
     documents: [],
     createDocuments: [],

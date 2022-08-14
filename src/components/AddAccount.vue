@@ -59,7 +59,7 @@
             </div>
             <div class="col">
               <q-input
-                v-model="employees.extName"
+                v-model="employees.extensionName"
                 outlined
                 label="Extension Name"
               />
@@ -201,7 +201,7 @@ interface IEmployee {
   lastName: string;
   firstName: string;
   middleName: string;
-  extName: string;
+  extensionName: string;
   birthDate: string;
   homeAddress: string;
   currentAddress: string;
@@ -233,7 +233,7 @@ export default class AddAccount extends Vue {
     lastName: '',
     firstName: '',
     middleName: '',
-    extName: '',
+    extensionName: '',
     birthDate: '',
     birthPlace: '',
     homeAddress: '',
@@ -315,7 +315,7 @@ export default class AddAccount extends Vue {
         lastName: '',
         firstName: '',
         middleName: '',
-        extName: '',
+        extensionName: '',
         birthDate: '',
         homeAddress: '',
         currentAddress: '',
@@ -359,7 +359,7 @@ export default class AddAccount extends Vue {
       name: '',
       firstName: '',
       lastName: '',
-      extName: '',
+      extensionName: '',
       contactNumber: '',
       agency: '',
       position: '',

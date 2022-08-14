@@ -168,6 +168,7 @@ export default class ManageEmployee extends Vue {
 
   async created() {
     await this.getEmployees();
+    console.log('emp: ', this.employees);
     this.data = this.employees;
     this.newFiltered = this.data.filter(
       (d: any) => d.agency != 'CSC - Lanao (Main Library - Office)'

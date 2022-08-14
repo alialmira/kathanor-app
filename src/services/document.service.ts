@@ -31,7 +31,7 @@ class DocumentService extends DocumentControllerApi {
 
   async insert(id: IDocument) {
     const response = await restApi.addDocument(id);
-    return response.data;
+    return response;
   }
 
   async upload(id: string, file: any) {
