@@ -8,8 +8,9 @@ const routes: RouteConfig[] = [
       {
         path: '/',
         name: 'log-in',
+        meta: { requiresGuest: true },
         component: () => import('src/pages/Login.vue'),
-      }
+      },
     ],
   },
   {
@@ -19,31 +20,37 @@ const routes: RouteConfig[] = [
       {
         path: '/home',
         name: 'home-user',
+        meta: { requiresAuth: true },
         component: () => import('src/pages/homeUser.vue'),
       },
       {
         path: '/employee',
         name: 'manage-employee',
+        meta: { requiresAuth: true },
         component: () => import('src/pages/ManageEmployee.vue'),
       },
       {
         path: '/accounts',
         name: 'manage-account',
+        meta: { requiresAuth: true },
         component: () => import('src/pages/ManageAccounts.vue'),
       },
       {
         path: '/201-files',
         name: 'manage-201',
+        meta: { requiresAuth: true },
         component: () => import('src/pages/Manage201.vue'),
       },
       {
         path: '/csc-report',
         name: 'manage-csc-report',
+        meta: { requiresAuth: true },
         component: () => import('src/pages/ManageCscReport.vue'),
       },
       {
         path: '/report',
         name: 'manage-csc-report',
+        meta: { requiresAuth: true },
         component: () => import('src/pages/managereport.vue'),
       },
       {
@@ -61,8 +68,6 @@ const routes: RouteConfig[] = [
         name: 'add-201File',
         component: () => import('src/components/Add201.vue'),
       },
-
-
     ],
   },
   // Always leave this as last one,

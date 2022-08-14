@@ -24,6 +24,25 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface Binary
+ */
+export interface Binary {
+    /**
+     * 
+     * @type {string}
+     * @memberof Binary
+     */
+    data?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Binary
+     */
+    type?: string;
+}
+/**
+ * 
+ * @export
  * @interface DocumentsReq
  */
 export interface DocumentsReq {
@@ -226,6 +245,12 @@ export interface EmployeeReq {
      * @type {string}
      * @memberof EmployeeReq
      */
+    accountType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EmployeeReq
+     */
     agency?: string;
     /**
      * 
@@ -329,6 +354,12 @@ export interface EmployeeRes {
      * @type {string}
      * @memberof EmployeeRes
      */
+    accountType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EmployeeRes
+     */
     agency?: string;
     /**
      * 
@@ -420,6 +451,55 @@ export interface EmployeeRes {
      * @memberof EmployeeRes
      */
     username?: string;
+}
+/**
+ * 
+ * @export
+ * @interface File201
+ */
+export interface File201 {
+    /**
+     * 
+     * @type {Binary}
+     * @memberof File201
+     */
+    content?: Binary;
+    /**
+     * 
+     * @type {string}
+     * @memberof File201
+     */
+    docType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof File201
+     */
+    employeeId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof File201
+     */
+    filename?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof File201
+     */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof File201
+     */
+    mimeType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof File201
+     */
+    uploadedBy?: string;
 }
 /**
  * 
@@ -1371,6 +1451,40 @@ export const File201ControllersApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * 
+         * @summary Get all 201 files of employee
+         * @param {string} empId empId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        get201Files: async (empId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'empId' is not null or undefined
+            assertParamExists('get201Files', 'empId', empId)
+            const localVarPath = `/kathanor-api/201file/{empId}`
+                .replace(`{${"empId"}}`, encodeURIComponent(String(empId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Upload 201 file
          * @param {string} docType docType
          * @param {string} employeeId employeeId
@@ -1445,6 +1559,17 @@ export const File201ControllersApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get all 201 files of employee
+         * @param {string} empId empId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async get201Files(empId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<File201>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.get201Files(empId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Upload 201 file
          * @param {string} docType docType
          * @param {string} employeeId employeeId
@@ -1478,6 +1603,16 @@ export const File201ControllersApiFactory = function (configuration?: Configurat
         },
         /**
          * 
+         * @summary Get all 201 files of employee
+         * @param {string} empId empId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        get201Files(empId: string, options?: any): AxiosPromise<Array<File201>> {
+            return localVarFp.get201Files(empId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Upload 201 file
          * @param {string} docType docType
          * @param {string} employeeId employeeId
@@ -1508,6 +1643,18 @@ export class File201ControllersApi extends BaseAPI {
      */
     public downloadFile(id: string, options?: any) {
         return File201ControllersApiFp(this.configuration).downloadFile(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get all 201 files of employee
+     * @param {string} empId empId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof File201ControllersApi
+     */
+    public get201Files(empId: string, options?: any) {
+        return File201ControllersApiFp(this.configuration).get201Files(empId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

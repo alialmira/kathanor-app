@@ -8,11 +8,19 @@
         :style="$q.screen.lt.md ? 'height: 60px' : 'height: 80px;'"
       >
         <q-toolbar>
-          <q-avatar v-show="!$q.screen.lt.md" class="q-pa-xs" circle size="70px">
+          <q-avatar
+            v-show="!$q.screen.lt.md"
+            class="q-pa-xs"
+            circle
+            size="70px"
+          >
             <img src="~assets/CSC-logo-2.png" />
           </q-avatar>
 
-          <q-toolbar-title v-if="!$q.screen.lt.md" class="text-h4 text-weight-medium">
+          <q-toolbar-title
+            v-if="!$q.screen.lt.md"
+            class="text-h4 text-weight-medium"
+          >
             <strong> KAPAGATOR: </strong>
             CIVIL SERVICE COMMISSION - LANAO DEL SUR
           </q-toolbar-title>
@@ -20,7 +28,6 @@
           <q-toolbar-title v-else class="text-h6 text-weight-medium">
             <strong> KAPAGATOR </strong>
           </q-toolbar-title>
-
 
           <q-btn
             size="20px"
@@ -201,11 +208,37 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { mapState, mapActions } from 'vuex';
+import IEmployee from '../interfaces/employee.interface';
 
-@Component({})
+@Component({
+  computed: {
+    ...mapState('uiNav', ['adminLoggedIn']),
+    ...mapState('officer', ['officers']),
+  },
+  methods: {
+    ...mapActions('officer', ['getEmployees', 'updateEmployee']),
+  },
+})
 export default class MainLayout extends Vue {
+  employees!: IEmployee[];
+  getEmployees!: () => Promise<void>;
+  updateEmployee!: (payload: any) => Promise<void>;
+  isAdmin = false;
+  user = {};
+
+
   async logout() {
-    this.$router.push('/');
+    await this.getEmployees();
+    await this.updateEmployee({
+      ...this.employees.find(
+        (e) =>
+          (e.session == true && e.accountType == 'admin') ||
+          (e.session == true && e.accountType == 'officer')
+      ),
+      session: false,
+    });
+    await this.$router.replace('/login');
   }
 }
 </script>

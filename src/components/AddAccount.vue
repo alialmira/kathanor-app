@@ -356,14 +356,18 @@ export default class AddAccount extends Vue {
 
   hideDialog() {
     this.employees = {
-      name: '',
-      firstName: '',
-      lastName: '',
-      extensionName: '',
-      contactNumber: '',
-      agency: '',
-      position: '',
-    };
+        lastName: '',
+        firstName: '',
+        middleName: '',
+        extensionName: '',
+        birthDate: '',
+        homeAddress: '',
+        currentAddress: '',
+        contNumber: '',
+        emailAdd: '',
+        agency: '',
+        position: '',
+      };
     this.$emit('clearData', { ...this.employees, onUpdate: false });
   }
 }

@@ -52,7 +52,12 @@
           </q-input>
 
           <div class="q-pb-md text-center">
-            <q-btn class="radius bg-positive full-width text-white" style="height: 43px;" label="Login" @click="login()" />
+            <q-btn
+              class="radius bg-positive full-width text-white"
+              style="height: 43px;"
+              label="Login"
+              @click="login()"
+            />
           </div>
         </q-form>
       </q-card-section>
@@ -62,22 +67,79 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { mapActions, mapState } from 'vuex';
+import IEmployee from '../interfaces/employee.interface';
 
-@Component({})
+@Component({
+  computed: {
+    ...mapState('employee', ['employees']),
+  },
+  methods: {
+    ...mapActions('uiNav', ['addAccountPopups', 'showEmployeeInfoPopups']),
+    ...mapActions('employee', ['getEmployees', 'updateEmployee']),
+  },
+})
 export default class Login extends Vue {
+  employees!: IEmployee[];
   user = {
     username: '',
     password: '',
   };
   isShowPass = false;
 
-  async login() {
-    if (this.user.username == 'admin' && this.user.password == 'pass') {
-      this.$router.push('/home');
+  getEmployees!: () => Promise<void>;
+  updateEmployee!: (payload: any) => Promise<void>;
+
+  async login(): Promise<void> {
+    await this.getEmployees();
+    if (
+      this.employees.find(
+        (e) =>
+          this.user.username == e.username &&
+          this.user.password == e.password &&
+          (e.accountType == 'admin' || e.accountType == 'Admin')
+      )
+    ) {
       this.$q.notify({
         type: 'positive',
-        message: 'Successfully Logged in',
+        message: 'Welcome Administrator.',
       });
+      await this.updateEmployee({
+        ...this.employees.find(
+          (e) =>
+            this.user.password == e.password &&
+            this.user.username == e.username &&
+            e.accountType == 'admin'
+        ),
+        session: true,
+      });
+      await this.getEmployees();
+      await this.$store.dispatch('uiNav/isAdminLogin', true);
+      await this.$router.push('/home');
+    } else if (
+      this.employees.find(
+        (e) =>
+          this.user.username == e.username &&
+          this.user.password == e.password &&
+          e.accountType == 'user'
+      )
+    ) {
+      this.$q.notify({
+        type: 'positive',
+        message: 'Successfully Logged in.',
+      });
+      await this.updateEmployee({
+        ...this.employees.find(
+          (e) =>
+            this.user.password == e.password &&
+            this.user.username == e.username &&
+            e.accountType == 'user'
+        ),
+        session: true,
+      });
+      await this.getEmployees();
+      await this.$store.dispatch('uiNav/isAdminLogin', false);
+      await this.$router.push('/');
     } else {
       this.$q.notify({
         type: 'negative',
@@ -90,7 +152,7 @@ export default class Login extends Vue {
 
 <style scoped>
 .bg-image {
-  background-image: url("~assets/CSC-background-1.jpg");
+  background-image: url('~assets/CSC-background-1.jpg');
   background-size: cover;
 }
 .opac {

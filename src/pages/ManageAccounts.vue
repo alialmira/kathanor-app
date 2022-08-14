@@ -8,7 +8,7 @@
       </div>
       <q-table
         class="card-border"
-        :data="data"
+        :data="newFiltered"
         :columns="columns"
         row-key="name"
         virtual-scroll
@@ -164,6 +164,13 @@ export default class ManageAccounts extends Vue {
       sortable: true,
     },
     {
+      name: 'extName',
+      align: 'left',
+      label: 'Extension Name',
+      field: 'extName',
+      sortable: true,
+    },
+    {
       name: 'position',
       align: 'left',
       label: 'Position',
@@ -192,6 +199,7 @@ export default class ManageAccounts extends Vue {
   async created() {
     await this.getEmployees();
     this.data = this.employees;
+    this.newFiltered = this.data.filter( d => d.accountType != 'admin');
     console.log('data: ', this.data);
   }
 

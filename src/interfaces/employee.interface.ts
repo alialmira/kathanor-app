@@ -12,6 +12,7 @@ export default interface IEmployee {
   emailAdd: string;
   agency: string;
   position: string;
+  accountType: string;
   username: string;
   password: string;
   session: boolean;
