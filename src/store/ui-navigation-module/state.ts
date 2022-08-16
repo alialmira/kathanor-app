@@ -3,6 +3,7 @@ export interface UiNavStateInterface {
   showAddAccountDialog: boolean;
   showAdd201FileDialog: boolean;
   showEmployeeInfoDialog: boolean;
+  adminLoggedIn: boolean;
 }
 
 function state(): UiNavStateInterface {
@@ -10,7 +11,8 @@ function state(): UiNavStateInterface {
     showAddEmployeeDialog: false,
     showAddAccountDialog: false,
     showAdd201FileDialog: false,
-    showEmployeeInfoDialog: false
+    showEmployeeInfoDialog: false,
+    adminLoggedIn: false,
   };
 }
 

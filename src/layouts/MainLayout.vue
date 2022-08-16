@@ -87,15 +87,6 @@
         elevated
         content-class="bg-white"
       >
-        <!-- <div class="text-center q-pt-md">
-        <div>
-          <q-avatar size="120px" style="border-radius: 10px 10px 10px 10px">
-          </q-avatar>
-        </div>
-        <q-chip class="bg-white text-weight-bolder text-h6" text-color="primary"
-          >MSU OIPP</q-chip
-        >
-      </div> -->
         <q-item
           active
           clickable
@@ -112,20 +103,20 @@
           </q-item-section>
         </q-item>
 
-        <!-- <q-item
+        <q-item
         active
         clickable
         v-ripple
-        to="/employee"
+        to="/profile"
         exact-active-class="text-white bg-positive"
       >
         <q-item-section avatar>
-        <q-icon name="people" />
+        <q-icon name="person" />
         </q-item-section>
         <q-item-section class="text-weight-bold">
-          CSC EMPLOYEES
+          PROFILE
         </q-item-section>
-      </q-item> -->
+      </q-item>
 
         <q-item
           active
@@ -156,21 +147,6 @@
             201-FILE
           </q-item-section>
         </q-item>
-
-        <!-- <q-item
-        active
-        clickable
-        v-ripple
-        to="/indiv-report"
-        exact-active-class="text-white bg-positive"
-      >
-        <q-item-section avatar>
-        <q-icon name="description" />
-        </q-item-section>
-        <q-item-section class="text-weight-bold">
-          Individual Report
-        </q-item-section>
-      </q-item> -->
 
         <q-item
           active
@@ -207,38 +183,37 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import IEmployee from '../interfaces/employee.interface';
 
 @Component({
   computed: {
     ...mapState('uiNav', ['adminLoggedIn']),
-    ...mapState('officer', ['officers']),
+    ...mapState('employee', ['employees', 'employee']),
   },
   methods: {
-    ...mapActions('officer', ['getEmployees', 'updateEmployee']),
+    ...mapActions('employee', ['getEmployees', 'getLoggedIn']),
   },
 })
 export default class MainLayout extends Vue {
   employees!: IEmployee[];
+  employee!: IEmployee;
   getEmployees!: () => Promise<void>;
-  updateEmployee!: (payload: any) => Promise<void>;
+  getLoggedIn!: (payload: any) => Promise<void>;
   isAdmin = false;
-  user = {};
-
 
   async logout() {
     await this.getEmployees();
-    await this.updateEmployee({
+    await this.getLoggedIn({
       ...this.employees.find(
         (e) =>
           (e.session == true && e.accountType == 'admin') ||
-          (e.session == true && e.accountType == 'officer')
+          (e.session == true && e.accountType == 'user')
       ),
       session: false,
     });
-    await this.$router.replace('/login');
+    await this.$router.replace('/');
   }
 }
 </script>

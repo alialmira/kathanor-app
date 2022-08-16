@@ -1,7 +1,7 @@
 <template>
   <q-page class="bg-image flex flex-center">
     <q-card
-      class="card-border opac"
+      class="card-border"
       v-bind:style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%' }"
     >
       <q-card-section>
@@ -72,15 +72,17 @@ import IEmployee from '../interfaces/employee.interface';
 
 @Component({
   computed: {
-    ...mapState('employee', ['employees']),
+    ...mapState('employee', ['employees', 'employee']),
   },
   methods: {
     ...mapActions('uiNav', ['addAccountPopups', 'showEmployeeInfoPopups']),
-    ...mapActions('employee', ['getEmployees', 'updateEmployee']),
+    ...mapActions('employee', ['getEmployees', 'getLoggedIn']),
   },
 })
 export default class Login extends Vue {
   employees!: IEmployee[];
+  employee!: IEmployee;
+  userLoggedIn!: IEmployee[];
   user = {
     username: '',
     password: '',
@@ -88,7 +90,7 @@ export default class Login extends Vue {
   isShowPass = false;
 
   getEmployees!: () => Promise<void>;
-  updateEmployee!: (payload: any) => Promise<void>;
+  getLoggedIn!: (payload: any) => Promise<void>;
 
   async login(): Promise<void> {
     await this.getEmployees();
@@ -100,11 +102,7 @@ export default class Login extends Vue {
           (e.accountType == 'admin' || e.accountType == 'Admin')
       )
     ) {
-      this.$q.notify({
-        type: 'positive',
-        message: 'Welcome Administrator.',
-      });
-      await this.updateEmployee({
+      await this.getLoggedIn({
         ...this.employees.find(
           (e) =>
             this.user.password == e.password &&
@@ -115,20 +113,25 @@ export default class Login extends Vue {
       });
       await this.getEmployees();
       await this.$store.dispatch('uiNav/isAdminLogin', true);
+      this.$q.notify({
+        type: 'positive',
+        message: 'Welcome System Admin.',
+      });
+
       await this.$router.push('/home');
     } else if (
       this.employees.find(
         (e) =>
           this.user.username == e.username &&
           this.user.password == e.password &&
-          e.accountType == 'user'
+          (e.accountType == 'user' || e.accountType == 'User')
       )
     ) {
       this.$q.notify({
         type: 'positive',
         message: 'Successfully Logged in.',
       });
-      await this.updateEmployee({
+      await this.getLoggedIn({
         ...this.employees.find(
           (e) =>
             this.user.password == e.password &&
@@ -139,7 +142,7 @@ export default class Login extends Vue {
       });
       await this.getEmployees();
       await this.$store.dispatch('uiNav/isAdminLogin', false);
-      await this.$router.push('/');
+      await this.$router.push('/home');
     } else {
       this.$q.notify({
         type: 'negative',

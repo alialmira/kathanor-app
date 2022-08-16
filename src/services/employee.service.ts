@@ -37,7 +37,6 @@ class EmployeeService extends EmployeeControllersApi {
       payload.id as string,
       payload
     );
-    console.log(response);
     return response.data;
   }
   async delete(id: string) {

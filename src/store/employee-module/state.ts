@@ -8,10 +8,11 @@ export interface EmployeeStateInterface {
 function state(): EmployeeStateInterface {
   return {
     employee: {
+      id: '',
       lastName: '',
       firstName: '',
       middleName: '',
-      extName: '',
+      extensionName: '',
       birthDate: '',
       birthPlace: '',
       homeAddress: '',
@@ -20,6 +21,7 @@ function state(): EmployeeStateInterface {
       emailAdd: '',
       agency: '',
       position: '',
+      accountType: '',
       username: '',
       password: '',
       session: false

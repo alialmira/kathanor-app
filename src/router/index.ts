@@ -25,7 +25,7 @@ export default route<Store<StateInterface>>(function ({ Vue, store }) {
 
   Router.beforeEach(async (to, from, next) => {
     // Check for requiredAuth guard
-    await store.dispatch('employees/getEmployees');
+    await store.dispatch('employee/getEmployees');
     const session = store.state.employee.employees.some((i) => i.session == true);
     if (to.matched.some((record) => record.meta.requiresAuth)) {
       console.log('here 1');

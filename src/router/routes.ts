@@ -8,7 +8,6 @@ const routes: RouteConfig[] = [
       {
         path: '/',
         name: 'log-in',
-        meta: { requiresGuest: true },
         component: () => import('src/pages/Login.vue'),
       },
     ],
@@ -24,10 +23,10 @@ const routes: RouteConfig[] = [
         component: () => import('src/pages/homeUser.vue'),
       },
       {
-        path: '/employee',
-        name: 'manage-employee',
+        path: '/profile',
+        name: 'profile',
         meta: { requiresAuth: true },
-        component: () => import('src/pages/ManageEmployee.vue'),
+        component: () => import('src/pages/Profile.vue'),
       },
       {
         path: '/accounts',
@@ -43,7 +42,7 @@ const routes: RouteConfig[] = [
       },
       {
         path: '/csc-report',
-        name: 'manage-csc-report',
+        name: 'manage-report',
         meta: { requiresAuth: true },
         component: () => import('src/pages/ManageCscReport.vue'),
       },
@@ -52,22 +51,7 @@ const routes: RouteConfig[] = [
         name: 'manage-csc-report',
         meta: { requiresAuth: true },
         component: () => import('src/pages/managereport.vue'),
-      },
-      {
-        path: '/add-document',
-        name: 'add-document',
-        component: () => import('src/components/AddDocumentPage.vue'),
-      },
-      {
-        path: '/add-employee',
-        name: 'add-employee',
-        component: () => import('src/components/AddEmployeePage.vue'),
-      },
-      {
-        path: '/add-201',
-        name: 'add-201File',
-        component: () => import('src/components/Add201.vue'),
-      },
+      }
     ],
   },
   // Always leave this as last one,

@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="q-pa-md">
-      <div class="q-pt-xs q-pr-md q-pb-sm">
+      <div class="q-pt-xs q-pr-md q-pb-sm q-gutter-sm">
         <q-label class="text-h5 text-weight-medium"
           >Employees</q-label
         >
@@ -96,8 +96,8 @@
         </template>
       </q-table>
     </div>
-    <AddAccount :employee="employee" @clearData="clearData" />
-    <ShowAccount :employee="employee" @clearData="clearData" />
+    <AddAccount :employee="upEmployee" @clearData="clearData" />
+    <ShowAccount :employee="upEmployee" @clearData="clearData" />
   </q-page>
 </template>
 
@@ -114,7 +114,7 @@ import IEmployee from 'src/interfaces/employee.interface';
     ShowAccount,
   },
   computed: {
-    ...mapState('employee', ['employees']),
+    ...mapState('employee', ['employees', 'employee']),
   },
   methods: {
     ...mapActions('uiNav', ['addAccountPopups', 'showEmployeeInfoPopups']),
@@ -122,7 +122,8 @@ import IEmployee from 'src/interfaces/employee.interface';
   },
 })
 export default class ManageAccounts extends Vue {
-  employee: any = {
+
+  upEmployee: any = {
     lastName: '',
     firstName: '',
     middleName: '',
@@ -138,6 +139,7 @@ export default class ManageAccounts extends Vue {
     password: '',
     session: false,
   };
+
   pagination = {
     rowsPerPage: 10,
   };
@@ -190,6 +192,7 @@ export default class ManageAccounts extends Vue {
   data: IEmployee[] = [];
   newFiltered: IEmployee[] = [];
   employees!: IEmployee[];
+  employee!: IEmployee;
   newEmployee!: IEmployee[];
   addAccountPopups!: (show: boolean) => void;
   showEmployeeInfoPopups!: (show: boolean) => void;
@@ -200,7 +203,6 @@ export default class ManageAccounts extends Vue {
     await this.getEmployees();
     this.data = this.employees;
     this.newFiltered = this.data.filter( d => d.accountType != 'admin');
-    console.log('data: ', this.data);
   }
 
   @Watch('employees')
@@ -209,12 +211,12 @@ export default class ManageAccounts extends Vue {
   }
 
   editEmployee(employee: IEmployee) {
-    this.employee = { ...employee, onUpdate: true };
+    this.upEmployee = { ...employee, onUpdate: true };
     this.addAccountPopups(true);
   }
 
   showEmployee(employee: IEmployee) {
-    this.employee = { ...employee, onUpdate: true };
+    this.upEmployee = { ...employee, onUpdate: true };
     this.showEmployeeInfoPopups(true);
   }
 
@@ -241,12 +243,9 @@ export default class ManageAccounts extends Vue {
   }
 
   clearData(val: IEmployee) {
-    this.employee = val;
+    this.upEmployee = val;
   }
 
-  sendMessage(employee: IEmployee) {
-    this.employee = document;
-  }
 }
 </script>
 

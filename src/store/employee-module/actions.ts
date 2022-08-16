@@ -3,7 +3,7 @@ import { StateInterface } from '../index';
 import { EmployeeStateInterface } from './state';
 import employeeService from 'src/services/employee.service';
 
-const actions: ActionTree<EmployeeStateInterface , StateInterface> = {
+const actions: ActionTree<EmployeeStateInterface, StateInterface> = {
   async addEmployee(context, payload: any) {
     const result = await employeeService.addEmployee(payload);
     context.commit('addEmployee', result);
@@ -16,16 +16,16 @@ const actions: ActionTree<EmployeeStateInterface , StateInterface> = {
     const result = await employeeService.getById(id);
     context.commit('getEmployeeById', result);
   },
-  changePassword(context, payload: { [key: string]: string }) {
-    context.commit('changePassword', payload);
-  },
-  async updateEmployee({}, payload): Promise<any> {
+  async getLoggedIn({}, payload: any): Promise<any> {
     await employeeService.update(payload);
   },
   async deleteEmployee(context, id: string): Promise<any> {
     await employeeService.delete(id);
     context.commit('deleteOfficer', id);
-  }
+  },
+  changePassword(context, payload: { [key: string]: string }) {
+    context.commit('changePassword', payload);
+  },
 };
 
 export default actions;
