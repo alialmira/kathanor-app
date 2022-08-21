@@ -35,10 +35,9 @@
             round
             flat
             outlined
-            icon="settings"
+            icon="account_circle"
             text-color="white"
           >
-            <q-tooltip>Logout</q-tooltip>
 
             <q-menu
               fit
@@ -61,6 +60,23 @@
               v-close-popup
             >
             </q-btn> -->
+
+               <q-btn
+                flat
+                align="left"
+                class="q-pa-sm"
+                label="Profile"
+                color="white"
+                style="width: 218px;"
+                icon="person"
+                text-color="black"
+                active
+                clickable
+                v-ripple
+                to="/profile"
+              >
+              </q-btn>
+
               <q-btn
                 flat
                 align="left"
@@ -73,6 +89,9 @@
                 @click="logout()"
               >
               </q-btn>
+
+
+
             </q-menu>
           </q-btn>
         </q-toolbar>
@@ -103,20 +122,6 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-        active
-        clickable
-        v-ripple
-        to="/profile"
-        exact-active-class="text-white bg-positive"
-      >
-        <q-item-section avatar>
-        <q-icon name="person" />
-        </q-item-section>
-        <q-item-section class="text-weight-bold">
-          PROFILE
-        </q-item-section>
-      </q-item>
 
         <q-item
           active

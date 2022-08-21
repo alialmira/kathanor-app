@@ -18,14 +18,15 @@
         <q-form class="q-pr-md q-pl-md q-gutter-md">
           <q-input
             v-model="user.username"
-            label="Username"
+            label="Phone Number"
+            mask="(+63) ###-###-####"
             unmasked-value
             rounded
             outlined
             @keypress.enter="login()"
           >
             <template v-slot:prepend>
-              <q-icon name="person" />
+              <q-icon name="call" />
             </template>
           </q-input>
 
@@ -99,7 +100,7 @@ export default class Login extends Vue {
         (e) =>
           this.user.username == e.username &&
           this.user.password == e.password &&
-          (e.accountType == 'admin' || e.accountType == 'Admin')
+          (e.accountType == 'admin')
       )
     ) {
       await this.getLoggedIn({
@@ -124,7 +125,7 @@ export default class Login extends Vue {
         (e) =>
           this.user.username == e.username &&
           this.user.password == e.password &&
-          (e.accountType == 'user' || e.accountType == 'User')
+          (e.accountType == 'user')
       )
     ) {
       this.$q.notify({

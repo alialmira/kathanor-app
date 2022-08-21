@@ -103,7 +103,7 @@ import IEmployee from '../interfaces/employee.interface';
     ...mapState('employee', ['employees']),
   },
   methods: {
-    ...mapActions('employee', ['getEmployees', 'getLoggedIn']),
+    ...mapActions('employee', ['getEmployees']),
   },
 })
 export default class Profile extends Vue {
@@ -111,7 +111,6 @@ export default class Profile extends Vue {
   user: any = {};
   employees!: IEmployee[];
   getEmployees!: () => Promise<any>;
-  getLoggedIn!: (payload: any) => Promise<any>;
 
   @Watch('employees')
   onDocumentsChanged() {
@@ -130,6 +129,7 @@ export default class Profile extends Vue {
     this.isAdmin = this.employees.some(
       (e) => e.session == true && e.accountType == 'admin'
     );
+    console.log(this.user);
   }
 }
 </script>

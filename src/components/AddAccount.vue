@@ -11,7 +11,7 @@
     >
       <q-toolbar>
         <q-toolbar-title class="text-weight-bold text-center">
-          <span v-if="employees.onUpdate">EDIT EMPLOYEE</span>
+          <span v-if="newEmployee.onUpdate">EDIT EMPLOYEE</span>
           <span v-else>ADD EMPLOYEE</span>
         </q-toolbar-title>
         <q-btn
@@ -27,8 +27,8 @@
           <div class="row q-gutter-sm">
             <div class="col">
               <q-input
-                ref= "firstName"
-                v-model="employees.firstName"
+                ref="firstName"
+                v-model="newEmployee.firstName"
                 outlined
                 label="First Name"
                 lazy-rules
@@ -38,7 +38,7 @@
             <div class="col">
               <q-input
                 ref="middleName"
-                v-model="employees.middleName"
+                v-model="newEmployee.middleName"
                 outlined
                 label="Middle Name"
                 lazy-rules
@@ -50,7 +50,7 @@
             <div class="col">
               <q-input
                 ref="lastName"
-                v-model="employees.lastName"
+                v-model="newEmployee.lastName"
                 outlined
                 label="Last Name"
                 lazy-rules
@@ -59,7 +59,7 @@
             </div>
             <div class="col">
               <q-input
-                v-model="employees.extensionName"
+                v-model="newEmployee.extensionName"
                 outlined
                 label="Extension Name"
               />
@@ -69,7 +69,7 @@
             <div class="col">
               <q-input
                 ref="birthDate"
-                v-model="employees.birthDate"
+                v-model="newEmployee.birthDate"
                 outlined
                 type="date"
                 hint="Date of Birth"
@@ -78,23 +78,24 @@
             <div class="col">
               <q-input
                 ref="contNumber"
-                v-model="employees.contactNumber"
-                mask="###########"
+                v-model="newEmployee.contactNumber"
+                mask="##########"
+                prefix="+63"
                 outlined
                 label="Contact Number"
                 lazy-rules
                 :rules="[
                   (val) =>
-                    val.length >= 11 || 'Contact Number must be 11 digit',
+                    val.length >= 10 || 'Contact Number must be 10 digit',
                 ]"
               />
             </div>
           </div>
           <div class="row q-gutter-sm">
             <div class="col">
-             <q-input
+              <q-input
                 ref="birthPlace"
-                v-model="employees.birthPlace"
+                v-model="newEmployee.birthPlace"
                 outlined
                 label="Place of Birth"
                 lazy-rules
@@ -104,7 +105,7 @@
             <div class="col">
               <q-input
                 ref="homeAddress"
-                v-model="employees.homeAddress"
+                v-model="newEmployee.homeAddress"
                 outlined
                 label="Home Address"
                 lazy-rules
@@ -114,7 +115,7 @@
             <div class="col">
               <q-input
                 ref="currentAddress"
-                v-model="employees.currentAddress"
+                v-model="newEmployee.currentAddress"
                 outlined
                 label="Current Address"
                 lazy-rules
@@ -122,20 +123,11 @@
               />
             </div>
           </div>
-
-          <q-input
-            ref="emailAdd"
-            v-model="employees.emailAddress"
-            outlined
-            label="Email Address"
-            lazy-rules
-            :rules="[(val) => !!val || 'Field is required']"
-          />
           <div class="row q-gutter-sm">
             <div class="col">
               <q-input
                 ref="agency"
-                v-model="employees.agency"
+                v-model="newEmployee.agency"
                 outlined
                 label="Agency"
                 lazy-rules
@@ -145,13 +137,107 @@
             <div class="col">
               <q-input
                 ref="position"
-                v-model="employees.position"
+                v-model="newEmployee.position"
                 outlined
                 label="Position"
                 lazy-rules
                 :rules="[(val) => !!val || 'Field is required']"
               />
             </div>
+          </div>
+          <div
+            v-if="user.accountType == 'admin' || user.accountType == 'Admin'"
+          >
+            <div class="row q-gutter-sm">
+              <div class="col">
+                <q-input
+                  ref="emailAdd"
+                  v-model="newEmployee.emailAddress"
+                  outlined
+                  label="Email Address"
+                  lazy-rules
+                  :rules="[(val) => !!val || 'Field is required']"
+                />
+              </div>
+              <div class="col">
+                <q-select
+                  :ref="
+                    user.accountType == 'admin' || user.accountType == 'Admin'
+                      ? 'accountType'
+                      : ''
+                  "
+                  label="Account Type"
+                  v-model="newEmployee.accountType"
+                  :options="accType"
+                  outlined
+                  lazy-rules
+                  :rules="[(val) => !!val || 'Field is required']"
+                />
+              </div>
+            </div>
+            <div
+              v-if="
+                newEmployee.accountType == 'admin' ||
+                newEmployee.accountType == 'user'
+              "
+              class="row q-gutter-sm"
+            >
+              <div class="col">
+                <q-input
+                  v-model="newEmployee.password"
+                  label="Password"
+                  :type="isShowPass ? 'text' : 'password'"
+                  outlined
+                >
+                  <template v-slot:append>
+                    <q-btn
+                      :icon="isShowPass ? 'visibility' : 'visibility_off'"
+                      flat
+                      round
+                      dense
+                      @click="isShowPass = !isShowPass"
+                    />
+                  </template>
+                </q-input>
+              </div>
+              <div class="col">
+                <q-input
+                  v-model="confirmPassword"
+                  label="Confirm Password"
+                  :type="isShowCPass ? 'text' : 'password'"
+                  outlined
+                >
+                  <template v-slot:append>
+                    <q-btn
+                      :icon="isShowCPass ? 'visibility' : 'visibility_off'"
+                      flat
+                      round
+                      dense
+                      @click="isShowCPass = !isShowCPass"
+                    />
+                  </template>
+                </q-input>
+              </div>
+            </div>
+            <div
+              v-if="
+                newEmployee.accountType == 'Admin' ||
+                newEmployee.accountType == 'User'
+              "
+              class="q-pt-xs text-center"
+            >
+              Note: Your contact number will be your username.
+            </div>
+          </div>
+          <div v-else class="q-gutter-sm">
+            <q-input
+              ref="emailAdd"
+              v-model="newEmployee.emailAddress"
+              outlined
+              label="Email Address"
+              lazy-rules
+              :rules="[(val) => !!val || 'Field is required']"
+            />
           </div>
         </div>
       </q-card-section>
@@ -169,12 +255,12 @@
         <div class="col">
           <q-btn
             class="full-width"
-            :label="employees.onUpdate ? 'Update' : 'Confirm'"
+            :label="newEmployee.onUpdate ? 'Update' : 'Confirm'"
             color="positive"
             rounded
             dense
             @click="
-              employees.onUpdate ? updateEmployeeInfo() : addNewEmployee()
+              newEmployee.onUpdate ? updateEmployeeInfo() : addNewEmployeeUser()
             "
             :loading="isUpload"
             :disable="isUpload"
@@ -186,10 +272,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
-import { date } from 'quasar';
-import { lstat } from 'fs';
 
 interface RefsVue extends Vue {
   validate(): void;
@@ -208,6 +292,7 @@ interface IEmployee {
   contNumber: string;
   emailAdd: string;
   position: string;
+  accountType: string;
   username: string;
   password: string;
   session: boolean;
@@ -216,10 +301,12 @@ interface IEmployee {
 @Component({
   computed: {
     ...mapState('uiNav', ['showAddAccountDialog']),
+    ...mapState('employee', ['employees']),
   },
   methods: {
     ...mapActions('uiNav', ['addAccountPopups']),
     ...mapActions('employee', [
+      'getEmployees',
       'addEmployee',
       'updateEmployee',
       'deleteEmployee',
@@ -229,7 +316,7 @@ interface IEmployee {
 export default class AddAccount extends Vue {
   @Prop({ type: Object, required: true }) readonly employee!: IEmployee;
 
-  employees: any = {
+  newEmployee: any = {
     lastName: '',
     firstName: '',
     middleName: '',
@@ -240,8 +327,9 @@ export default class AddAccount extends Vue {
     currentAddress: '',
     contNumber: '',
     emailAdd: '',
-    agency: 'Civil Service Commission - LDS',
+    agency: '',
     position: '',
+    accountType: '',
     username: '',
     password: '',
     onUpdate: false,
@@ -259,17 +347,45 @@ export default class AddAccount extends Vue {
     emailAdd: RefsVue;
     agency: RefsVue;
     position: RefsVue;
+    accountType: RefsVue;
   };
 
+  accType = ['admin', 'user', 'none'];
+  confirmPassword = '';
+  user: any = {};
+  isShowPass = false;
+  isShowCPass = false;
+  isAdmin = false;
   readonly = false;
   _id = undefined;
   isSubmit = false;
   isUpload = false;
   formHasError!: boolean;
   showAddAccountDialog!: boolean;
+  employees!: IEmployee[];
   addAccountPopups!: (show: boolean) => void;
   updateEmployee!: (payload: any) => Promise<void>;
   addEmployee!: (payload: any) => Promise<void>;
+  getEmployees!: () => Promise<void>;
+
+  @Watch('employees')
+  onDocumentsChanged() {
+    this.isAdmin = this.employees.some(
+      (e) => e.session == true && e.accountType == 'admin'
+    );
+    this.user = this.employees.find(
+      (e) =>
+        (e.session == true && e.accountType == 'admin') ||
+        e.accountType == 'user'
+    );
+  }
+
+  async created() {
+    await this.getEmployees();
+    this.isAdmin = this.employees.some(
+      (e) => e.session == true && e.accountType == 'admin'
+    );
+  }
 
   checkForm() {
     this.$refs.lastName.validate();
@@ -299,42 +415,170 @@ export default class AddAccount extends Vue {
       this.$refs.contNumber.hasError ||
       this.$refs.emailAdd.hasError ||
       this.$refs.agency.hasError ||
+      this.$refs.position.hasError ||
+      this.$refs.accountType.hasError
+    ) {
+      this.formHasError = true;
+    } else {
+      this.isSubmit = false;
+      if (this.newEmployee.accountType == 'None') {
+        await this.addEmployee({
+          ...this.newEmployee,
+          session: false,
+          username: '',
+          password: '',
+        });
+        await this.$store.dispatch('uiNav/addAccountPopups', false);
+        this.newEmployee = {
+          lastName: '',
+          firstName: '',
+          middleName: '',
+          extensionName: '',
+          birthDate: '',
+          homeAddress: '',
+          currentAddress: '',
+          contNumber: '',
+          emailAdd: '',
+          agency: '',
+          position: '',
+        };
+        this.confirmPassword = '';
+        this.$q.notify({
+          type: 'positive',
+          message: 'Employee Account Created.',
+        });
+      } else if (this.newEmployee.password == this.confirmPassword) {
+        await this.addEmployee({
+          ...this.newEmployee,
+          session: false,
+          username: this.newEmployee.contactNumber,
+          password: this.newEmployee.password,
+        });
+        await this.$store.dispatch('uiNav/addAccountPopups', false);
+        this.newEmployee = {
+          lastName: '',
+          firstName: '',
+          middleName: '',
+          extensionName: '',
+          birthDate: '',
+          homeAddress: '',
+          currentAddress: '',
+          contNumber: '',
+          emailAdd: '',
+          agency: '',
+          position: '',
+        };
+        this.confirmPassword = '';
+        this.$q.notify({
+          type: 'positive',
+          message: 'Employee Account Created.',
+        });
+      } else if (this.newEmployee.password == this.confirmPassword) {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Password Not Matched.',
+        });
+      } else {
+        this.$q.notify({
+          type: 'positive',
+          message: 'Failed to Create Account.',
+        });
+      }
+    }
+  }
+
+  async addNewEmployeeUser() {
+    this.isSubmit = true;
+    this.checkForm();
+    if (
+      this.$refs.lastName.hasError ||
+      this.$refs.firstName.hasError ||
+      this.$refs.middleName.hasError ||
+      this.$refs.birthDate.hasError ||
+      this.$refs.birthPlace.hasError ||
+      this.$refs.homeAddress.hasError ||
+      this.$refs.currentAddress.hasError ||
+      this.$refs.contNumber.hasError ||
+      this.$refs.emailAdd.hasError ||
+      this.$refs.agency.hasError ||
       this.$refs.position.hasError
     ) {
       this.formHasError = true;
     } else {
       this.isSubmit = false;
-      await this.addEmployee({
-        ...this.employees,
-        session: false,
-        username: this.employees.firstName,
-        password: this.employees.lastName,
-      });
-      await this.$store.dispatch('uiNav/addAccountPopups', false);
-      this.employees = {
-        lastName: '',
-        firstName: '',
-        middleName: '',
-        extensionName: '',
-        birthDate: '',
-        homeAddress: '',
-        currentAddress: '',
-        contNumber: '',
-        emailAdd: '',
-        agency: '',
-        position: '',
-      };
-      this.$q.notify({
-        type: 'positive',
-        message: 'Employee Account Created',
-      });
+      if (this.newEmployee.accountType == 'none') {
+        await this.addEmployee({
+          ...this.newEmployee,
+          accountType: 'none',
+          session: false,
+          username: '',
+          password: '',
+        });
+        await this.$store.dispatch('uiNav/addAccountPopups', false);
+        this.newEmployee = {
+          lastName: '',
+          firstName: '',
+          middleName: '',
+          extensionName: '',
+          birthDate: '',
+          homeAddress: '',
+          currentAddress: '',
+          contNumber: '',
+          emailAdd: '',
+          agency: '',
+          position: '',
+          accountType: ''
+        };
+        this.confirmPassword = '';
+        this.$q.notify({
+          type: 'positive',
+          message: 'Employee Account Created.',
+        });
+      } else if (this.newEmployee.password == this.confirmPassword) {
+        await this.addEmployee({
+          ...this.newEmployee,
+          session: false,
+          username: this.newEmployee.contactNumber,
+          password: this.newEmployee.password,
+        });
+        await this.$store.dispatch('uiNav/addAccountPopups', false);
+        this.newEmployee = {
+          lastName: '',
+          firstName: '',
+          middleName: '',
+          extensionName: '',
+          birthDate: '',
+          homeAddress: '',
+          currentAddress: '',
+          contNumber: '',
+          emailAdd: '',
+          agency: '',
+          position: '',
+          accountType: ''
+        };
+        this.confirmPassword = '';
+        this.$q.notify({
+          type: 'positive',
+          message: 'Employee Account Created.',
+        });
+      } else if (this.newEmployee.password != this.confirmPassword) {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Password Not Matched.',
+        });
+      } else {
+        this.$q.notify({
+          type: 'positive',
+          message: 'Failed to Create Account.',
+        });
+      }
     }
   }
 
   async updateEmployeeInfo() {
     try {
       await this.updateEmployee({
-        ...this.employees,
+        ...this.newEmployee,
       });
       this.addAccountPopups(false);
       this.$q.notify({
@@ -351,24 +595,28 @@ export default class AddAccount extends Vue {
   }
 
   showDialog() {
-    this.employees = { ...this.employee };
+    this.newEmployee = { ...this.employee };
   }
 
   hideDialog() {
-    this.employees = {
-        lastName: '',
-        firstName: '',
-        middleName: '',
-        extensionName: '',
-        birthDate: '',
-        homeAddress: '',
-        currentAddress: '',
-        contNumber: '',
-        emailAdd: '',
-        agency: '',
-        position: '',
-      };
-    this.$emit('clearData', { ...this.employees, onUpdate: false });
+    this.newEmployee = {
+      lastName: '',
+      firstName: '',
+      middleName: '',
+      extensionName: '',
+      birthDate: '',
+      homeAddress: '',
+      currentAddress: '',
+      contNumber: '',
+      emailAdd: '',
+      agency: '',
+      position: '',
+      accountType: '',
+      username: '',
+      password: '',
+    };
+    this.confirmPassword = '';
+    this.$emit('clearData', { ...this.newEmployee, onUpdate: false });
   }
 }
 </script>
