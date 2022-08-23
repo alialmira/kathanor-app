@@ -1,7 +1,6 @@
 import { ActionTree } from 'vuex';
 import { StateInterface } from '../index';
 import { DocumentStateInterface } from './state';
-import documentService from 'src/services/document.service';
 import file201Service from 'src/services/201file.service';
 import IDocument from 'src/interfaces/document.interface';
 
@@ -13,21 +12,29 @@ const actions: ActionTree<DocumentStateInterface, StateInterface> = {
     }));
     return uploads;
   },
-  async addDocument(context, id: any) {
-    const result = await documentService.addDocument(id);
-    context.commit('addEmployeeDocument', result);
-  },
-  async getDocument(context, id: any): Promise<any> {
-    const result = await documentService.getDocument(id);
-    context.commit('getEmployeeDocument', result);
-  },
-  async getDocuments(context): Promise<any> {
-    const result = await documentService.getAll();
+  async getAllDocuments(context): Promise<any> {
+    const result = await file201Service.getAll201Files();
     context.commit('getDocuments', result);
   },
-  async updateDocument({}, payload): Promise<any> {
-    await documentService.update(payload);
-  },
+  async getEmployeeDocs(context, id: string){
+    const result = await file201Service.get201Files(id);
+    context.commit('getEmployeeDocs', result);
+  }
+  // async addDocument(context, id: any) {
+  //   const result = await documentService.addDocument(id);
+  //   context.commit('addEmployeeDocument', result);
+  // },
+  // async getDocument(context, id: any): Promise<any> {
+  //   const result = await documentService.getDocument(id);
+  //   context.commit('getEmployeeDocument', result);
+  // },
+  // async getAllDocuments(context): Promise<any> {
+  //   const result = await documentService.getAll();
+  //   context.commit('getDocuments', result);
+  // },
+  // async updateDocument({}, payload): Promise<any> {
+  //   await documentService.update(payload);
+  // },
 };
 
 export default actions;

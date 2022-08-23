@@ -123,8 +123,8 @@ export default class Login extends Vue {
     } else if (
       this.employees.find(
         (e) =>
-          this.user.username == e.username &&
-          this.user.password == e.password &&
+          this.user.username === e.username &&
+          this.user.password === e.password &&
           (e.accountType == 'user')
       )
     ) {
@@ -135,8 +135,8 @@ export default class Login extends Vue {
       await this.getLoggedIn({
         ...this.employees.find(
           (e) =>
-            this.user.password == e.password &&
-            this.user.username == e.username &&
+            this.user.password === e.password &&
+            this.user.username === e.username &&
             e.accountType == 'user'
         ),
         session: true,

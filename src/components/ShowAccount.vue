@@ -6,7 +6,7 @@
     @show="showDialog()"
   >
     <q-card
-      style="width: 700px; max-width: 80vw; border-radius: 25px;"
+      style="width: 500px; max-width: 80vw; border-radius: 25px;"
       class="__card q-pt-xs q-pb-md"
     >
       <q-toolbar>
@@ -21,87 +21,122 @@
           @click="showEmployeeInfoPopups(false)"
         ></q-btn>
       </q-toolbar>
-      <q-card-section class="q-pr-lg q-pl-lg q-pb-xs">
-        <div class="items-center">
-          <div class="row q-gutter-sm">
-            <div class="col-4">
-              <q-avatar size="150px">
-                <img src="~assets/avatar-02.jpg" />
-              </q-avatar>
-            </div>
-            <div class="col">
-              <q-card-section class="text-h5 text-weight-bold">
-                <div class="row q-gutter-sm">
+      <div class="flex flex-center">
+        <q-card-section>
+          <div class="q-pt-xs">
+            <div :class="$q.screen.lt.md ? 'text-h6' : 'ellipsis'">
+              <q-card-section :class="$q.screen.lt.md ? '' : 'text-h5 text-weight-bold'">
+                <div
+                  :class="
+                    $q.screen.lt.md
+                      ? 'text-center q-gutter-md'
+                      : 'text-center q-gutter-md'
+                  "
+                >
+                  <q-avatar
+                    :size="$q.screen.lt.md ? '110px' : '170px'"
+                    class="shadow-10"
+                  >
+                    <img src="~assets/avatar-02.jpg" />
+                  </q-avatar>
+                </div>
+              </q-card-section>
+              <q-card-section
+                :class="$q.screen.lt.md ? '' : 'text-h5 text-weight-bold'"
+              >
+                <div
+                  :class="
+                    $q.screen.lt.md
+                      ? 'text-center q-gutter-xs'
+                      : 'text-center q-gutter-xs'
+                  "
+                >
                   {{ employees.firstName }} {{ employees.middleName }}
-                  {{ employees.lastName }} {{ employees.extensionName }}
+                  {{ employees.lastName }}
+                  {{ employees.extensionName }}
                   <br />
                   {{ employees.position }}
                   <br />
                   {{ employees.agency }}
                 </div>
               </q-card-section>
-            </div>
-          </div>
-        </div>
-      </q-card-section>
-      <q-card-section class="q-pr-lg q-pl-lg q-pb-xs">
-        <div class="items-center">
-          <div class="row q-gutter-sm">
-            <div class="col">
-              <q-card-section class="text-h5">
+              <div class="q-pa-md q-pt-md">
+                <q-separator color="black" />
+              </div>
+              <q-card-section
+                :class="
+                  $q.screen.lt.md ? '' : 'text-h5 text-center text-weight-bold'
+                "
+              >
                 <div class="row q-gutter-sm">
                   <div class="col">
-                    Birth Date:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ employees.birthDate }}
-                  </div>
-                </div>
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    Birth Place:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ employees.birthPlace }}
-                  </div>
-                </div>
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    Contact Number:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ employees.contactNumber }}
-                  </div>
-                </div>
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    Email Address:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ employees.emailAddress }}
-                  </div>
-                </div>
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    Home Address:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ employees.homeAddress }}
-                  </div>
-                </div>
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    Current Address:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ employees.currentAddress }}
+                    <div :class="$q.screen.lt.md ? '' : 'row'">
+                      <div
+                        :class="
+                          $q.screen.lt.md
+                            ? 'q-gutter-sm'
+                            : 'col text-weight-bold q-gutter-sm'
+                        "
+                      >
+                        <q-input
+                          v-model="employees.birthDate"
+                          label="Birth Date"
+                          borderless
+                          stack-label
+                          dense
+                          readonly
+                        />
+                        <q-input
+                          v-model="employees.contactNumber"
+                          label="Contact Number"
+                          borderless
+                          stack-label
+                          dense
+                          readonly
+                        />
+                        <q-input
+                          v-model="employees.homeAddress"
+                          label="Home Address"
+                          borderless
+                          stack-label
+                          dense
+                          readonly
+                        />
+                      </div>
+                      <div class="col text-black q-gutter-sm">
+                        <q-input
+                          v-model="employees.birthPlace"
+                          label="Birth Place"
+                          borderless
+                          stack-label
+                          dense
+                          readonly
+                        />
+                        <q-input
+                          v-model="employees.emailAddress"
+                          label="Email Address"
+                          borderless
+                          stack-label
+                          dense
+                          readonly
+                        />
+                        <q-input
+                          v-model="employees.currentAddress"
+                          label="Current Address"
+                          borderless
+                          stack-label
+                          dense
+                          readonly
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </q-card-section>
             </div>
           </div>
-        </div>
-      </q-card-section>
+        </q-card-section>
+      </div>
     </q-card>
   </q-dialog>
 </template>

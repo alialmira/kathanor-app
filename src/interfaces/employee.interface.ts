@@ -9,7 +9,7 @@ export default interface IEmployee {
   homeAddress: string;
   currentAddress: string;
   contNumber: string;
-  emailAdd: string;
+  emailAdd?: string;
   agency: string;
   position: string;
   accountType: string;

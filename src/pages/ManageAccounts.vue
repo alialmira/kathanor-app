@@ -2,13 +2,11 @@
   <q-page>
     <div class="q-pa-md">
       <div class="q-pt-xs q-pr-md q-pb-sm q-gutter-sm">
-        <q-label class="text-h5 text-weight-medium"
-          >Employees</q-label
-        >
+        <q-label class="text-h5 text-weight-medium">Employees</q-label>
       </div>
       <q-table
         class="card-border"
-        :data="newFiltered"
+        :data="user.accountType != 'admin' ? newFiltered : data"
         :columns="columns"
         row-key="name"
         virtual-scroll
@@ -122,7 +120,6 @@ import IEmployee from 'src/interfaces/employee.interface';
   },
 })
 export default class ManageAccounts extends Vue {
-
   upEmployee: any = {
     lastName: '',
     firstName: '',
@@ -169,7 +166,7 @@ export default class ManageAccounts extends Vue {
       name: 'extName',
       align: 'left',
       label: 'Extension Name',
-      field: 'extName',
+      field: 'extensionName',
       sortable: true,
     },
     {
@@ -188,6 +185,8 @@ export default class ManageAccounts extends Vue {
       sortable: true,
     },
   ];
+  isAdmin = false;
+  user: any = {};
   filter = '';
   data: IEmployee[] = [];
   newFiltered: IEmployee[] = [];
@@ -202,12 +201,27 @@ export default class ManageAccounts extends Vue {
   async created() {
     await this.getEmployees();
     this.data = this.employees;
-    this.newFiltered = this.data.filter( d => d.accountType != 'admin');
+    this.newFiltered = this.data.filter((d) => d.accountType != 'admin');
+    this.isAdmin = this.employees.some(
+      (e) => e.session == true && e.accountType == 'admin'
+    );
   }
 
   @Watch('employees')
   onEmployeesChanged(val: any) {
     this.data = val;
+  }
+
+  @Watch('employees')
+  onDocumentsChanged() {
+    this.isAdmin = this.employees.some(
+      (e) => e.session == true && e.accountType == 'admin'
+    );
+    this.user = this.employees.find(
+      (e) =>
+        (e.session == true && e.accountType == 'admin') ||
+        e.accountType == 'user'
+    );
   }
 
   editEmployee(employee: IEmployee) {
@@ -245,7 +259,6 @@ export default class ManageAccounts extends Vue {
   clearData(val: IEmployee) {
     this.upEmployee = val;
   }
-
 }
 </script>
 

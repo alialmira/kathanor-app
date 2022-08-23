@@ -131,7 +131,6 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
-import file201Service from 'src/services/201file.service';
 import IDocument from '../interfaces/document.interface';
 import IEmployee from 'src/interfaces/employee.interface';
 
@@ -155,7 +154,7 @@ interface RefsVue extends Vue {
 export default class Add201File extends Vue {
   @Prop({ type: Object, required: true }) readonly document!: IDocument;
 
-  documents:IDocument = {
+  documents: any = {
     employeeId: '',
     docType: '',
     files: [],

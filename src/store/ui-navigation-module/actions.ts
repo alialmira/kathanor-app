@@ -9,6 +9,9 @@ const actions: ActionTree<UiNavStateInterface, StateInterface> = {
   showEmployeeInfoPopups(context, payload: boolean){
     context.commit('showEmployeeInfoPopups', payload);
   },
+  showEmployeeDocsPopups(context, payload: boolean){
+    context.commit('showEmployeeDocsPopups', payload);
+  },
   addAccountPopups(context, payload: boolean) {
     context.commit('addAccountPopups', payload);
   },

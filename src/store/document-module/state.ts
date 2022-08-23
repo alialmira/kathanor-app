@@ -1,22 +1,21 @@
-import IDocument from 'src/interfaces/document.interface';
+import IFIle201 from 'src/interfaces/File201.interface';
 
 export interface DocumentStateInterface {
-  createDocuments: IDocument[];
-  documents: IDocument[];
-  newDocuments: IDocument[];
-  document: IDocument;
+  documents: IFIle201[];
+  document: IFIle201;
 }
 
 function state(): DocumentStateInterface {
   return {
     document: {
+      uploadedBy: '',
       employeeId: '',
+      filename: '',
       docType: '',
-      files: [],
+      mimeType: '',
+      content: '',
     },
     documents: [],
-    createDocuments: [],
-    newDocuments: [],
   };
 }
 

@@ -7,7 +7,7 @@
       <q-table
         class="card-border"
         style="border-radius: 15px;"
-        :data="newFiltered"
+        :data="data"
         :columns="columns"
         row-key="name"
         virtual-scroll
@@ -66,104 +66,177 @@
             <q-td auto-width>
               <q-btn
                 size="sm"
-                color="blue"
+                color="green"
                 icon="info"
                 round
                 dense
                 class="q-mr-sm"
+                @click="showEmployeeDocs(props.row)"
               >
                 <q-tooltip>Show 201-File</q-tooltip>
-              </q-btn>
-              <q-btn
-                size="sm"
-                color="green"
-                icon="edit"
-                round
-                dense
-                class="q-mr-sm"
-              >
-                <q-tooltip>Edit 201-File</q-tooltip>
-              </q-btn>
-              <q-btn
-                size="sm"
-                color="red"
-                icon="delete"
-                round
-                dense
-                class="q-mr-sm"
-              >
               </q-btn>
             </q-td>
           </q-tr>
         </template>
       </q-table>
       <Add201File />
+      <ShowDocument :document="newDocument" @clearData="clearData" />
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
 import { mapActions, mapState } from 'vuex';
 import Add201File from 'src/components/Add201File.vue';
+import ShowDocument from 'src/components/showDocument.vue';
+import IFIle201 from 'src/interfaces/File201.interface';
+import IEmployee from '../interfaces/employee.interface';
+import { Promise } from 'q';
+
+interface IEmployeeFile {
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  bdate: string;
+  tor: string;
+  pds: string;
+  scard: string;
+  eligibility: string;
+  appointment: string;
+}
 
 @Component({
   components: {
     Add201File,
+    ShowDocument,
   },
-  computed: {},
+  computed: {
+    ...mapState('document', ['documents']),
+    ...mapState('employee', ['employee', 'employees']),
+  },
   methods: {
-    ...mapActions('uiNav', ['add201FilePopups']),
+    ...mapActions('uiNav', ['add201FilePopups', 'showEmployeeDocsPopups']),
+    ...mapActions('document', ['getAllDocuments']),
+    ...mapActions('employee', ['getEmployees', 'getEmployeeById']),
   },
 })
 export default class ManageAccounts extends Vue {
+  // columns = [
+  //   {
+  //     name: 'firstName',
+  //     align: 'left',
+  //     label: 'First Name',
+  //     field: '',
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: 'middleName',
+  //     align: 'left',
+  //     label: 'Middle Name',
+  //     field: '',
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: 'lastName',
+  //     align: 'left',
+  //     label: 'Last Name',
+  //     field: '',
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: 'extName',
+  //     align: 'left',
+  //     label: 'Extension Name',
+  //     field: '',
+  //     sortable: true,
+  //   },
+
+  //   {
+  //     name: 'birthDate',
+  //     align: 'left',
+  //     label: 'Birth Date',
+  //     field: '',
+  //     sortable: true,
+  //   },
+
+  //   {
+  //     name: 'agency',
+  //     align: 'left',
+  //     label: 'Agency',
+  //     field: '',
+  //     sortable: true,
+  //   },
+  // ];
+
+  filter = '';
+  pagination = {
+    rowsPerPage: 10,
+  };
   columns = [
     {
-      name: 'firstName',
+      name: 'employeeId',
       align: 'left',
-      label: 'First Name',
-      field: '',
+      label: 'Employee ID',
+      field: 'employeeId',
       sortable: true,
     },
     {
-      name: 'middleName',
+      name: 'filename',
       align: 'left',
-      label: 'Middle Name',
-      field: '',
+      label: 'File Name',
+      field: 'filename',
       sortable: true,
     },
     {
-      name: 'lastName',
+      name: 'docType',
       align: 'left',
-      label: 'Last Name',
-      field: '',
-      sortable: true,
-    },
-    {
-      name: 'extName',
-      align: 'left',
-      label: 'Extension Name',
-      field: '',
+      label: 'Document Type',
+      field: 'docType',
       sortable: true,
     },
 
     {
-      name: 'birthDate',
+      name: 'mimeType',
       align: 'left',
-      label: 'Birth Date',
-      field: '',
-      sortable: true,
-    },
-
-    {
-      name: 'agency',
-      align: 'left',
-      label: 'Agency',
-      field: '',
+      label: 'Format',
+      field: 'mimeType',
       sortable: true,
     },
   ];
 
+  newDocument: any = {
+    uploadedBy: '',
+    employeeId: '',
+    filename: '',
+    docType: '',
+    mimeType: '',
+    onUpdate: false,
+  };
+
+  dataFile!: IEmployeeFile;
+  documents!: IFIle201[];
+  employees!: IEmployee[];
+  employee!: IEmployee;
+  getEmployees!: () => Promise<void>;
+  getAllDocuments!: () => Promise<void>;
   add201FilePopups!: (show: boolean) => void;
+  showEmployeeDocsPopups!: (show: boolean) => void;
+  data: any = ([] = []);
+
+  async created() {
+    await this.getAllDocuments();
+    await this.getEmployees();
+    this.data = this.documents;
+  }
+
+  showEmployeeDocs(document: IFIle201) {
+    this.newDocument = { ...document, onUpdate: true };
+    this.showEmployeeDocsPopups(true);
+  }
+
+  clearData(val: IFIle201) {
+    this.newDocument = val;
+  }
 }
 </script>

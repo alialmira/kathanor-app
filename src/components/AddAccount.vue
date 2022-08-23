@@ -145,43 +145,23 @@
               />
             </div>
           </div>
-          <div
-            v-if="user.accountType == 'admin' || user.accountType == 'Admin'"
-          >
-            <div class="row q-gutter-sm">
-              <div class="col">
-                <q-input
-                  ref="emailAdd"
-                  v-model="newEmployee.emailAddress"
-                  outlined
-                  label="Email Address"
-                  lazy-rules
-                  :rules="[(val) => !!val || 'Field is required']"
-                />
-              </div>
-              <div class="col">
-                <q-select
-                  :ref="
-                    user.accountType == 'admin' || user.accountType == 'Admin'
-                      ? 'accountType'
-                      : ''
-                  "
-                  label="Account Type"
-                  v-model="newEmployee.accountType"
-                  :options="accType"
-                  outlined
-                  lazy-rules
-                  :rules="[(val) => !!val || 'Field is required']"
-                />
-              </div>
+          <div class="row q-gutter-sm">
+            <div class="col">
+              <q-input
+                v-model="newEmployee.emailAddress"
+                outlined
+                label="Email Address"
+              />
             </div>
-            <div
-              v-if="
-                newEmployee.accountType == 'admin' ||
-                newEmployee.accountType == 'user'
-              "
-              class="row q-gutter-sm"
-            >
+          </div>
+          <div
+            v-if="
+              newEmployee.agency == 'CSC - LDS' ||
+              newEmployee.agency == 'Csc - lds' ||
+              newEmployee.agency == 'csc - lds'
+            "
+          >
+            <div class="row q-pt-sm q-gutter-sm">
               <div class="col">
                 <q-input
                   v-model="newEmployee.password"
@@ -221,23 +201,14 @@
             </div>
             <div
               v-if="
-                newEmployee.accountType == 'Admin' ||
-                newEmployee.accountType == 'User'
+                newEmployee.agency == 'CSC - LDS' ||
+                newEmployee.agency == 'Csc - lds' ||
+                newEmployee.agency == 'csc - lds'
               "
               class="q-pt-xs text-center"
             >
               Note: Your contact number will be your username.
             </div>
-          </div>
-          <div v-else class="q-gutter-sm">
-            <q-input
-              ref="emailAdd"
-              v-model="newEmployee.emailAddress"
-              outlined
-              label="Email Address"
-              lazy-rules
-              :rules="[(val) => !!val || 'Field is required']"
-            />
           </div>
         </div>
       </q-card-section>
@@ -260,7 +231,7 @@
             rounded
             dense
             @click="
-              newEmployee.onUpdate ? updateEmployeeInfo() : addNewEmployeeUser()
+              newEmployee.onUpdate ? updateEmployeeInfo() : addNewEmployee()
             "
             :loading="isUpload"
             :disable="isUpload"
@@ -344,7 +315,6 @@ export default class AddAccount extends Vue {
     homeAddress: RefsVue;
     currentAddress: RefsVue;
     contNumber: RefsVue;
-    emailAdd: RefsVue;
     agency: RefsVue;
     position: RefsVue;
     accountType: RefsVue;
@@ -396,10 +366,94 @@ export default class AddAccount extends Vue {
     this.$refs.homeAddress.validate();
     this.$refs.currentAddress.validate();
     this.$refs.contNumber.validate();
-    this.$refs.emailAdd.validate();
     this.$refs.agency.validate();
     this.$refs.position.validate();
   }
+
+  // async addNewEmployee() {
+  //   this.isSubmit = true;
+  //   this.checkForm();
+  //   if (
+  //     this.$refs.lastName.hasError ||
+  //     this.$refs.firstName.hasError ||
+  //     this.$refs.middleName.hasError ||
+  //     this.$refs.birthDate.hasError ||
+  //     this.$refs.birthPlace.hasError ||
+  //     this.$refs.homeAddress.hasError ||
+  //     this.$refs.currentAddress.hasError ||
+  //     this.$refs.contNumber.hasError ||
+  //     this.$refs.agency.hasError ||
+  //     this.$refs.position.hasError ||
+  //     this.$refs.accountType.hasError
+  //   ) {
+  //     this.formHasError = true;
+  //   } else {
+  //     this.isSubmit = false;
+  //     if (this.newEmployee.accountType == 'None') {
+  //       await this.addEmployee({
+  //         ...this.newEmployee,
+  //         session: false,
+  //         username: '',
+  //         password: '',
+  //       });
+  //       await this.$store.dispatch('uiNav/addAccountPopups', false);
+  //       this.newEmployee = {
+  //         lastName: '',
+  //         firstName: '',
+  //         middleName: '',
+  //         extensionName: '',
+  //         birthDate: '',
+  //         homeAddress: '',
+  //         currentAddress: '',
+  //         contNumber: '',
+  //         emailAdd: '',
+  //         agency: '',
+  //         position: '',
+  //       };
+  //       this.confirmPassword = '';
+  //       this.$q.notify({
+  //         type: 'positive',
+  //         message: 'Employee Account Created.',
+  //       });
+  //     } else if (this.newEmployee.password == this.confirmPassword) {
+  //       await this.addEmployee({
+  //         ...this.newEmployee,
+  //         session: false,
+  //         username: this.newEmployee.contactNumber,
+  //         password: this.newEmployee.password,
+  //       });
+  //       await this.$store.dispatch('uiNav/addAccountPopups', false);
+  //       this.newEmployee = {
+  //         lastName: '',
+  //         firstName: '',
+  //         middleName: '',
+  //         extensionName: '',
+  //         birthDate: '',
+  //         homeAddress: '',
+  //         currentAddress: '',
+  //         contNumber: '',
+  //         emailAdd: '',
+  //         agency: '',
+  //         position: '',
+  //       };
+  //       this.confirmPassword = '';
+  //       this.$q.notify({
+  //         type: 'positive',
+  //         message: 'Employee Account Created.',
+  //       });
+  //     } else if (this.newEmployee.password == this.confirmPassword) {
+  //       this.$q.notify({
+  //         type: 'negative',
+  //         message: 'Password Not Matched.',
+  //       });
+  //     } else {
+  //       this.$q.notify({
+  //         type: 'positive',
+  //         message: 'Failed to Create Account.',
+  //       });
+  //     }
+  //   }
+  // }
 
   async addNewEmployee() {
     this.isSubmit = true;
@@ -413,103 +467,16 @@ export default class AddAccount extends Vue {
       this.$refs.homeAddress.hasError ||
       this.$refs.currentAddress.hasError ||
       this.$refs.contNumber.hasError ||
-      this.$refs.emailAdd.hasError ||
-      this.$refs.agency.hasError ||
-      this.$refs.position.hasError ||
-      this.$refs.accountType.hasError
-    ) {
-      this.formHasError = true;
-    } else {
-      this.isSubmit = false;
-      if (this.newEmployee.accountType == 'None') {
-        await this.addEmployee({
-          ...this.newEmployee,
-          session: false,
-          username: '',
-          password: '',
-        });
-        await this.$store.dispatch('uiNav/addAccountPopups', false);
-        this.newEmployee = {
-          lastName: '',
-          firstName: '',
-          middleName: '',
-          extensionName: '',
-          birthDate: '',
-          homeAddress: '',
-          currentAddress: '',
-          contNumber: '',
-          emailAdd: '',
-          agency: '',
-          position: '',
-        };
-        this.confirmPassword = '';
-        this.$q.notify({
-          type: 'positive',
-          message: 'Employee Account Created.',
-        });
-      } else if (this.newEmployee.password == this.confirmPassword) {
-        await this.addEmployee({
-          ...this.newEmployee,
-          session: false,
-          username: this.newEmployee.contactNumber,
-          password: this.newEmployee.password,
-        });
-        await this.$store.dispatch('uiNav/addAccountPopups', false);
-        this.newEmployee = {
-          lastName: '',
-          firstName: '',
-          middleName: '',
-          extensionName: '',
-          birthDate: '',
-          homeAddress: '',
-          currentAddress: '',
-          contNumber: '',
-          emailAdd: '',
-          agency: '',
-          position: '',
-        };
-        this.confirmPassword = '';
-        this.$q.notify({
-          type: 'positive',
-          message: 'Employee Account Created.',
-        });
-      } else if (this.newEmployee.password == this.confirmPassword) {
-        this.$q.notify({
-          type: 'negative',
-          message: 'Password Not Matched.',
-        });
-      } else {
-        this.$q.notify({
-          type: 'positive',
-          message: 'Failed to Create Account.',
-        });
-      }
-    }
-  }
-
-  async addNewEmployeeUser() {
-    this.isSubmit = true;
-    this.checkForm();
-    if (
-      this.$refs.lastName.hasError ||
-      this.$refs.firstName.hasError ||
-      this.$refs.middleName.hasError ||
-      this.$refs.birthDate.hasError ||
-      this.$refs.birthPlace.hasError ||
-      this.$refs.homeAddress.hasError ||
-      this.$refs.currentAddress.hasError ||
-      this.$refs.contNumber.hasError ||
-      this.$refs.emailAdd.hasError ||
       this.$refs.agency.hasError ||
       this.$refs.position.hasError
     ) {
       this.formHasError = true;
     } else {
       this.isSubmit = false;
-      if (this.newEmployee.accountType == 'none') {
+      if (this.newEmployee.agency != "CSC - LDS") {
         await this.addEmployee({
           ...this.newEmployee,
-          accountType: 'none',
+          accountType: 'user',
           session: false,
           username: '',
           password: '',
@@ -527,50 +494,55 @@ export default class AddAccount extends Vue {
           emailAdd: '',
           agency: '',
           position: '',
-          accountType: ''
         };
         this.confirmPassword = '';
         this.$q.notify({
           type: 'positive',
           message: 'Employee Account Created.',
         });
-      } else if (this.newEmployee.password == this.confirmPassword) {
-        await this.addEmployee({
-          ...this.newEmployee,
-          session: false,
-          username: this.newEmployee.contactNumber,
-          password: this.newEmployee.password,
-        });
-        await this.$store.dispatch('uiNav/addAccountPopups', false);
-        this.newEmployee = {
-          lastName: '',
-          firstName: '',
-          middleName: '',
-          extensionName: '',
-          birthDate: '',
-          homeAddress: '',
-          currentAddress: '',
-          contNumber: '',
-          emailAdd: '',
-          agency: '',
-          position: '',
-          accountType: ''
-        };
-        this.confirmPassword = '';
-        this.$q.notify({
-          type: 'positive',
-          message: 'Employee Account Created.',
-        });
-      } else if (this.newEmployee.password != this.confirmPassword) {
-        this.$q.notify({
-          type: 'negative',
-          message: 'Password Not Matched.',
-        });
+      } else if (this.newEmployee.agency == "CSC - LDS") {
+        if (this.newEmployee.password == this.confirmPassword) {
+          await this.addEmployee({
+            ...this.newEmployee,
+            accountType: 'user',
+            session: false,
+            username: this.newEmployee.contactNumber,
+            password: this.newEmployee.password,
+          });
+          await this.$store.dispatch('uiNav/addAccountPopups', false);
+          this.newEmployee = {
+            lastName: '',
+            firstName: '',
+            middleName: '',
+            extensionName: '',
+            birthDate: '',
+            homeAddress: '',
+            currentAddress: '',
+            contNumber: '',
+            emailAdd: '',
+            agency: '',
+            position: '',
+            username: '',
+            password: '',
+          };
+          this.confirmPassword = '';
+          this.$q.notify({
+            type: 'positive',
+            message: 'Employee Account Created.',
+          });
+        }else{
+          this.confirmPassword = '';
+          this.$q.notify({
+            type: 'warning',
+            message: 'Password not Matched.',
+          });
+        }
       } else {
-        this.$q.notify({
-          type: 'positive',
-          message: 'Failed to Create Account.',
-        });
+        this.confirmPassword = '';
+          this.$q.notify({
+            type: 'warning',
+            message: 'Failed to Created Account.',
+          });
       }
     }
   }

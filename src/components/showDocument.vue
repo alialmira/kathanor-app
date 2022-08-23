@@ -1,110 +1,119 @@
 <template>
   <q-dialog
-    v-model="showDocumentInfoDialog"
+    v-model="showEmployeeDocsDialog"
     persistent
     @hide="hideDialog()"
     @show="showDialog()"
   >
     <q-card
-      style="width: 700px; max-width: 80vw; border-radius: 25px;"
+      style="width: 500px; max-width: 80vw; border-radius: 25px;"
       class="__card q-pt-xs q-pb-md"
     >
       <q-toolbar>
         <q-toolbar-title class="text-weight-bold text-center">
           <span>FILE DETAILS</span>
         </q-toolbar-title>
-        <q-btn outlined flat icon="close" size="sm"></q-btn>
+        <q-btn
+          outlined
+          flat
+          icon="close"
+          size="sm"
+          @click="showEmployeeDocsPopups(false)"
+        ></q-btn>
       </q-toolbar>
-      <q-card-section class="q-pr-lg q-pl-lg q-pb-xs">
-        <div class="items-center">
-          <div class="row q-gutter-sm">
-            <div class="col-4">
-              <q-avatar size="150px">
-                <img src="~assets/avatar-02.jpg" />
-              </q-avatar>
-            </div>
-            <div class="col">
-              <q-card-section class="text-h5 text-weight-bold">
+      <div class="flex flex-center">
+        <q-card-section>
+          <div class="q-pt-xs">
+            <div :class="$q.screen.lt.md ? 'text-h6' : 'ellipsis'">
+              <q-card-section
+                :class="$q.screen.lt.md ? '' : 'text-h5 text-weight-bold'"
+              >
+                <div
+                  :class="
+                    $q.screen.lt.md
+                      ? 'text-center q-gutter-md'
+                      : 'text-center q-gutter-md'
+                  "
+                >
+                  <q-avatar
+                    :size="$q.screen.lt.md ? '110px' : '170px'"
+                    class="shadow-10"
+                  >
+                    <img src="~assets/avatar-02.jpg" />
+                  </q-avatar>
+                </div>
+              </q-card-section>
+              <q-card-section
+                :class="$q.screen.lt.md ? '' : 'text-h5 text-weight-bold'"
+              >
+                <div
+                  :class="
+                    $q.screen.lt.md
+                      ? 'text-center q-gutter-xs'
+                      : 'text-center q-gutter-xs'
+                  "
+                >
+                  {{ documents.employeeId }}
+                </div>
+              </q-card-section>
+              <div class="q-pa-md q-pt-md">
+                <q-separator color="black" />
+              </div>
+              <q-card-section
+                :class="
+                  $q.screen.lt.md ? '' : 'text-h5 text-center text-weight-bold'
+                "
+              >
                 <div class="row q-gutter-sm">
-                  {{ document.firstName }} {{ document.middleName }}
-                  {{ document.lastName }} {{ document.extName }}
-                  <br />
-                  {{ document.position }}
-                  <br />
-                  {{ document.agency }}
+                  <div class="col">
+                    <div :class="$q.screen.lt.md ? '' : 'row'">
+                      <div
+                        :class="
+                          $q.screen.lt.md
+                            ? 'q-gutter-sm'
+                            : 'col text-weight-bold q-gutter-sm'
+                        "
+                      >
+                        <q-input
+                          v-model="documents.filename"
+                          label="Filename"
+                          borderless
+                          stack-label
+                          dense
+                          readonly
+                        />
+                        <q-input
+                          v-model="documents.docType"
+                          label="Document Type"
+                          borderless
+                          stack-label
+                          dense
+                          readonly
+                        />
+                        <q-input
+                          v-model="documents.mimeType"
+                          label="Format"
+                          borderless
+                          stack-label
+                          dense
+                          readonly
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </q-card-section>
             </div>
           </div>
-        </div>
-      </q-card-section>
-      <q-card-section class="q-pr-lg q-pl-lg q-pb-xs">
-        <div class="items-center">
-          <div class="row q-gutter-sm">
-            <div class="col">
-              <q-card-section class="text-h5">
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    Birth Date:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ document.birthDate }}
-                  </div>
-                </div>
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    Birth Place:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ document.birthPlace }}
-                  </div>
-                </div>
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    Contact Number:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ document.contactNumber }}
-                  </div>
-                </div>
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    Email Address:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ document.emailAddress }}
-                  </div>
-                </div>
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    Home Address:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ document.homeAddress }}
-                  </div>
-                </div>
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    Current Address:
-                  </div>
-                  <div class="col text-weight-bold">
-                    {{ document.currentAddress }}
-                  </div>
-                </div>
-              </q-card-section>
-            </div>
-          </div>
-        </div>
-      </q-card-section>
-    </q-card>
+        </q-card-section></div
+    ></q-card>
   </q-dialog>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
-import { date } from 'quasar';
-import { lstat } from 'fs';
+import IFIle201 from '../interfaces/File201.interface';
 
 interface RefsVue extends Vue {
   validate(): void;
@@ -112,78 +121,44 @@ interface RefsVue extends Vue {
   hasError: boolean;
 }
 
-interface IDocument {
-  lastName: string;
-  firstName: string;
-  middleName: string;
-  extName: String;
-  birthDate: string;
-  homeAddress: string;
-  currentAddress: string;
-  contNumber: string;
-  emailAdd: string;
-  position: string;
-  username: string;
-  password: string;
-  session: boolean;
-}
-
 @Component({
   computed: {
-    ...mapState('uiNav', ['showDocumentInfoDialog']),
+    ...mapState('uiNav', ['showEmployeeDocsDialog']),
   },
   methods: {
-    ...mapActions('uiNav', ['showDocumentInfoPopups']),
-    ...mapActions('employee', [
-      'addDocument',
-      'updateDocument',
-      'deleteDocument',
-    ]),
+    ...mapActions('uiNav', ['showEmployeeDocsPopups']),
+    ...mapActions('employee', ['getEmployees']),
   },
 })
-export default class AddDocument extends Vue {
-  @Prop({ type: Object, required: true }) readonly document!: IDocument;
+export default class ShowDocument extends Vue {
+  @Prop({ type: Object, required: true }) readonly document!: IFIle201;
 
-  document: any = {
-    lastName: '',
-    firstName: '',
-    middleName: '',
-    extName: '',
-    birthDate: '',
-    birthPlace: '',
-    homeAddress: '',
-    currentAddress: '',
-    contNumber: '',
-    emailAdd: '',
-    agency: '',
-    position: '',
-    username: '',
-    password: '',
+  documents: any = {
+    uploadedBy: '',
+    employeeId: '',
+    filename: '',
+    docType: '',
+    mimeType: '',
     onUpdate: false,
   };
-
   readonly = false;
   _id = undefined;
   isSubmit = false;
   isUpload = false;
-  showEmployeeInfoDialog!: boolean;
-  showEmployeeInfoPopups!: (show: boolean) => void;
+  showEmployeeDocsDialog!: boolean;
+  showEmployeeDocsPopups!: (show: boolean) => void;
+  getEmployees!: () => Promise<void>;
+
+  async created() {
+    await this.getEmployees();
+  }
 
   showDialog() {
     this.documents = { ...this.document };
   }
 
   hideDialog() {
-    this.documents = {
-      name: '',
-      firstName: '',
-      lastName: '',
-      extName: '',
-      contactNumber: '',
-      agency: '',
-      position: '',
-    };
-    this.$emit('clearData', { ...this.document, onUpdate: false });
+    this.$emit('clearData', { ...this.documents, onUpdate: false });
   }
 }
 </script>

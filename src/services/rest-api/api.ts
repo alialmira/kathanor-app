@@ -1485,6 +1485,36 @@ export const File201ControllersApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * 
+         * @summary Get all 201 File
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAll201Files: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/kathanor-api/201file/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Upload 201 file
          * @param {string} docType docType
          * @param {string} employeeId employeeId
@@ -1570,6 +1600,16 @@ export const File201ControllersApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get all 201 File
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAll201Files(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<File201>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAll201Files(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Upload 201 file
          * @param {string} docType docType
          * @param {string} employeeId employeeId
@@ -1610,6 +1650,15 @@ export const File201ControllersApiFactory = function (configuration?: Configurat
          */
         get201Files(empId: string, options?: any): AxiosPromise<Array<File201>> {
             return localVarFp.get201Files(empId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get all 201 File
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAll201Files(options?: any): AxiosPromise<Array<File201>> {
+            return localVarFp.getAll201Files(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1655,6 +1704,17 @@ export class File201ControllersApi extends BaseAPI {
      */
     public get201Files(empId: string, options?: any) {
         return File201ControllersApiFp(this.configuration).get201Files(empId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get all 201 File
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof File201ControllersApi
+     */
+    public getAll201Files(options?: any) {
+        return File201ControllersApiFp(this.configuration).getAll201Files(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
