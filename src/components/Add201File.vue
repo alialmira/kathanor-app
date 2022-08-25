@@ -129,10 +129,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import IDocument from '../interfaces/document.interface';
 import IEmployee from 'src/interfaces/employee.interface';
+import { date } from 'quasar';
 
 interface RefsVue extends Vue {
   validate(): void;
@@ -143,7 +144,7 @@ interface RefsVue extends Vue {
 @Component({
   computed: {
     ...mapState('uiNav', ['showAdd201FileDialog']),
-    ...mapState('employee', ['employees']),
+    ...mapState('employee', ['employees', 'employee']),
   },
   methods: {
     ...mapActions('uiNav', ['add201FilePopups']),
@@ -155,6 +156,8 @@ export default class Add201File extends Vue {
   @Prop({ type: Object, required: true }) readonly document!: IDocument;
 
   documents: any = {
+    uploadedBy: '',
+    dateUploaded: '',
     employeeId: '',
     docType: '',
     files: [],
@@ -170,6 +173,8 @@ export default class Add201File extends Vue {
     tor: RefsVue;
   };
 
+  isAdmin = false;
+  user: any = {};
   readonly = false;
   _id = undefined;
   isSubmit = false;
@@ -178,6 +183,7 @@ export default class Add201File extends Vue {
   showAdd201FileDialog!: boolean;
   data: IEmployee[] = [];
   employees!: IEmployee[];
+  employee!: IEmployee;
   add201FilePopups!: (show: boolean) => void;
   getEmployees!: () => Promise<void>;
   add201File!: (payload: any) => Promise<void>;
@@ -185,6 +191,19 @@ export default class Add201File extends Vue {
   async created() {
     await this.getEmployees();
     this.data = this.employees;
+    this.documents.uploadedBy = this.user.id;
+  }
+
+  @Watch('employees')
+  onDocumentsChanged() {
+    this.isAdmin = this.employees.some(
+      (e) => e.session == true && e.accountType == 'admin'
+    );
+    this.user = this.employees.find(
+      (e) =>
+        (e.session == true && e.accountType == 'admin') ||
+        e.accountType == 'user'
+    );
   }
 
   checkForm() {
@@ -197,14 +216,10 @@ export default class Add201File extends Vue {
     if (this.$refs.employeeId.hasError) {
       this.formHasError = true;
     } else {
+      this.documents.dateUploaded = date.formatDate(Date.now(), 'YYYY-MM-DD') as string;
+      this.documents.uploadedBy = this.user.id;
       this.isSubmit = false;
-      console.log(this.documents.docType);
       await this.add201File(this.documents);
-      // await file201Service.upload201File(
-      //   this.documents.docType,
-      //   this.documents.employeeId,
-      //   this.documents.file
-      // );
       await this.$store.dispatch('uiNav/add201FilePopups', false);
       this.documents = {
         employeeId: '',

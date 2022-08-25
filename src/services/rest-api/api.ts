@@ -469,6 +469,12 @@ export interface File201 {
      * @type {string}
      * @memberof File201
      */
+    dateUploaded?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof File201
+     */
     docType?: string;
     /**
      * 
@@ -1516,17 +1522,23 @@ export const File201ControllersApiAxiosParamCreator = function (configuration?: 
         /**
          * 
          * @summary Upload 201 file
+         * @param {string} dateUploaded dateUploaded
          * @param {string} docType docType
          * @param {string} employeeId employeeId
+         * @param {string} uploadedBy uploadedBy
          * @param {any} [content] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        upload201File: async (docType: string, employeeId: string, content?: any, options: any = {}): Promise<RequestArgs> => {
+        upload201File: async (dateUploaded: string, docType: string, employeeId: string, uploadedBy: string, content?: any, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'dateUploaded' is not null or undefined
+            assertParamExists('upload201File', 'dateUploaded', dateUploaded)
             // verify required parameter 'docType' is not null or undefined
             assertParamExists('upload201File', 'docType', docType)
             // verify required parameter 'employeeId' is not null or undefined
             assertParamExists('upload201File', 'employeeId', employeeId)
+            // verify required parameter 'uploadedBy' is not null or undefined
+            assertParamExists('upload201File', 'uploadedBy', uploadedBy)
             const localVarPath = `/kathanor-api/201file`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1540,12 +1552,20 @@ export const File201ControllersApiAxiosParamCreator = function (configuration?: 
             const localVarQueryParameter = {} as any;
             const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
 
+            if (dateUploaded !== undefined) {
+                localVarQueryParameter['dateUploaded'] = dateUploaded;
+            }
+
             if (docType !== undefined) {
                 localVarQueryParameter['docType'] = docType;
             }
 
             if (employeeId !== undefined) {
                 localVarQueryParameter['employeeId'] = employeeId;
+            }
+
+            if (uploadedBy !== undefined) {
+                localVarQueryParameter['uploadedBy'] = uploadedBy;
             }
 
 
@@ -1611,14 +1631,16 @@ export const File201ControllersApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Upload 201 file
+         * @param {string} dateUploaded dateUploaded
          * @param {string} docType docType
          * @param {string} employeeId employeeId
+         * @param {string} uploadedBy uploadedBy
          * @param {any} [content] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async upload201File(docType: string, employeeId: string, content?: any, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.upload201File(docType, employeeId, content, options);
+        async upload201File(dateUploaded: string, docType: string, employeeId: string, uploadedBy: string, content?: any, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.upload201File(dateUploaded, docType, employeeId, uploadedBy, content, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1663,14 +1685,16 @@ export const File201ControllersApiFactory = function (configuration?: Configurat
         /**
          * 
          * @summary Upload 201 file
+         * @param {string} dateUploaded dateUploaded
          * @param {string} docType docType
          * @param {string} employeeId employeeId
+         * @param {string} uploadedBy uploadedBy
          * @param {any} [content] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        upload201File(docType: string, employeeId: string, content?: any, options?: any): AxiosPromise<string> {
-            return localVarFp.upload201File(docType, employeeId, content, options).then((request) => request(axios, basePath));
+        upload201File(dateUploaded: string, docType: string, employeeId: string, uploadedBy: string, content?: any, options?: any): AxiosPromise<string> {
+            return localVarFp.upload201File(dateUploaded, docType, employeeId, uploadedBy, content, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1720,15 +1744,17 @@ export class File201ControllersApi extends BaseAPI {
     /**
      * 
      * @summary Upload 201 file
+     * @param {string} dateUploaded dateUploaded
      * @param {string} docType docType
      * @param {string} employeeId employeeId
+     * @param {string} uploadedBy uploadedBy
      * @param {any} [content] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof File201ControllersApi
      */
-    public upload201File(docType: string, employeeId: string, content?: any, options?: any) {
-        return File201ControllersApiFp(this.configuration).upload201File(docType, employeeId, content, options).then((request) => request(this.axios, this.basePath));
+    public upload201File(dateUploaded: string, docType: string, employeeId: string, uploadedBy: string, content?: any, options?: any) {
+        return File201ControllersApiFp(this.configuration).upload201File(dateUploaded, docType, employeeId, uploadedBy, content, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

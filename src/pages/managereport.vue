@@ -8,7 +8,7 @@
       </div>
       <q-table
         class="card-border"
-        :data="newFiltered"
+        :data="data"
         :columns="columns"
         row-key="name"
         virtual-scroll
@@ -48,35 +48,50 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapActions, mapState } from 'vuex';
-import AddAccount from 'src/components/AddAccount.vue';
-import ShowAccount from 'src/components/ShowAccount.vue';
-import IEmployee from 'src/interfaces/employee.interface';
+import IEmployee from '../interfaces/employee.interface';
 
-@Component({})
-export default class ManageAccounts extends Vue {
+interface IEmployeeReport {
+  lastName: string;
+  firstName: string;
+  middleName: string;
+  extensionName: string;
+  birthDate: string;
+  day: string;
+  month: string;
+  year: string;
+}
+
+@Component({
+  computed: {
+    ...mapState('employee', ['employees', 'employee']),
+  },
+  methods: {
+    ...mapActions('employee', ['getEmployees']),
+  },
+})
+export default class ManageReport extends Vue {
   columns = [
     {
       name: 'lastName',
       align: 'left',
       label: 'Last Name',
-      field: '',
+      field: 'lastName',
       sortable: true,
     },
     {
       name: 'firstName',
       align: 'left',
       label: 'Fist Name',
-      field: '',
+      field: 'firstName',
       sortable: true,
     },
     {
       name: 'middleName',
       align: 'left',
       label: 'Middle Name',
-      field: '',
+      field: 'middleName',
       sortable: true,
     },
-
     {
       name: 'day',
       align: 'left',
@@ -101,5 +116,20 @@ export default class ManageAccounts extends Vue {
       sortable: true,
     },
   ];
+
+  pagination = {
+    rowsPerPage: 10,
+  };
+
+  data: any = [];
+  employees!: IEmployee[];
+  getEmployees!: () => Promise<void>;
+  filter = '';
+
+  async created() {
+    await this.getEmployees;
+    this.data = this.employees.filter((e) => e.accountType == 'user');
+    console.log('data: ', this.data);
+  }
 }
 </script>

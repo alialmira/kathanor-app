@@ -34,6 +34,13 @@
             "type": "file"
           },
           {
+            "name": "dateUploaded",
+            "in": "query",
+            "description": "dateUploaded",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "docType",
             "in": "query",
             "description": "docType",
@@ -44,6 +51,13 @@
             "name": "employeeId",
             "in": "query",
             "description": "employeeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uploadedBy",
+            "in": "query",
+            "description": "uploadedBy",
             "required": true,
             "type": "string"
           }
@@ -520,6 +534,7 @@
       "type": "object",
       "properties": {
         "content": { "$ref": "#/definitions/Binary" },
+        "dateUploaded": { "type": "string" },
         "docType": { "type": "string" },
         "employeeId": { "type": "string" },
         "filename": { "type": "string" },

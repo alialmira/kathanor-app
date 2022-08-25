@@ -21,7 +21,7 @@
           @click="showEmployeeInfoPopups(false)"
         ></q-btn>
       </q-toolbar>
-      <div class="flex flex-center">
+      <div class="text-center">
         <q-card-section>
           <div class="q-pt-xs">
             <div :class="$q.screen.lt.md ? 'text-h6' : 'ellipsis'">

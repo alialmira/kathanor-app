@@ -6,10 +6,10 @@
     >
       <q-card-section>
         <div class="text-center q-pt-md">
-          <div class="col text-h2 text-grey-9 text-weight-bold ellipsis">
+          <div :class="$q.screen.lt.md ? 'col text-h4 text-weight-bold' : 'col text-h2 text-grey-9 text-weight-bold ellipsis'">
             KAPAGATOR
           </div>
-          <div class="col text-h5 text-grey-9 text-weight-bold ellipsis">
+          <div :class="$q.screen.lt.md ? 'col text-weight-bold' : 'col text-h5 text-grey-9 text-weight-bold ellipsis'">
             CSC Record Management System
           </div>
         </div>
@@ -98,16 +98,16 @@ export default class Login extends Vue {
     if (
       this.employees.find(
         (e) =>
-          this.user.username == e.username &&
-          this.user.password == e.password &&
+          this.user.username === e.username &&
+          this.user.password === e.password &&
           (e.accountType == 'admin')
       )
     ) {
       await this.getLoggedIn({
         ...this.employees.find(
           (e) =>
-            this.user.password == e.password &&
-            this.user.username == e.username &&
+            this.user.password === e.password &&
+            this.user.username === e.username &&
             e.accountType == 'admin'
         ),
         session: true,
@@ -116,7 +116,7 @@ export default class Login extends Vue {
       await this.$store.dispatch('uiNav/isAdminLogin', true);
       this.$q.notify({
         type: 'positive',
-        message: 'Welcome System Admin.',
+        message: 'Successfully Logged in.',
       });
 
       await this.$router.push('/home');

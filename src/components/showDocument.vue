@@ -6,7 +6,7 @@
     @show="showDialog()"
   >
     <q-card
-      style="width: 500px; max-width: 80vw; border-radius: 25px;"
+      style="width: 450px; max-width: 80vw; border-radius: 25px;"
       class="__card q-pt-xs q-pb-md"
     >
       <q-toolbar>
@@ -21,7 +21,7 @@
           @click="showEmployeeDocsPopups(false)"
         ></q-btn>
       </q-toolbar>
-      <div class="flex flex-center">
+      <div class="text-center">
         <q-card-section>
           <div class="q-pt-xs">
             <div :class="$q.screen.lt.md ? 'text-h6' : 'ellipsis'">
@@ -53,7 +53,7 @@
                       : 'text-center q-gutter-xs'
                   "
                 >
-                  {{ documents.employeeId }}
+                  {{ formData }}
                 </div>
               </q-card-section>
               <div class="q-pa-md q-pt-md">
@@ -114,6 +114,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import IFIle201 from '../interfaces/File201.interface';
+import IEmployee from '../interfaces/employee.interface';
 
 interface RefsVue extends Vue {
   validate(): void;
@@ -124,6 +125,7 @@ interface RefsVue extends Vue {
 @Component({
   computed: {
     ...mapState('uiNav', ['showEmployeeDocsDialog']),
+    ...mapState('employee', ['employees']),
   },
   methods: {
     ...mapActions('uiNav', ['showEmployeeDocsPopups']),
@@ -145,12 +147,15 @@ export default class ShowDocument extends Vue {
   _id = undefined;
   isSubmit = false;
   isUpload = false;
+  formData: any = {};
+  employees!: IEmployee[];
   showEmployeeDocsDialog!: boolean;
   showEmployeeDocsPopups!: (show: boolean) => void;
   getEmployees!: () => Promise<void>;
 
-  async created() {
+  async created(){
     await this.getEmployees();
+    this.formData = this.employees.find((e) => e.id == this.document.employeeId);
   }
 
   showDialog() {

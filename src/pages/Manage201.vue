@@ -95,15 +95,8 @@ import IEmployee from '../interfaces/employee.interface';
 import { Promise } from 'q';
 
 interface IEmployeeFile {
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  bdate: string;
-  tor: string;
-  pds: string;
-  scard: string;
-  eligibility: string;
-  appointment: string;
+  fullname: string;
+  file: string;
 }
 
 @Component({
@@ -122,53 +115,6 @@ interface IEmployeeFile {
   },
 })
 export default class ManageAccounts extends Vue {
-  // columns = [
-  //   {
-  //     name: 'firstName',
-  //     align: 'left',
-  //     label: 'First Name',
-  //     field: '',
-  //     sortable: true,
-  //   },
-  //   {
-  //     name: 'middleName',
-  //     align: 'left',
-  //     label: 'Middle Name',
-  //     field: '',
-  //     sortable: true,
-  //   },
-  //   {
-  //     name: 'lastName',
-  //     align: 'left',
-  //     label: 'Last Name',
-  //     field: '',
-  //     sortable: true,
-  //   },
-  //   {
-  //     name: 'extName',
-  //     align: 'left',
-  //     label: 'Extension Name',
-  //     field: '',
-  //     sortable: true,
-  //   },
-
-  //   {
-  //     name: 'birthDate',
-  //     align: 'left',
-  //     label: 'Birth Date',
-  //     field: '',
-  //     sortable: true,
-  //   },
-
-  //   {
-  //     name: 'agency',
-  //     align: 'left',
-  //     label: 'Agency',
-  //     field: '',
-  //     sortable: true,
-  //   },
-  // ];
-
   filter = '';
   pagination = {
     rowsPerPage: 10,
@@ -177,7 +123,7 @@ export default class ManageAccounts extends Vue {
     {
       name: 'employeeId',
       align: 'left',
-      label: 'Employee ID',
+      label: 'Employee',
       field: 'employeeId',
       sortable: true,
     },
@@ -208,6 +154,7 @@ export default class ManageAccounts extends Vue {
   newDocument: any = {
     uploadedBy: '',
     employeeId: '',
+    employee: '',
     filename: '',
     docType: '',
     mimeType: '',
@@ -220,13 +167,22 @@ export default class ManageAccounts extends Vue {
   employee!: IEmployee;
   getEmployees!: () => Promise<void>;
   getAllDocuments!: () => Promise<void>;
+  getEmployeeById!: (payload: any) => Promise<void>;
   add201FilePopups!: (show: boolean) => void;
   showEmployeeDocsPopups!: (show: boolean) => void;
   data: any = ([] = []);
+  newData: any = [];
+  mapVal: any;
 
   async created() {
     await this.getAllDocuments();
     await this.getEmployees();
+    const empId = this.documents.map((d) => d.employeeId);
+    for (let index = 0; index < empId.length; index++) {
+      this.newData[index] = this.employees
+        .filter((e) => e.id == empId[index])
+        .map((e) => e.firstName + ' ' + e.middleName + ' ' + e.lastName);
+    }
     this.data = this.documents;
   }
 

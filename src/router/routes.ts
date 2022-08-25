@@ -41,16 +41,10 @@ const routes: RouteConfig[] = [
         component: () => import('src/pages/Manage201.vue'),
       },
       {
-        path: '/csc-report',
-        name: 'manage-report',
-        meta: { requiresAuth: true },
-        component: () => import('src/pages/ManageCscReport.vue'),
-      },
-      {
         path: '/report',
         name: 'manage-csc-report',
         meta: { requiresAuth: true },
-        component: () => import('src/pages/managereport.vue'),
+        component: () => import('src/pages/ManageReport.vue'),
       }
     ],
   },
