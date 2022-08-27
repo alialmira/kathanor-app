@@ -96,7 +96,8 @@ import { Promise } from 'q';
 
 interface IEmployeeFile {
   fullname: string;
-  file: string;
+  birthDate: string;
+  file: IFIle201;
 }
 
 @Component({
@@ -124,44 +125,47 @@ export default class ManageAccounts extends Vue {
       name: 'employeeId',
       align: 'left',
       label: 'Employee',
-      field: 'employeeId',
+      field: (row: IEmployeeFile) => row.fullname,
       sortable: true,
     },
     {
-      name: 'filename',
+      name: 'birthDate',
       align: 'left',
-      label: 'File Name',
-      field: 'filename',
+      label: 'Birth date',
+      field: (row: IEmployeeFile) => row.birthDate,
       sortable: true,
     },
     {
       name: 'docType',
       align: 'left',
       label: 'Document Type',
-      field: 'docType',
+      field: (row: IEmployeeFile) => row.file.docType,
       sortable: true,
     },
-
     {
-      name: 'mimeType',
+      name: 'filename',
       align: 'left',
-      label: 'Format',
-      field: 'mimeType',
+      label: 'File Name',
+      field: (row: IEmployeeFile) => row.file.filename,
       sortable: true,
     },
   ];
 
   newDocument: any = {
-    uploadedBy: '',
-    employeeId: '',
-    employee: '',
-    filename: '',
-    docType: '',
-    mimeType: '',
-    onUpdate: false,
+    fullname: '',
+    birthDate: '',
+    file: {
+      uploadedBy: '',
+      employeeId: '',
+      filename: '',
+      docType: '',
+      mimeType: '',
+      content: '',
+    },
+    onUpdate: false
   };
 
-  dataFile!: IEmployeeFile;
+  dataFile: IEmployeeFile[] = [];
   documents!: IFIle201[];
   employees!: IEmployee[];
   employee!: IEmployee;
@@ -170,28 +174,52 @@ export default class ManageAccounts extends Vue {
   getEmployeeById!: (payload: any) => Promise<void>;
   add201FilePopups!: (show: boolean) => void;
   showEmployeeDocsPopups!: (show: boolean) => void;
-  data: any = ([] = []);
-  newData: any = [];
+  data: IEmployeeFile[] = [];
+  fullName: any = [];
+  birthDate: any = [];
   mapVal: any;
 
   async created() {
     await this.getAllDocuments();
     await this.getEmployees();
     const empId = this.documents.map((d) => d.employeeId);
-    for (let index = 0; index < empId.length; index++) {
-      this.newData[index] = this.employees
-        .filter((e) => e.id == empId[index])
-        .map((e) => e.firstName + ' ' + e.middleName + ' ' + e.lastName);
-    }
-    this.data = this.documents;
+    this.setEmployeeDetails(empId);
+    this.data = this.dataFile;
   }
 
-  showEmployeeDocs(document: IFIle201) {
+  setEmployeeDetails(empId: any) {
+    for (let index = 0; index < empId.length; index++) {
+      this.fullName[index] = this.employees
+        .filter((e) => e.id == empId[index])
+        .map(
+          (e) =>
+            e.firstName +
+            ' ' +
+            e.middleName +
+            ' ' +
+            e.lastName +
+            ' ' +
+            e.extensionName
+        );
+      for (let index = 0; index < empId.length; index++) {
+        this.birthDate[index] = this.employees
+          .filter((e) => e.id == empId[index])
+          .map((e) => e.birthDate);
+      }
+      this.dataFile[index] = {
+        fullname: this.fullName[index].toString(),
+        birthDate: this.birthDate[index].toString(),
+        file: this.documents[index],
+      };
+    }
+  }
+
+  showEmployeeDocs(document: IEmployeeFile) {
     this.newDocument = { ...document, onUpdate: true };
     this.showEmployeeDocsPopups(true);
   }
 
-  clearData(val: IFIle201) {
+  clearData(val: IEmployeeFile) {
     this.newDocument = val;
   }
 }

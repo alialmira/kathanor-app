@@ -53,7 +53,9 @@
                       : 'text-center q-gutter-xs'
                   "
                 >
-                  {{ formData }}
+                  {{ documents.fullname }}
+                  <br/>
+                  {{ documents.birthDate }}
                 </div>
               </q-card-section>
               <div class="q-pa-md q-pt-md">
@@ -75,7 +77,7 @@
                         "
                       >
                         <q-input
-                          v-model="documents.filename"
+                          v-model="documents.file.filename"
                           label="Filename"
                           borderless
                           stack-label
@@ -83,7 +85,7 @@
                           readonly
                         />
                         <q-input
-                          v-model="documents.docType"
+                          v-model="documents.file.docType"
                           label="Document Type"
                           borderless
                           stack-label
@@ -91,7 +93,7 @@
                           readonly
                         />
                         <q-input
-                          v-model="documents.mimeType"
+                          v-model="documents.file.mimeType"
                           label="Format"
                           borderless
                           stack-label
@@ -122,6 +124,12 @@ interface RefsVue extends Vue {
   hasError: boolean;
 }
 
+interface IEmployeeFile {
+  fullname: string;
+  birthDate: string;
+  file: IFIle201;
+}
+
 @Component({
   computed: {
     ...mapState('uiNav', ['showEmployeeDocsDialog']),
@@ -133,16 +141,21 @@ interface RefsVue extends Vue {
   },
 })
 export default class ShowDocument extends Vue {
-  @Prop({ type: Object, required: true }) readonly document!: IFIle201;
+  @Prop({ type: Object, required: false }) readonly document!: IEmployeeFile;
 
-  documents: any = {
-    uploadedBy: '',
-    employeeId: '',
-    filename: '',
-    docType: '',
-    mimeType: '',
-    onUpdate: false,
+  documents: IEmployeeFile = {
+    fullname: '',
+    birthDate: '',
+    file: {
+      uploadedBy: '',
+      employeeId: '',
+      filename: '',
+      docType: '',
+      mimeType: '',
+      content: '',
+    },
   };
+
   readonly = false;
   _id = undefined;
   isSubmit = false;
@@ -153,9 +166,11 @@ export default class ShowDocument extends Vue {
   showEmployeeDocsPopups!: (show: boolean) => void;
   getEmployees!: () => Promise<void>;
 
-  async created(){
+  async created() {
     await this.getEmployees();
-    this.formData = this.employees.find((e) => e.id == this.document.employeeId);
+    this.formData = this.employees.find(
+      (e) => e.id == this.document.file.employeeId
+    );
   }
 
   showDialog() {

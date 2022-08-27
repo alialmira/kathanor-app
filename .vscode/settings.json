@@ -6,10 +6,13 @@
   "vetur.experimental.templateInterpolationService": true,
   "cSpell.words": [
     "addperson",
+    "Fullname",
+    "getbirth",
     "indiv",
     "KATHANOR",
     "managereport",
     "scard",
+    "setbirth",
     "vuex"
   ]
 }

@@ -7,12 +7,13 @@
         class="bg-positive"
         :style="$q.screen.lt.md ? 'height: 60px' : 'height: 80px;'"
       >
-        <q-toolbar>
+        <q-toolbar
+          ><q-btn flat icon="menu" size="20px" @click="left = !left"> </q-btn>
           <q-avatar
             v-show="!$q.screen.lt.md"
             class="q-pa-xs"
             circle
-            size="70px"
+            size="65px"
           >
             <img src="~assets/CSC-logo-2.png" />
           </q-avatar>
@@ -38,7 +39,6 @@
             icon="account_circle"
             text-color="white"
           >
-
             <q-menu
               fit
               transition-show="jump-down"
@@ -46,22 +46,7 @@
               max-width="218px"
               :offset="[10, 5]"
             >
-              <!-- <q-btn
-              flat
-              align="left"
-              class="q-pa-sm auto-close"
-              label="Change Password"
-              color="white"
-
-              style="width: 218px;"
-              icon="settings"
-              text-color="black"
-              clickable
-              v-close-popup
-            >
-            </q-btn> -->
-
-               <q-btn
+              <q-btn
                 flat
                 align="left"
                 class="q-pa-sm"
@@ -89,9 +74,6 @@
                 @click="logout()"
               >
               </q-btn>
-
-
-
             </q-menu>
           </q-btn>
         </q-toolbar>
@@ -100,6 +82,8 @@
       <q-drawer
         v-if="$route.name != 'login-page'"
         show-if-above
+        v-model="left"
+        side="left"
         :width="220"
         :breakpoint="500"
         bordered
@@ -121,7 +105,6 @@
             HOME
           </q-item-section>
         </q-item>
-
 
         <q-item
           active
@@ -207,6 +190,7 @@ export default class MainLayout extends Vue {
   getEmployees!: () => Promise<void>;
   getLoggedIn!: (payload: any) => Promise<void>;
   isAdmin = false;
+  left = false;
 
   async logout() {
     await this.getEmployees();

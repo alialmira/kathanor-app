@@ -4,14 +4,19 @@
       class="card-border"
       :style="
         $q.screen.lt.sm
-          ? 'margin-top: 50px; margin-bottom: 40px'
+          ? 'width: 500px; max-width: 80vw;  margin-top: 20px; margin-bottom: 40px'
           : 'width: 700px; max-width: 100vw; border-radius: 25px;'
       "
     >
+      <q-toolbar class="q-pt-sm q-pr-sm">
+        <q-btn round flat icon="edit" size="md" @click="editEmployee(user)">
+          <q-tooltip>Edit Profile</q-tooltip></q-btn
+        >
+      </q-toolbar>
       <q-card-section>
         <q-avatar
-          :size="$q.screen.lt.md ? '120px' : '150px'"
-          class="absolute-center shadow-10"
+          :size="$q.screen.lt.md ? '115px' : '165px'"
+          :class="$q.screen.lt.md ? 'absolute-center q-pt-md' : 'absolute-center shadow-8'"
         >
           <img src="~assets/avatar-02.jpg" />
         </q-avatar>
@@ -41,7 +46,9 @@
               <q-separator color="black" />
             </div>
             <q-card-section
-              :class="$q.screen.lt.md ? '' : 'text-h5 text-center text-weight-bold'"
+              :class="
+                $q.screen.lt.md ? '' : 'text-h5 text-center text-weight-bold'
+              "
             >
               <div class="row q-gutter-sm">
                 <div class="col">
@@ -112,6 +119,7 @@
         </div>
       </q-card-section>
     </q-card>
+    <AddAccount :employee="upEmployee" @clearData="clearData" />
   </q-page>
 </template>
 
@@ -119,20 +127,44 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import IEmployee from '../interfaces/employee.interface';
+import AddAccount from 'src/components/AddAccount.vue';
 
 @Component({
+  components: {
+    AddAccount,
+  },
   computed: {
     ...mapState('employee', ['employees']),
   },
   methods: {
     ...mapActions('employee', ['getEmployees']),
+    ...mapActions('uiNav', ['addAccountPopups', 'showEmployeeInfoPopups']),
   },
 })
 export default class Profile extends Vue {
+  upEmployee: any = {
+    lastName: '',
+    firstName: '',
+    middleName: '',
+    extensionName: '',
+    birthDate: '',
+    homeAddress: '',
+    currentAddress: '',
+    contNumber: '',
+    emailAdd: '',
+    agency: '',
+    position: '',
+    username: '',
+    password: '',
+    session: false,
+  };
+
   isAdmin = false;
   user: any = {};
   employees!: IEmployee[];
   getEmployees!: () => Promise<any>;
+  addAccountPopups!: (show: boolean) => void;
+  readOnly = false;
 
   @Watch('employees')
   onDocumentsChanged() {
@@ -151,6 +183,16 @@ export default class Profile extends Vue {
     this.isAdmin = this.employees.some(
       (e) => e.session == true && e.accountType == 'admin'
     );
+    console.log('user: ', this.user);
+  }
+
+  editEmployee(user: IEmployee) {
+    this.upEmployee = { ...user, onUpdate: true };
+    this.addAccountPopups(true);
+  }
+
+  clearData(val: IEmployee) {
+    this.upEmployee = val;
   }
 }
 </script>

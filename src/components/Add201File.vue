@@ -86,7 +86,7 @@
               />
               <q-file
                 clearable
-                style="width: 550px; max-width: 80vw;"
+                :style="$q.screen.lt.md ? 'width: 490px; max-width: 68vw;' : 'width: 550px; max-width: 80vw;'"
                 v-model="documents.files"
                 label="Choose Files"
                 multiple
