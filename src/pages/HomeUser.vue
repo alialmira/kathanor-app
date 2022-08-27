@@ -46,7 +46,9 @@
             MONTHLY REPORTS
           </q-card-section>
           <q-separator color="white" />
-          <q-card-section class="text-h2 text-weight-bolder">0</q-card-section>
+          <q-card-section class="text-h2 text-weight-bolder">{{
+            docNum
+          }}</q-card-section>
         </q-card>
       </div>
     </div>

@@ -20,6 +20,9 @@ const mutation: MutationTree<UiNavStateInterface> = {
   add201FilePopups(state, payload: boolean) {
     state.showAdd201FileDialog = payload;
   },
+  changePassPopups(state, payload: boolean) {
+    state.showChangePassDialog = payload;
+  },
 };
 
 export default mutation;

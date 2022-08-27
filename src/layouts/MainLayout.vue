@@ -61,7 +61,21 @@
                 to="/profile"
               >
               </q-btn>
-
+              <q-btn
+                flat
+                align="left"
+                class="q-pa-sm auto-close"
+                label="Change Password"
+                color="white"
+                size="md"
+                style="width: 218px;"
+                icon="settings"
+                text-color="black"
+                @click="changePassPopups(true)"
+                clickable
+                v-close-popup
+              >
+              </q-btn>
               <q-btn
                 flat
                 align="left"
@@ -166,6 +180,8 @@
       <q-page-container>
         <router-view></router-view>
       </q-page-container>
+
+      <UpdatePassword />
     </q-layout>
   </div>
 </template>
@@ -174,23 +190,31 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import IEmployee from '../interfaces/employee.interface';
+import UpdatePassword from 'components/UpdatePassword.vue';
 
 @Component({
+  components: {
+    UpdatePassword,
+  },
   computed: {
     ...mapState('uiNav', ['adminLoggedIn']),
     ...mapState('employee', ['employees', 'employee']),
   },
   methods: {
+    ...mapActions('uiNav', ['changePassPopups']),
     ...mapActions('employee', ['getEmployees', 'getLoggedIn']),
   },
 })
 export default class MainLayout extends Vue {
-  employees!: IEmployee[];
-  employee!: IEmployee;
-  getEmployees!: () => Promise<void>;
-  getLoggedIn!: (payload: any) => Promise<void>;
   isAdmin = false;
   left = false;
+
+  employees!: IEmployee[];
+  employee!: IEmployee;
+
+  getEmployees!: () => Promise<void>;
+  getLoggedIn!: (payload: any) => Promise<void>;
+  changePassPopups!: (show: boolean) => void;
 
   async logout() {
     await this.getEmployees();

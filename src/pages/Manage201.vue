@@ -89,7 +89,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { mapActions, mapState } from 'vuex';
 import Add201File from 'src/components/Add201File.vue';
-import ShowDocument from 'src/components/showDocument.vue';
+import ShowDocument from 'src/components/ShowDocument.vue';
 import IFIle201 from 'src/interfaces/File201.interface';
 import IEmployee from '../interfaces/employee.interface';
 import { Promise } from 'q';

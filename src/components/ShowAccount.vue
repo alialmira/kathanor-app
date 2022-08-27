@@ -6,7 +6,7 @@
     @show="showDialog()"
   >
     <q-card
-      style="width: 500px; max-width: 80vw; border-radius: 25px;"
+      style="width: 500px; max-width: 85vw; border-radius: 25px;"
       class="__card q-pt-xs q-pb-md"
     >
       <q-toolbar>

@@ -6,10 +6,10 @@ const actions: ActionTree<UiNavStateInterface, StateInterface> = {
   addEmployeePopups(context, payload: boolean) {
     context.commit('addEmployeePopups', payload);
   },
-  showEmployeeInfoPopups(context, payload: boolean){
+  showEmployeeInfoPopups(context, payload: boolean) {
     context.commit('showEmployeeInfoPopups', payload);
   },
-  showEmployeeDocsPopups(context, payload: boolean){
+  showEmployeeDocsPopups(context, payload: boolean) {
     context.commit('showEmployeeDocsPopups', payload);
   },
   addAccountPopups(context, payload: boolean) {
@@ -20,6 +20,9 @@ const actions: ActionTree<UiNavStateInterface, StateInterface> = {
   },
   isAdminLogin(context, payload: boolean) {
     context.commit('isAdminLogin', payload);
+  },
+  changePassPopups(context, payload: boolean) {
+    context.commit('changePassPopups', payload);
   },
 };
 
