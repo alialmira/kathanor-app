@@ -156,9 +156,9 @@
           </div>
           <div
             v-if="
-              newEmployee.agency == 'CSC - LDS' ||
+              (newEmployee.agency == 'CSC - LDS' ||
               newEmployee.agency == 'Csc - lds' ||
-              newEmployee.agency == 'csc - lds'
+              newEmployee.agency == 'csc - lds') && !newEmployee.onUpdate
             "
           >
             <div class="row q-pt-sm q-gutter-sm">
@@ -201,9 +201,9 @@
             </div>
             <div
               v-if="
-                newEmployee.agency == 'CSC - LDS' ||
+                (newEmployee.agency == 'CSC - LDS' ||
                 newEmployee.agency == 'Csc - lds' ||
-                newEmployee.agency == 'csc - lds'
+                newEmployee.agency == 'csc - lds') && !newEmployee.onUpdate
               "
               class="q-pt-xs text-center"
             >
