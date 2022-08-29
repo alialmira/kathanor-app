@@ -82,6 +82,7 @@
                 round
                 dense
                 class="q-mr-sm"
+                @click="downloadEmployeeDocs(props.row.file.id)"
               >
                 <q-tooltip>Download 201-File</q-tooltip>
               </q-btn>
@@ -121,7 +122,7 @@ interface IEmployeeFile {
   },
   methods: {
     ...mapActions('uiNav', ['add201FilePopups', 'showEmployeeDocsPopups']),
-    ...mapActions('document', ['getAllDocuments']),
+    ...mapActions('document', ['getAllDocuments', 'downloadDocs']),
     ...mapActions('employee', ['getEmployees', 'getEmployeeById']),
   },
 })
@@ -165,6 +166,7 @@ export default class ManageAccounts extends Vue {
     fullname: '',
     birthDate: '',
     file: {
+      id: '',
       uploadedBy: '',
       employeeId: '',
       filename: '',
@@ -182,6 +184,7 @@ export default class ManageAccounts extends Vue {
   getEmployees!: () => Promise<void>;
   getAllDocuments!: () => Promise<void>;
   getEmployeeById!: (payload: any) => Promise<void>;
+  downloadDocs!: (id: string) => Promise<void>;
   add201FilePopups!: (show: boolean) => void;
   showEmployeeDocsPopups!: (show: boolean) => void;
   data: IEmployeeFile[] = [];
@@ -195,6 +198,10 @@ export default class ManageAccounts extends Vue {
     const empId = this.documents.map((d) => d.employeeId);
     this.setEmployeeDetails(empId);
     this.data = this.dataFile;
+  }
+
+  async downloadEmployeeDocs(id: string) {
+    await this.downloadDocs(id);
   }
 
   setEmployeeDetails(empId: any) {

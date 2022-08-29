@@ -16,9 +16,12 @@ const actions: ActionTree<DocumentStateInterface, StateInterface> = {
     const result = await file201Service.getAll201Files();
     context.commit('getDocuments', result);
   },
-  async getEmployeeDocs(context, id: string){
+  async getEmployeeDocs(context, id: string) {
     const result = await file201Service.get201Files(id);
     context.commit('getEmployeeDocs', result);
+  },
+  async downloadDocs(context, id: string): Promise<any> {
+    await file201Service.downloadFile(id);
   }
 };
 
