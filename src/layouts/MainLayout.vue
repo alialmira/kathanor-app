@@ -95,7 +95,6 @@
 
       <q-drawer
         v-if="$route.name != 'login-page'"
-        show-if-above
         v-model="left"
         side="left"
         :width="220"

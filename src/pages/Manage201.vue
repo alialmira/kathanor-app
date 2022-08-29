@@ -75,6 +75,16 @@
               >
                 <q-tooltip>Show 201-File</q-tooltip>
               </q-btn>
+              <q-btn
+                size="sm"
+                color="blue"
+                icon="download"
+                round
+                dense
+                class="q-mr-sm"
+              >
+                <q-tooltip>Download 201-File</q-tooltip>
+              </q-btn>
             </q-td>
           </q-tr>
         </template>
@@ -162,7 +172,7 @@ export default class ManageAccounts extends Vue {
       mimeType: '',
       content: '',
     },
-    onUpdate: false
+    onUpdate: false,
   };
 
   dataFile: IEmployeeFile[] = [];
