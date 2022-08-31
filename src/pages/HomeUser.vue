@@ -72,6 +72,7 @@
             outlined
             text-color="white"
             icon="edit"
+            @click="homeContentPopups(true)"
           >
           </q-btn>
         </q-card-section>
@@ -99,6 +100,7 @@
             outlined
             text-color="white"
             icon="edit"
+            @click="home"
           >
           </q-btn>
         </q-card-section>
@@ -116,6 +118,7 @@
           necessary about the individual.</q-card-section
         >
       </q-card>
+      <UpdateHomeContent />
     </div>
   </q-page>
 </template>
@@ -123,8 +126,8 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
-import IEmployee from '../interfaces/employee.interface';
-import IDocument from '../interfaces/document.interface';
+import IEmployee from 'src/interfaces/employee.interface';
+import UpdateHomeContent from 'src/components/UpdateHomeContent.vue';
 
 interface file201Docs {
   id?: string;
@@ -137,12 +140,16 @@ interface file201Docs {
 }
 
 @Component({
+  components: {
+    UpdateHomeContent,
+  },
   computed: {
     ...mapState('employee', ['employees', 'employee']),
     ...mapState('document', ['documents']),
   },
   methods: {
     ...mapActions('employee', ['getEmployees']),
+    ...mapActions('uiNav', ['homeContentPopups']),
     ...mapActions('document', ['getAllDocuments']),
   },
 })
@@ -153,8 +160,14 @@ export default class HomeUser extends Vue {
   user: any = {};
   getEmployees!: () => Promise<void>;
   getAllDocuments!: () => Promise<void>;
+  homeContentPopups!: (show: boolean) => void;
   empNum = 0;
   docNum = 0;
+
+  contentType: any = {
+    content: '',
+    type: false
+  }
 
   async created() {
     const res = await this.user;
@@ -189,6 +202,14 @@ export default class HomeUser extends Vue {
 
   async ReportPage() {
     await this.$router.push('/report');
+  }
+
+  async editCivilServiceContent(){
+    this.contentType = {
+      content: '',
+
+    }
+    await this.homeContentPopups(true);
   }
 }
 </script>

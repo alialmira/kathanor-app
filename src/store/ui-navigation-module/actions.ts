@@ -1,3 +1,4 @@
+import { contentTracing } from 'electron';
 import { ActionTree } from 'vuex';
 import { StateInterface } from '../index';
 import { UiNavStateInterface } from './state';
@@ -24,6 +25,9 @@ const actions: ActionTree<UiNavStateInterface, StateInterface> = {
   changePassPopups(context, payload: boolean) {
     context.commit('changePassPopups', payload);
   },
+  homeContentPopups(context, payload: boolean) {
+    context.commit('homeContentPopups', payload);
+  }
 };
 
 export default actions;

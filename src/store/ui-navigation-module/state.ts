@@ -5,6 +5,7 @@ export interface UiNavStateInterface {
   showEmployeeInfoDialog: boolean;
   showEmployeeDocsDialog: boolean;
   showChangePassDialog: boolean;
+  showContentDialog: boolean;
   adminLoggedIn: boolean;
 }
 
@@ -16,6 +17,7 @@ function state(): UiNavStateInterface {
     showEmployeeInfoDialog: false,
     showEmployeeDocsDialog: false,
     showChangePassDialog: false,
+    showContentDialog: false,
     adminLoggedIn: false,
   };
 }

@@ -23,6 +23,9 @@ const mutation: MutationTree<UiNavStateInterface> = {
   changePassPopups(state, payload: boolean) {
     state.showChangePassDialog = payload;
   },
+  homeContentPopups(state, payload: boolean) {
+    state.showContentDialog = payload;
+  }
 };
 
 export default mutation;
