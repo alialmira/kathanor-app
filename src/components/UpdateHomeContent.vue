@@ -17,6 +17,7 @@
         ></q-btn>
       </q-toolbar>
       <q-card-section
+        v-if="this.content.type == 'CSC'"
         :class="
           $q.screen.lt.md
             ? 'q-pr-lg q-pl-lg q-pb-xs text-h5 text-weight-bold'
@@ -25,9 +26,20 @@
       >
         What is Civil Service Commission?
       </q-card-section>
+      <q-card-section
+        v-else
+        :class="
+          $q.screen.lt.md
+            ? 'q-pr-lg q-pl-lg q-pb-xs text-h5 text-weight-bold'
+            : 'q-pr-lg q-pl-lg q-pb-xs text-h4 text-weight-bold'
+        "
+      >
+        What is 201 file?
+      </q-card-section>
       <q-card-section class="q-pr-lg q-pl-lg q-pb-xs">
         <q-input
           outlined
+          v-model="this.content.content"
           type="textarea"
           style="max-height: 500px;"
           lazy-rules
@@ -63,9 +75,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
-import IEmployee from '../interfaces/employee.interface';
+import IContent from '../interfaces/content.interface';
 
 interface RefsVue extends Vue {
   validate(): void;
@@ -82,26 +94,26 @@ interface RefsVue extends Vue {
   },
 })
 export default class UpdateHomeContent extends Vue {
-  password = {
-    oldPass: '',
-    newPass: '',
-    renewPass: '',
+  @Prop({ type: Object, required: true }) readonly content!: IContent;
+
+  contentType: IContent = {
+    type: '',
+    content: '',
+    onUpdate: false,
   };
 
-  $refs!: {
-    oldPass: RefsVue;
-    newPass: RefsVue;
-    renewPass: RefsVue;
-  };
-
+  isUpload = false;
   formHasError!: boolean;
   showContentDialog!: boolean;
   homeContentPopups!: (show: boolean) => void;
   updateEmployee!: (payload: any) => Promise<void>;
-  employees!: IEmployee[];
 
   hideDialog() {
-    this.password = { oldPass: '', newPass: '', renewPass: '' };
+    this.contentType = {
+      type: '',
+      content: '',
+      onUpdate: false,
+    };
   }
 
   qNotify(props: { [key: string]: string }) {

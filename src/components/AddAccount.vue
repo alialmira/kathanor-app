@@ -473,7 +473,7 @@ export default class AddAccount extends Vue {
       this.formHasError = true;
     } else {
       this.isSubmit = false;
-      if (this.newEmployee.agency != "CSC - LDS") {
+      if (this.newEmployee.agency != 'CSC - LDS') {
         await this.addEmployee({
           ...this.newEmployee,
           accountType: 'admin',
@@ -500,7 +500,7 @@ export default class AddAccount extends Vue {
           type: 'positive',
           message: 'Employee Account Created.',
         });
-      } else if (this.newEmployee.agency == "CSC - LDS") {
+      } else if (this.newEmployee.agency == 'CSC - LDS') {
         if (this.newEmployee.password == this.confirmPassword) {
           await this.addEmployee({
             ...this.newEmployee,

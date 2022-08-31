@@ -157,7 +157,7 @@ interface IEmployee {
   lastName: string;
   firstName: string;
   middleName: string;
-  extName: String;
+  extName: string;
   birthDate: string;
   homeAddress: string;
   currentAddress: string;

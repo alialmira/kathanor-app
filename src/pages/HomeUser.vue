@@ -72,7 +72,7 @@
             outlined
             text-color="white"
             icon="edit"
-            @click="homeContentPopups(true)"
+            @click="editCivilServiceContent()"
           >
           </q-btn>
         </q-card-section>
@@ -100,7 +100,7 @@
             outlined
             text-color="white"
             icon="edit"
-            @click="home"
+            @click="edit201FileContent()"
           >
           </q-btn>
         </q-card-section>
@@ -118,7 +118,7 @@
           necessary about the individual.</q-card-section
         >
       </q-card>
-      <UpdateHomeContent />
+      <UpdateHomeContent :content="contentType" @clearData="clearData" />
     </div>
   </q-page>
 </template>
@@ -128,6 +128,7 @@ import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import IEmployee from 'src/interfaces/employee.interface';
 import UpdateHomeContent from 'src/components/UpdateHomeContent.vue';
+import IContent from 'src/interfaces/content.interface';
 
 interface file201Docs {
   id?: string;
@@ -164,10 +165,11 @@ export default class HomeUser extends Vue {
   empNum = 0;
   docNum = 0;
 
-  contentType: any = {
+  contentType: IContent = {
+    type: '',
     content: '',
-    type: false
-  }
+    onUpdate: false,
+  };
 
   async created() {
     const res = await this.user;
@@ -204,13 +206,29 @@ export default class HomeUser extends Vue {
     await this.$router.push('/report');
   }
 
-  async editCivilServiceContent(){
+  editCivilServiceContent() {
     this.contentType = {
-      content: '',
-
-    }
-    await this.homeContentPopups(true);
+      type: 'CSC',
+      content:
+        '201 - files contains records/data pertaining to the employees personal information, financial information, employment contract, duties, job grade, performance, and employment history for future employment requirements.',
+      onUpdate: true,
+    };
+    this.homeContentPopups(true);
   }
+
+  edit201FileContent() {
+    this.contentType = {
+      type: '201-file',
+      content: 'Interestingly, the term “201 files” originated from the Army. Form 201 in the US Army, Which is a set of documents containing a person’s comprehensive profile, including all previous and new information necessary about the individual.',
+      onUpdate: true,
+    };
+    this.homeContentPopups(true);
+  }
+
+  clearData(val: IContent) {
+    this.contentType = val;
+  }
+
 }
 </script>
 
