@@ -39,7 +39,7 @@
       <q-card-section class="q-pr-lg q-pl-lg q-pb-xs">
         <q-input
           outlined
-          v-model="this.content.content"
+          v-model="this.contentType.content"
           type="textarea"
           style="max-height: 500px;"
           lazy-rules

@@ -14,6 +14,7 @@
   "host": "localhost:9000",
   "basePath": "/",
   "tags": [
+    { "name": "content-controllers", "description": "Content Controllers" },
     { "name": "employee-controllers", "description": "Employee Controllers" },
     { "name": "file-201-controllers", "description": "File 201 Controllers" }
   ],
@@ -139,6 +140,111 @@
               "items": { "$ref": "#/definitions/File201" }
             }
           },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/kathanor-api/content/": {
+      "get": {
+        "tags": ["content-controllers"],
+        "summary": "Get all dashboard content",
+        "operationId": "getContent",
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/ContentRes" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["content-controllers"],
+        "summary": "Insert dashboard content",
+        "operationId": "addContent",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "model",
+            "description": "model",
+            "required": true,
+            "schema": { "$ref": "#/definitions/ContentReq" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ContentRes" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/kathanor-api/content/{id}": {
+      "get": {
+        "tags": ["content-controllers"],
+        "summary": "Get content by id",
+        "operationId": "getContentById",
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ContentRes" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["content-controllers"],
+        "summary": "Update dashboard content",
+        "operationId": "updateContent",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "model",
+            "description": "model",
+            "required": true,
+            "schema": { "$ref": "#/definitions/ContentReq" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ContentRes" }
+          },
+          "201": { "description": "Created" },
           "401": { "description": "Unauthorized" },
           "403": { "description": "Forbidden" },
           "404": { "description": "Not Found" }
@@ -280,6 +386,24 @@
         "type": { "type": "string", "format": "byte" }
       },
       "title": "Binary"
+    },
+    "ContentReq": {
+      "type": "object",
+      "properties": {
+        "content": { "type": "string" },
+        "contentType": { "type": "string" },
+        "id": { "$ref": "#/definitions/ObjectId" }
+      },
+      "title": "ContentReq"
+    },
+    "ContentRes": {
+      "type": "object",
+      "properties": {
+        "content": { "type": "string" },
+        "contentType": { "type": "string" },
+        "id": { "type": "string" }
+      },
+      "title": "ContentRes"
     },
     "EmployeeReq": {
       "type": "object",

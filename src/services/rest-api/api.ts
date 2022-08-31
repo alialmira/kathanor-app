@@ -43,6 +43,56 @@ export interface Binary {
 /**
  * 
  * @export
+ * @interface ContentReq
+ */
+export interface ContentReq {
+    /**
+     * 
+     * @type {string}
+     * @memberof ContentReq
+     */
+    content?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContentReq
+     */
+    contentType?: string;
+    /**
+     * 
+     * @type {ObjectId}
+     * @memberof ContentReq
+     */
+    id?: ObjectId;
+}
+/**
+ * 
+ * @export
+ * @interface ContentRes
+ */
+export interface ContentRes {
+    /**
+     * 
+     * @type {string}
+     * @memberof ContentRes
+     */
+    content?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContentRes
+     */
+    contentType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContentRes
+     */
+    id?: string;
+}
+/**
+ * 
+ * @export
  * @interface EmployeeReq
  */
 export interface EmployeeReq {
@@ -381,6 +431,316 @@ export interface Resource {
      */
     url?: string;
 }
+
+/**
+ * ContentControllersApi - axios parameter creator
+ * @export
+ */
+export const ContentControllersApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Insert dashboard content
+         * @param {ContentReq} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addContent: async (model: ContentReq, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'model' is not null or undefined
+            assertParamExists('addContent', 'model', model)
+            const localVarPath = `/kathanor-api/content/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(model, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get all dashboard content
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getContent: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/kathanor-api/content/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get content by id
+         * @param {string} id id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getContentById: async (id: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getContentById', 'id', id)
+            const localVarPath = `/kathanor-api/content/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update dashboard content
+         * @param {string} id id
+         * @param {ContentReq} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateContent: async (id: string, model: ContentReq, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('updateContent', 'id', id)
+            // verify required parameter 'model' is not null or undefined
+            assertParamExists('updateContent', 'model', model)
+            const localVarPath = `/kathanor-api/content/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(model, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ContentControllersApi - functional programming interface
+ * @export
+ */
+export const ContentControllersApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ContentControllersApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Insert dashboard content
+         * @param {ContentReq} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addContent(model: ContentReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContentRes>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addContent(model, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get all dashboard content
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getContent(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ContentRes>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getContent(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get content by id
+         * @param {string} id id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getContentById(id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContentRes>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getContentById(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Update dashboard content
+         * @param {string} id id
+         * @param {ContentReq} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateContent(id: string, model: ContentReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContentRes>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateContent(id, model, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * ContentControllersApi - factory interface
+ * @export
+ */
+export const ContentControllersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ContentControllersApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Insert dashboard content
+         * @param {ContentReq} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addContent(model: ContentReq, options?: any): AxiosPromise<ContentRes> {
+            return localVarFp.addContent(model, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get all dashboard content
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getContent(options?: any): AxiosPromise<Array<ContentRes>> {
+            return localVarFp.getContent(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get content by id
+         * @param {string} id id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getContentById(id: string, options?: any): AxiosPromise<ContentRes> {
+            return localVarFp.getContentById(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update dashboard content
+         * @param {string} id id
+         * @param {ContentReq} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateContent(id: string, model: ContentReq, options?: any): AxiosPromise<ContentRes> {
+            return localVarFp.updateContent(id, model, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ContentControllersApi - object-oriented interface
+ * @export
+ * @class ContentControllersApi
+ * @extends {BaseAPI}
+ */
+export class ContentControllersApi extends BaseAPI {
+    /**
+     * 
+     * @summary Insert dashboard content
+     * @param {ContentReq} model model
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ContentControllersApi
+     */
+    public addContent(model: ContentReq, options?: any) {
+        return ContentControllersApiFp(this.configuration).addContent(model, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get all dashboard content
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ContentControllersApi
+     */
+    public getContent(options?: any) {
+        return ContentControllersApiFp(this.configuration).getContent(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get content by id
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ContentControllersApi
+     */
+    public getContentById(id: string, options?: any) {
+        return ContentControllersApiFp(this.configuration).getContentById(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update dashboard content
+     * @param {string} id id
+     * @param {ContentReq} model model
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ContentControllersApi
+     */
+    public updateContent(id: string, model: ContentReq, options?: any) {
+        return ContentControllersApiFp(this.configuration).updateContent(id, model, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
 
 /**
  * EmployeeControllersApi - axios parameter creator
