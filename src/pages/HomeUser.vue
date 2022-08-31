@@ -106,7 +106,7 @@
           {{ fileContent }}</q-card-section
         >
       </q-card>
-      <UpdateHomeContent :content="contentType" @clearData="clearData" />
+      <UpdateHomeContent :content="newContent" @clearData="clearData" />
     </div>
   </q-page>
 </template>
@@ -154,9 +154,9 @@ export default class HomeUser extends Vue {
   employees!: IEmployee[];
   documents!: file201Docs[];
   contents!: IContent[];
-  cscDetails!: IContent[];
-  fileDetails!: IContent[];
-  contentType: any = {
+  cscDetails!: any;
+  fileDetails!: any;
+  newContent: any = {
     contentType: '',
     content: '',
     onUpdate: false,
@@ -181,8 +181,8 @@ export default class HomeUser extends Vue {
   }
 
   setDashboardDetails() {
-    this.cscDetails = this.contents.filter((c) => c.contentType == 'CSC');
-    this.fileDetails = this.contents.filter((c) => c.contentType == 'file201');
+    this.cscDetails = this.contents.find((c) => c.contentType == 'CSC');
+    this.fileDetails = this.contents.find((c) => c.contentType == 'file201');
   }
 
   setDashboardContents() {
@@ -222,16 +222,16 @@ export default class HomeUser extends Vue {
   }
 
   editContent(content: IContent) {
-    this.contentType = {
+    this.newContent = {
       ...content,
       onUpdate: true,
     };
-    console.log('content type: ', this.contentType);
+    console.log('payload: ', this.newContent);
     this.homeContentPopups(true);
   }
 
   clearData(val: IContent) {
-    this.contentType = val;
+    this.newContent = val;
   }
 }
 </script>

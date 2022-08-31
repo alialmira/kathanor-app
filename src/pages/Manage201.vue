@@ -223,6 +223,7 @@ export default class ManageAccounts extends Vue {
 
   showEmployeeDocs(document: IEmployeeFile) {
     this.newDocument = { ...document, onUpdate: true };
+    console.log('docs: ', this.newDocument);
     this.showEmployeeDocsPopups(true);
   }
 
