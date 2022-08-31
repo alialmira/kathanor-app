@@ -5,6 +5,8 @@ import { EmployeeStateInterface } from './employee-module/state';
 import employee from './employee-module';
 import { DocumentStateInterface } from './document-module/state';
 import document from './document-module';
+import { ContentStateInterface } from './content-module/state';
+import content from './content-module';
 import { UiNavStateInterface } from './ui-navigation-module/state';
 import uiNav from './ui-navigation-module';
 /*
@@ -18,6 +20,7 @@ export interface StateInterface {
   // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
   employee: EmployeeStateInterface;
   document: DocumentStateInterface;
+  content: ContentStateInterface;
   uiNav: UiNavStateInterface;
 }
 
@@ -28,6 +31,7 @@ export default store(function({ Vue }) {
     modules: {
       document,
       employee,
+      content,
       uiNav
     },
 

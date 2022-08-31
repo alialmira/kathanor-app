@@ -129,7 +129,6 @@ export default class ManageReport extends Vue {
     const empId = this.documents.map((d) => d.uploadedBy);
     const res = this.setReportDetails(empId);
     this.data = this.empReport;
-    console.log('result: ', this.data);
   }
 
   setReportDetails(empId: any) {

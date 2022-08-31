@@ -72,16 +72,13 @@
             outlined
             text-color="white"
             icon="edit"
-            @click="editCivilServiceContent()"
+            @click="editContent(cscDetails)"
           >
           </q-btn>
         </q-card-section>
         <q-separator color="white" />
         <q-card-section :class="$q.screen.lt.md ? '' : 'text-h5'"
-          >The Civil Service Commission is one of the three Constitutional
-          Commissions of the Philippines with responsibility over the civil
-          service. It is tasked with overseeing the integrity of government
-          actions and processes.
+          >{{ cscContent }}
         </q-card-section>
       </q-card>
       <q-card class="col card-border q-pa-md">
@@ -100,22 +97,13 @@
             outlined
             text-color="white"
             icon="edit"
-            @click="edit201FileContent()"
+            @click="editContent(fileDetails)"
           >
           </q-btn>
         </q-card-section>
         <q-separator color="white" />
         <q-card-section :class="$q.screen.lt.md ? '' : 'text-h5'">
-          201 - files contains records/data pertaining to the employee's
-          personal information, financial information, employment contract,
-          duties, job grade, performance, and employment history for future
-          employment requirements.</q-card-section
-        >
-        <q-card-section :class="$q.screen.lt.md ? '' : 'text-h5'"
-          >Interestingly, the term “201 files” originated from the Army. Form
-          201 in the US Army, Which is a set of documents containing a person’s
-          comprehensive profile, including all previous and new information
-          necessary about the individual.</q-card-section
+          {{ fileContent }}</q-card-section
         >
       </q-card>
       <UpdateHomeContent :content="contentType" @clearData="clearData" />
@@ -147,39 +135,66 @@ interface file201Docs {
   computed: {
     ...mapState('employee', ['employees', 'employee']),
     ...mapState('document', ['documents']),
+    ...mapState('content', ['contents']),
   },
   methods: {
     ...mapActions('employee', ['getEmployees']),
     ...mapActions('uiNav', ['homeContentPopups']),
     ...mapActions('document', ['getAllDocuments']),
+    ...mapActions('content', ['getContents']),
   },
 })
 export default class HomeUser extends Vue {
-  employees!: IEmployee[];
-  documents!: file201Docs[];
   isAdmin = false;
   user: any = {};
-  getEmployees!: () => Promise<void>;
-  getAllDocuments!: () => Promise<void>;
-  homeContentPopups!: (show: boolean) => void;
   empNum = 0;
   docNum = 0;
-
-  contentType: IContent = {
-    type: '',
+  cscContent = '';
+  fileContent = '';
+  employees!: IEmployee[];
+  documents!: file201Docs[];
+  contents!: IContent[];
+  cscDetails!: IContent[];
+  fileDetails!: IContent[];
+  contentType: any = {
+    contentType: '',
     content: '',
     onUpdate: false,
   };
+  getEmployees!: () => Promise<void>;
+  getContents!: () => Promise<void>;
+  getAllDocuments!: () => Promise<void>;
+  homeContentPopups!: (show: boolean) => void;
 
   async created() {
     const res = await this.user;
     await this.getEmployees();
     await this.getAllDocuments();
+    await this.getContents();
     this.empNum = this.employees.length;
     this.docNum = this.documents.length;
     this.isAdmin = this.employees.some(
       (e) => e.session == true && e.accountType == 'admin'
     );
+    this.setDashboardContents();
+    this.setDashboardDetails();
+  }
+
+  setDashboardDetails() {
+    this.cscDetails = this.contents.filter((c) => c.contentType == 'CSC');
+    this.fileDetails = this.contents.filter((c) => c.contentType == 'file201');
+  }
+
+  setDashboardContents() {
+    this.cscContent = this.contents
+      .filter((c) => c.contentType == 'CSC')
+      .map((c) => c.content)
+      .toString();
+
+    this.fileContent = this.contents
+      .filter((c) => c.contentType == 'file201')
+      .map((c) => c.content)
+      .toString();
   }
 
   @Watch('employees')
@@ -206,29 +221,18 @@ export default class HomeUser extends Vue {
     await this.$router.push('/report');
   }
 
-  editCivilServiceContent() {
+  editContent(content: IContent) {
     this.contentType = {
-      type: 'CSC',
-      content:
-        '201 - files contains records/data pertaining to the employees personal information, financial information, employment contract, duties, job grade, performance, and employment history for future employment requirements.',
+      ...content,
       onUpdate: true,
     };
-    this.homeContentPopups(true);
-  }
-
-  edit201FileContent() {
-    this.contentType = {
-      type: '201-file',
-      content: 'Interestingly, the term “201 files” originated from the Army. Form 201 in the US Army, Which is a set of documents containing a person’s comprehensive profile, including all previous and new information necessary about the individual.',
-      onUpdate: true,
-    };
+    console.log('content type: ', this.contentType);
     this.homeContentPopups(true);
   }
 
   clearData(val: IContent) {
     this.contentType = val;
   }
-
 }
 </script>
 

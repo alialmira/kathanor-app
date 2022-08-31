@@ -1,5 +1,6 @@
 export default interface IContent {
-  type: string;
+  id?: string;
+  contentType: string;
   content: string;
   onUpdate?: boolean;
 }

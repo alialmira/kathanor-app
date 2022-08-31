@@ -17,7 +17,7 @@
         ></q-btn>
       </q-toolbar>
       <q-card-section
-        v-if="this.content.type == 'CSC'"
+        v-if="newContent.contentType == 'CSC'"
         :class="
           $q.screen.lt.md
             ? 'q-pr-lg q-pl-lg q-pb-xs text-h5 text-weight-bold'
@@ -39,7 +39,7 @@
       <q-card-section class="q-pr-lg q-pl-lg q-pb-xs">
         <q-input
           outlined
-          v-model="this.contentType.content"
+          v-model="newContent.content"
           type="textarea"
           style="max-height: 500px;"
           lazy-rules
@@ -67,6 +67,7 @@
             dense
             :loading="isUpload"
             :disable="isUpload"
+            @click="updateContent()"
           ></q-btn>
         </div>
       </q-card-actions>
@@ -96,8 +97,8 @@ interface RefsVue extends Vue {
 export default class UpdateHomeContent extends Vue {
   @Prop({ type: Object, required: true }) readonly content!: IContent;
 
-  contentType: IContent = {
-    type: '',
+  newContent: any = {
+    contentType: '',
     content: '',
     onUpdate: false,
   };
@@ -108,12 +109,17 @@ export default class UpdateHomeContent extends Vue {
   homeContentPopups!: (show: boolean) => void;
   updateEmployee!: (payload: any) => Promise<void>;
 
+  updateContent(){
+    console.log('content: ', this.content);
+  }
+
   hideDialog() {
-    this.contentType = {
-      type: '',
+    this.newContent = {
+      contentType: '',
       content: '',
       onUpdate: false,
     };
+    this.homeContentPopups(false);
   }
 
   qNotify(props: { [key: string]: string }) {
