@@ -16,15 +16,6 @@
       >
         <template v-slot:top-left>
           <div class="row q-gutter-sm">
-            <!-- <q-btn
-              label="Add 201-File"
-              color="positive"
-              rounded
-              text-color="white"
-              icon="add"
-              to="/add-201"
-            >
-            </q-btn> -->
             <q-btn
               label="Add 201-File"
               color="positive"

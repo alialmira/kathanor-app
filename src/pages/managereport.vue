@@ -8,6 +8,7 @@
       </div>
       <q-table
         class="card-border"
+        style="border-radius: 15px;"
         :data="data"
         :columns="columns"
         row-key="name"
@@ -49,12 +50,10 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapActions, mapState } from 'vuex';
 import IEmployee from '../interfaces/employee.interface';
+import IFIle201 from '../interfaces/File201.interface';
 
 interface IEmployeeReport {
-  lastName: string;
-  firstName: string;
-  middleName: string;
-  extensionName: string;
+  fullname: string;
   birthDate: string;
   day: string;
   month: string;
@@ -64,72 +63,103 @@ interface IEmployeeReport {
 @Component({
   computed: {
     ...mapState('employee', ['employees', 'employee']),
+    ...mapState('document', ['documents']),
   },
   methods: {
     ...mapActions('employee', ['getEmployees']),
+    ...mapActions('document', ['getAllDocuments']),
   },
 })
 export default class ManageReport extends Vue {
   columns = [
     {
-      name: 'lastName',
+      name: 'fullname',
       align: 'left',
-      label: 'Last Name',
-      field: 'lastName',
+      label: 'Employee',
+      field: (row: IEmployeeReport) => row.fullname,
       sortable: true,
     },
     {
-      name: 'firstName',
+      name: 'birthDate',
       align: 'left',
-      label: 'Fist Name',
-      field: 'firstName',
-      sortable: true,
-    },
-    {
-      name: 'middleName',
-      align: 'left',
-      label: 'Middle Name',
-      field: 'middleName',
+      label: 'Birth Date',
+      field: (row: IEmployeeReport) => row.birthDate,
       sortable: true,
     },
     {
       name: 'day',
       align: 'left',
       label: 'Day',
-      field: '',
+      field: (row: IEmployeeReport) => row.day,
       sortable: true,
     },
-
     {
       name: 'month',
       align: 'left',
       label: 'Month',
-      field: '',
+      field: (row: IEmployeeReport) => row.month,
       sortable: true,
     },
-
     {
       name: 'year',
       align: 'left',
       label: 'Year',
-      field: '',
+      field: (row: IEmployeeReport) => row.year,
       sortable: true,
-    },
+    }
   ];
 
   pagination = {
     rowsPerPage: 10,
   };
 
-  data: any = [];
+  empReport: IEmployeeReport[] = [];
+  data: IEmployeeReport[] = [];
   employees!: IEmployee[];
+  documents!: IFIle201[];
   getEmployees!: () => Promise<void>;
+  getAllDocuments!: () => Promise<void>;
+  fullName: any = [];
+  birthDate: any = [];
   filter = '';
 
   async created() {
-    await this.getEmployees;
-    this.data = this.employees.filter((e) => e.accountType == 'user');
-    console.log('data: ', this.data);
+    await this.getAllDocuments();
+    await this.getEmployees();
+    const empId = this.documents.map((d) => d.uploadedBy);
+    const res = this.setReportDetails(empId);
+    this.data = this.empReport;
+    console.log('result: ', this.data);
+  }
+
+  setReportDetails(empId: any) {
+    for (let index = 0; index < empId.length; index++) {
+      this.fullName[index] = this.employees
+        .filter((e) => e.id == empId[index] && e.accountType == 'admin')
+        .map(
+          (e) =>
+            e.firstName +
+            ' ' +
+            e.middleName +
+            ' ' +
+            e.lastName +
+            ' ' +
+            e.extensionName
+        );
+      for (let index = 0; index < empId.length; index++) {
+        this.birthDate[index] = this.employees
+          .filter((e) => e.id == empId[index] && e.accountType == 'admin')
+          .map((e) => e.birthDate);
+      }
+      this.empReport[index] = {
+        fullname: this.fullName[index].toString(),
+        birthDate: this.birthDate[index].toString(),
+        day: '',
+        month: '',
+        year: '',
+      };
+    }
+    return this.empReport;
   }
 }
 </script>

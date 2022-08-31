@@ -183,7 +183,6 @@ export default class Profile extends Vue {
     this.isAdmin = this.employees.some(
       (e) => e.session == true && e.accountType == 'admin'
     );
-    console.log('user: ', this.user);
   }
 
   editEmployee(user: IEmployee) {
