@@ -7,7 +7,7 @@
       <q-table
         class="card-border"
         :data="user.accountType != 'admin' ? newFiltered : data"
-        :columns="columns"
+        :columns="$q.screen.lt.md ? columnsX : columns"
         row-key="name"
         virtual-scroll
         :filter="filter"
@@ -140,8 +140,25 @@ export default class ManageAccounts extends Vue {
   pagination = {
     rowsPerPage: 10,
   };
-  columns = [
+  columnsX = [
     {
+      name: 'fullname',
+      align: 'left',
+      label: 'Employee',
+      field: (row: IEmployee) => row.firstName + ' ' + row.lastName + ' ' + row.extensionName,
+      sortable: true,
+    },
+    {
+      name: 'agency',
+      align: 'left',
+      label: 'Agency',
+      field: 'agency',
+      sortable: true,
+    },
+  ];
+
+  columns = [
+     {
       name: 'firstName',
       align: 'left',
       label: 'First Name',
@@ -185,6 +202,7 @@ export default class ManageAccounts extends Vue {
       sortable: true,
     },
   ];
+
   isAdmin = false;
   user: any = {};
   filter = '';
