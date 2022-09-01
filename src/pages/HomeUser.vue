@@ -226,7 +226,6 @@ export default class HomeUser extends Vue {
       ...content,
       onUpdate: true,
     };
-    console.log('payload: ', this.newContent);
     this.homeContentPopups(true);
   }
 

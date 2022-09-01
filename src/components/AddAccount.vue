@@ -473,7 +473,6 @@ export default class AddAccount extends Vue {
         message: 'Account Updated Successfully.',
       });
     } catch (error) {
-      console.log(error);
       this.$q.notify({
         type: 'negative',
         message: 'Account Failed to Update.',

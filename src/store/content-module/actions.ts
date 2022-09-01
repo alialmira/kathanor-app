@@ -9,6 +9,9 @@ const actions: ActionTree<ContentStateInterface, StateInterface> = {
     const result = await ContentService.getAll();
     context.commit('getContents', result);
   },
+  async updateContent({}, payload): Promise<any> {
+    await ContentService.updateContent(payload.id, payload);
+  },
 };
 
 export default actions;

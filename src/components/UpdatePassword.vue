@@ -43,7 +43,7 @@
         />
       </q-card-section>
 
-      <q-card-actions class="row q-col-gutter-md q-pr-lg q-pl-lg">
+      <q-card-actions class="row q-col-gutter-md q-pr-lg q-pl-lg q-pb-md">
         <div class="col">
           <q-btn
             class="full-width"

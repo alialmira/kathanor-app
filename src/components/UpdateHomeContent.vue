@@ -1,5 +1,10 @@
 <template>
-  <q-dialog v-model="showContentDialog" persistent @hide="hideDialog()">
+  <q-dialog
+    v-model="showContentDialog"
+    persistent
+    @hide="hideDialog()"
+    @show="showDialog()"
+  >
     <q-card
       style="width: 700px; max-width: 100vw; border-radius: 25px;"
       class="__card q-pt-xs"
@@ -39,6 +44,7 @@
       <q-card-section class="q-pr-lg q-pl-lg q-pb-xs">
         <q-input
           outlined
+          ref="content"
           v-model="newContent.content"
           type="textarea"
           style="max-height: 500px;"
@@ -67,7 +73,7 @@
             dense
             :loading="isUpload"
             :disable="isUpload"
-            @click="updateContent()"
+            @click="updateDashContent()"
           ></q-btn>
         </div>
       </q-card-actions>
@@ -88,33 +94,81 @@ interface RefsVue extends Vue {
 @Component({
   computed: {
     ...mapState('uiNav', ['showContentDialog']),
+    ...mapState('content', ['contents']),
   },
   methods: {
     ...mapActions('uiNav', ['homeContentPopups']),
     ...mapActions('employee', ['updateEmployee']),
+    ...mapActions('content', ['getContents', 'updateContent']),
   },
 })
 export default class UpdateHomeContent extends Vue {
   @Prop({ type: Object, required: true }) readonly content!: IContent;
 
   newContent: any = {
+    id: '',
     contentType: '',
     content: '',
     onUpdate: false,
   };
 
+  $refs!: {
+    content: RefsVue;
+  };
+
+  isSubmit = false;
   isUpload = false;
   formHasError!: boolean;
   showContentDialog!: boolean;
+  contents!: IContent[];
   homeContentPopups!: (show: boolean) => void;
   updateEmployee!: (payload: any) => Promise<void>;
+  getContents!: () => Promise<void>;
+  updateContent!: (payload: any) => Promise<void>;
 
-  updateContent(){
-    console.log('content: ', this.content);
+  async created() {
+    await this.getContents();
+  }
+
+  checkForm() {
+    this.$refs.content.validate();
+  }
+
+  async updateDashContent() {
+    this.isSubmit = true;
+    this.checkForm();
+    if (this.$refs.content.hasError) {
+      this.formHasError = true;
+    } else {
+      try {
+        await this.updateContent({ ...this.newContent });
+        this.homeContentPopups(false);
+        this.$q.notify({
+          type: 'positive',
+          message: 'Content Updated Successfully.',
+        });
+        this.newContent = {
+          id: '',
+          contentType: '',
+          content: '',
+          onUpdate: false,
+        };
+      } catch (error) {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Failed to Update Content.',
+        });
+      }
+    }
+  }
+
+  showDialog() {
+    this.newContent = { ...this.content };
   }
 
   hideDialog() {
     this.newContent = {
+      id: '',
       contentType: '',
       content: '',
       onUpdate: false,
