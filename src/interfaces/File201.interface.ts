@@ -2,6 +2,7 @@ export default interface IFIle201 {
   id?: string;
   uploadedBy: string;
   employeeId: string;
+  dateUploaded: string;
   filename: string;
   docType: string;
   mimeType: string;
