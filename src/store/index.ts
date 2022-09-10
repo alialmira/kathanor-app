@@ -7,6 +7,8 @@ import { DocumentStateInterface } from './document-module/state';
 import document from './document-module';
 import { ContentStateInterface } from './content-module/state';
 import content from './content-module';
+import { ReportStateInterface } from './report-module/state';
+import report from './report-module';
 import { UiNavStateInterface } from './ui-navigation-module/state';
 import uiNav from './ui-navigation-module';
 /*
@@ -21,6 +23,7 @@ export interface StateInterface {
   employee: EmployeeStateInterface;
   document: DocumentStateInterface;
   content: ContentStateInterface;
+  report: ReportStateInterface;
   uiNav: UiNavStateInterface;
 }
 
@@ -32,6 +35,7 @@ export default store(function({ Vue }) {
       document,
       employee,
       content,
+      report,
       uiNav
     },
 
