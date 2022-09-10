@@ -16,7 +16,8 @@
   "tags": [
     { "name": "content-controllers", "description": "Content Controllers" },
     { "name": "employee-controllers", "description": "Employee Controllers" },
-    { "name": "file-201-controllers", "description": "File 201 Controllers" }
+    { "name": "file-201-controllers", "description": "File 201 Controllers" },
+    { "name": "report-controllers", "description": "Report Controllers" }
   ],
   "paths": {
     "/kathanor-api/201file": {
@@ -376,6 +377,52 @@
           "403": { "description": "Forbidden" }
         }
       }
+    },
+    "/kathanor-api/report/": {
+      "get": {
+        "tags": ["report-controllers"],
+        "summary": "Get all reports",
+        "operationId": "getReports",
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/ReportRes" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["report-controllers"],
+        "summary": "Insert some reports",
+        "operationId": "addReport",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "model",
+            "description": "model",
+            "required": true,
+            "schema": { "$ref": "#/definitions/ReportReq" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ReportRes" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
     }
   },
   "definitions": {
@@ -470,6 +517,34 @@
       "type": "object",
       "properties": { "timestamp": { "type": "integer", "format": "int32" } },
       "title": "ObjectId"
+    },
+    "ReportReq": {
+      "type": "object",
+      "properties": {
+        "accountType": { "type": "string" },
+        "birthDate": { "type": "string" },
+        "dateRecorded": { "type": "string" },
+        "day": { "type": "string" },
+        "fullname": { "type": "string" },
+        "id": { "$ref": "#/definitions/ObjectId" },
+        "month": { "type": "string" },
+        "year": { "type": "string" }
+      },
+      "title": "ReportReq"
+    },
+    "ReportRes": {
+      "type": "object",
+      "properties": {
+        "accountType": { "type": "string" },
+        "birthdate": { "type": "string" },
+        "dateRecorded": { "type": "string" },
+        "day": { "type": "string" },
+        "fullname": { "type": "string" },
+        "id": { "type": "string" },
+        "month": { "type": "string" },
+        "year": { "type": "string" }
+      },
+      "title": "ReportRes"
     },
     "Resource": {
       "type": "object",

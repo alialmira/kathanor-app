@@ -379,6 +379,116 @@ export interface ObjectId {
 /**
  * 
  * @export
+ * @interface ReportReq
+ */
+export interface ReportReq {
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportReq
+     */
+    accountType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportReq
+     */
+    birthDate?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportReq
+     */
+    dateRecorded?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportReq
+     */
+    day?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportReq
+     */
+    fullname?: string;
+    /**
+     * 
+     * @type {ObjectId}
+     * @memberof ReportReq
+     */
+    id?: ObjectId;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportReq
+     */
+    month?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportReq
+     */
+    year?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ReportRes
+ */
+export interface ReportRes {
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportRes
+     */
+    accountType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportRes
+     */
+    birthdate?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportRes
+     */
+    dateRecorded?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportRes
+     */
+    day?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportRes
+     */
+    fullname?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportRes
+     */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportRes
+     */
+    month?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportRes
+     */
+    year?: string;
+}
+/**
+ * 
+ * @export
  * @interface Resource
  */
 export interface Resource {
@@ -1459,6 +1569,173 @@ export class File201ControllersApi extends BaseAPI {
      */
     public upload201File(dateUploaded: string, docType: string, employeeId: string, uploadedBy: string, content?: any, options?: any) {
         return File201ControllersApiFp(this.configuration).upload201File(dateUploaded, docType, employeeId, uploadedBy, content, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * ReportControllersApi - axios parameter creator
+ * @export
+ */
+export const ReportControllersApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Insert some reports
+         * @param {ReportReq} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addReport: async (model: ReportReq, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'model' is not null or undefined
+            assertParamExists('addReport', 'model', model)
+            const localVarPath = `/kathanor-api/report/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(model, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get all reports
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getReports: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/kathanor-api/report/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ReportControllersApi - functional programming interface
+ * @export
+ */
+export const ReportControllersApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ReportControllersApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Insert some reports
+         * @param {ReportReq} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addReport(model: ReportReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReportRes>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addReport(model, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get all reports
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getReports(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ReportRes>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getReports(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * ReportControllersApi - factory interface
+ * @export
+ */
+export const ReportControllersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ReportControllersApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Insert some reports
+         * @param {ReportReq} model model
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addReport(model: ReportReq, options?: any): AxiosPromise<ReportRes> {
+            return localVarFp.addReport(model, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get all reports
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getReports(options?: any): AxiosPromise<Array<ReportRes>> {
+            return localVarFp.getReports(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ReportControllersApi - object-oriented interface
+ * @export
+ * @class ReportControllersApi
+ * @extends {BaseAPI}
+ */
+export class ReportControllersApi extends BaseAPI {
+    /**
+     * 
+     * @summary Insert some reports
+     * @param {ReportReq} model model
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReportControllersApi
+     */
+    public addReport(model: ReportReq, options?: any) {
+        return ReportControllersApiFp(this.configuration).addReport(model, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get all reports
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReportControllersApi
+     */
+    public getReports(options?: any) {
+        return ReportControllersApiFp(this.configuration).getReports(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
