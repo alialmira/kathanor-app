@@ -119,7 +119,7 @@ interface IEmployeeFile {
 export default class ManageAccounts extends Vue {
   filter = '';
   pagination = {
-    rowsPerPage: 10,
+  rowsPerPage: 8,
   };
   columns = [
     {

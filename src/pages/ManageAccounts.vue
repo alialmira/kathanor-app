@@ -138,7 +138,7 @@ export default class ManageAccounts extends Vue {
   };
 
   pagination = {
-    rowsPerPage: 10,
+    rowsPerPage: 8,
   };
   columnsX = [
     {
