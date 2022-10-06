@@ -11,6 +11,7 @@ function state(): DocumentStateInterface {
       uploadedBy: '',
       employeeId: '',
       filename: '',
+      dateUploaded: '',
       docType: '',
       mimeType: '',
       content: '',

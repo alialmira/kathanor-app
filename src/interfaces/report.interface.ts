@@ -1,6 +1,6 @@
 export default interface IEmployeeReport {
   fullname: string;
-  birthDate: string;
+  birthdate: string;
   accountType?: string;
   dateRecorded: string;
   day: string;

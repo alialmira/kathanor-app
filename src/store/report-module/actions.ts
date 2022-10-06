@@ -9,6 +9,7 @@ const actions: ActionTree<ReportStateInterface, StateInterface> = {
     context.commit('getReports', result);
   },
   async addReport(context, payload: any) {
+    console.log('payload: ', payload);
     const result = await ReportService.addReport(payload);
     context.commit('addReport', result);
   },

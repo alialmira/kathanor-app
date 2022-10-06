@@ -391,7 +391,7 @@ export default class AddAccount extends Vue {
       if (this.newEmployee.agency != 'CSC - LDS') {
         await this.addEmployee({
           ...this.newEmployee,
-          accountType: 'admin',
+          accountType: '',
           session: false,
           username: '',
           password: '',

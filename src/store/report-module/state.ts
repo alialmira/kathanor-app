@@ -9,7 +9,7 @@ function state(): ReportStateInterface {
   return {
     report: {
       fullname : '',
-      birthDate : '',
+      birthdate : '',
       accountType : '',
       dateRecorded : '',
       day : '',

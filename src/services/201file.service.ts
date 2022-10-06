@@ -17,10 +17,10 @@ const restConfig = new Configuration({
 const restApi = new File201ControllersApi(restConfig);
 
 class File201Service extends File201ControllersApi {
-  async upload(id: string, file: any) {
-    const response = await restApi.upload201File(id, file);
-    return response.data;
-  }
+  // async upload(id: string, file: any) {
+  //   const response = await restApi.upload201File(id, file);
+  //   return response.data;
+  // }
 }
 
 const file201Service = new File201Service();

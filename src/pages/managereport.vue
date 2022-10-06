@@ -16,6 +16,19 @@
         :filter="filter"
         :pagination.sync="pagination"
       >
+        <template v-slot:top-left>
+          <div class="row q-gutter-sm">
+            <q-btn
+              label="Submit Report"
+              color="positive"
+              rounded
+              text-color="white"
+              icon="upload"
+              @click="uploadReports()"
+            >
+            </q-btn>
+          </div>
+        </template>
         <template v-slot:top-right>
           <div class="row q-gutter-sm">
             <q-input dense debounce="300" v-model="filter" placeholder="Search">
@@ -39,7 +52,11 @@
         </template>
 
         <template v-slot:body="props">
-          <q-tr :props="props"> </q-tr>
+          <q-tr :props="props">
+            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              {{ col.value }}
+            </q-td>
+          </q-tr>
         </template>
       </q-table>
     </div>
@@ -50,23 +67,19 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { mapActions, mapState } from 'vuex';
 import IEmployee from '../interfaces/employee.interface';
+import IEmployeeReport from '../interfaces/report.interface';
 import IFIle201 from '../interfaces/File201.interface';
-
-interface IEmployeeReport {
-  fullname: string;
-  birthDate: string;
-  day: string;
-  month: string;
-  year: string;
-}
+import { date } from 'quasar';
 
 @Component({
   computed: {
     ...mapState('employee', ['employees', 'employee']),
+    ...mapState('report', ['reports', 'report']),
     ...mapState('document', ['documents']),
   },
   methods: {
     ...mapActions('employee', ['getEmployees']),
+    ...mapActions('report', ['getReports', 'addReport']),
     ...mapActions('document', ['getAllDocuments']),
   },
 })
@@ -83,7 +96,7 @@ export default class ManageReport extends Vue {
       name: 'birthDate',
       align: 'left',
       label: 'Birth Date',
-      field: (row: IEmployeeReport) => row.birthDate,
+      field: (row: IEmployeeReport) => row.birthdate,
       sortable: true,
     },
     {
@@ -106,7 +119,7 @@ export default class ManageReport extends Vue {
       label: 'Year',
       field: (row: IEmployeeReport) => row.year,
       sortable: true,
-    }
+    },
   ];
 
   pagination = {
@@ -115,26 +128,50 @@ export default class ManageReport extends Vue {
 
   empReport: IEmployeeReport[] = [];
   data: IEmployeeReport[] = [];
+  dataUp: IEmployeeReport[] = [];
   employees!: IEmployee[];
   documents!: IFIle201[];
+  reports!: IEmployeeReport[];
+  addReport!: (payload: any) => Promise<void>;
   getEmployees!: () => Promise<void>;
+  getReports!: () => Promise<void>;
   getAllDocuments!: () => Promise<void>;
   fullName: any = [];
+  accType: any = [];
   birthDate: any = [];
+  testDate: any = [];
+  report: any = [];
+  dateRec: any = [];
   filter = '';
 
   async created() {
     await this.getAllDocuments();
     await this.getEmployees();
-    const empId = this.documents.map((d) => d.uploadedBy);
-    const res = this.setReportDetails(empId);
-    this.data = this.empReport;
+    await this.getReports();
+    const empId = this.employees.map((d) => d.id);
+    this.setReportData(empId);
+    this.data = this.empReport.filter((r) => r.accountType == 'admin');
   }
 
-  setReportDetails(empId: any) {
-    for (let index = 0; index < empId.length; index++) {
-      this.fullName[index] = this.employees
-        .filter((e) => e.id == empId[index] && e.accountType == 'admin')
+  checkReport() {
+    this.dateRec = this.reports.map((r) => r.dateRecorded);
+    this.dateRec.forEach((d: any) => {
+      var currentDate = date.formatDate(Date.now(), 'YYYY-MM-DD') as string;
+      const date1 = new Date(d);
+      const date2 = new Date(currentDate);
+      if (date.isSameDate(date1, date2, 'day')) {
+        console.log('true');
+      } else {
+        console.log('false');
+      }
+    });
+  }
+
+  setReportData(empId: any) {
+    var currentDate = date.formatDate(Date.now(), 'YYYY-MM-DD') as string;
+    for (let i = 0; i < empId.length; i++) {
+      this.fullName[i] = this.employees
+        .filter((e) => e.id == empId[i])
         .map(
           (e) =>
             e.firstName +
@@ -145,20 +182,44 @@ export default class ManageReport extends Vue {
             ' ' +
             e.extensionName
         );
-      for (let index = 0; index < empId.length; index++) {
-        this.birthDate[index] = this.employees
-          .filter((e) => e.id == empId[index] && e.accountType == 'admin')
-          .map((e) => e.birthDate);
-      }
-      this.empReport[index] = {
-        fullname: this.fullName[index].toString(),
-        birthDate: this.birthDate[index].toString(),
-        day: '',
-        month: '',
-        year: '',
+      this.birthDate[i] = this.employees
+        .filter((e) => e.id == empId[i])
+        .map((e) => e.birthDate);
+      this.accType[i] = this.employees
+        .filter((e) => e.id == empId[i])
+        .map((e) => e.accountType);
+      this.report[i] = this.documents.filter((d) => d.uploadedBy == empId[i]);
+      this.empReport[i] = {
+        fullname: this.fullName[i].toString(),
+        birthdate: this.birthDate[i].toString(),
+        dateRecorded: currentDate,
+        accountType: this.accType[i].toString(),
+        day: this.report[i].length as string,
+        month: this.report[i].length as string,
+        year: this.report[i].length as string,
       };
     }
-    return this.empReport;
+  }
+
+  async uploadReports() {
+    this.$q
+      .dialog({
+        title: 'Are you sure you want to upload this reports?',
+        message:
+          'Please make sure to validate information first. All reports will be cleared.',
+        ok: {
+          outlined: true,
+          color: 'red',
+        },
+        cancel: true,
+        persistent: true,
+      })
+      .onOk(async () => {
+        this.$q.notify({
+          type: 'positive',
+          message: 'Reports Uploaded Successfully.',
+        });
+      });
   }
 }
 </script>

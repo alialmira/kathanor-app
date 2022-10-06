@@ -150,6 +150,7 @@ export default class ShowDocument extends Vue {
       uploadedBy: '',
       employeeId: '',
       filename: '',
+      dateUploaded: '',
       docType: '',
       mimeType: '',
       content: '',
