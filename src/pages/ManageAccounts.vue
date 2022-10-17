@@ -78,7 +78,7 @@
                 <q-tooltip>Edit Employee</q-tooltip>
               </q-btn>
 
-              <q-btn
+              <!-- <q-btn
                 size="sm"
                 color="red"
                 icon="delete"
@@ -86,7 +86,7 @@
                 dense
                 class="q-mr-sm"
                 @click="deleteLastName(props.row.id)"
-              >
+              > -->
                 <q-tooltip>Delete Employee</q-tooltip>
               </q-btn>
             </q-td>
