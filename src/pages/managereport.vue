@@ -19,7 +19,7 @@
         <template v-slot:top-left>
           <div class="row q-gutter-sm">
             <q-btn
-              label="Submit Report"
+              label="Download Report"
               color="positive"
               rounded
               text-color="white"
